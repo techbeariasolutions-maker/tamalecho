@@ -46,6 +46,7 @@
 - Sin aprobación obligatoria en S1: el autor llena el checklist de DoD en el PR y hace la revisión de comportamiento (PLAN §8).
 - Una rama por **paquete de trabajo** (WP), no por tarjeta: 28 PR en 4 días es burocracia sin valor. Cada commit lleva el ID de actividad.
 - Se reactiva la revisión cruzada cuando haya trabajo en paralelo (S2).
+- **Excepción registrada (20/10):** el PR del WP-1 entra sin check automático porque el CI se crea en el WP-4. La protección de `main` se activa al terminar el WP-4; a partir de ahí no hay excepciones.
 
 ## D-06 · Hosting — VIGENTE (S1) / PENDIENTE (S2)
 - S1: **Vercel** (HTTPS, vista previa por PR, *Instant Rollback*). SPA con `vercel.json` (todas las rutas reescritas a `/index.html`).
@@ -82,6 +83,16 @@
   3. Demostración en vivo.
   4. **Reporte del Sprint 1 en Word**, con la estructura de PLAN §10.
 - Se pide confirmación a la profesora por mensaje el 20/10. Si no responde antes del jueves, se entrega lo anterior.
+
+## D-14 · Versiones de dependencias — VIGENTE (20/10/2026)
+- `react-router` se fija en **^7** aunque npm ya ofrece la v8. Es la versión que pide `CLAUDE.md` §4 y la más documentada; migrar no aporta valor en el S1.
+- Vite, `@vitejs/plugin-react` y Vitest: se usa la combinación más reciente **compatible entre sí**. El agente reporta en el PR del WP-1 las versiones exactas que quedaron y la versión mínima de Node que exigen.
+- `.nvmrc` y el README indican esa versión mínima de Node, y el equipo verifica que su Node local la cumpla.
+
+## D-15 · Entorno de los agentes — VIGENTE (20/10/2026)
+- El agente de código trabaja en un entorno Linux en la nube. Sus pruebas en verde no demuestran que el proyecto funcione en Windows.
+- La prueba de aceptación de HT-01.1 (caso T-15: clonar y correr en otra máquina) la hace el equipo en Windows con PowerShell y deja una captura como evidencia.
+- El agente puede crear y subir las ramas de WP con la convención de `CLAUDE.md` §9.
 
 ## D-12 · Versionado — VIGENTE
 - Catálogo: `0.9.0` mientras haya borradores; `1.0.0` solo cuando los 24 estén aprobados (HT-03.2-B).
