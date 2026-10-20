@@ -7,7 +7,7 @@
 | Fecha | ¿Qué terminé desde la última daily? | ¿Qué haré hoy? | Impedimentos | Horas reales | Actividades restantes (de 28) |
 |---|---|---|---|---|---|
 | Lun 19/10 | — | — | No se realizó el Sprint Planning ni se creó el repositorio | 0 | 28 |
-| Mar 20/10 | Sprint Planning (PLAN.md, DECISIONES.md, PROMPTS.md, PRUEBAS.md); borrador de los 24 tips | WP-0, WP-1, WP-B, WP-4, WP-2; mensaje a la profesora (D-13) | Sin rúbrica (D-13); ¿guía PMBOK 6 completa o solo cap. 1–5? (D-03) | | |
+| Mar 20/10 | Sprint Planning (PLAN, DECISIONES, PROMPTS, PRUEBAS) y borrador de los 24 tips. Terminadas: HT-01.1-A, HT-01.1-B (WP-1), HT-01.2-A, HT-01.2-B (WP-4). Tablero con 28 issues. URL pública: tamalecho.vercel.app. Protección de `main` activa. | Mié: revisar el PR del WP-2; WP-3, WP-5, WP-6 y WP-7; verificar los 12 tips Scrum | WP-2 movido al miércoles por tiempo (se lanza al agente el martes y se revisa el miércoles). Primera corrida E2E en Windows falló por arranque en frío de Chromium (resuelto, T-15). Sin rúbrica (D-13). ¿Guía PMBOK 6 completa? (D-03) | ≈ 3.25 | 24 |
 | Mié 21/10 | | WP-3, WP-5, WP-6, WP-7 | | | |
 | Jue 22/10 | | PC-2 → WP-8, WP-9; congelación | | | |
 | Vie 23/10 | | WP-10, documentos, Review, Retro | | | |
@@ -17,7 +17,7 @@
 |---|---|---|---|
 | Inicio (lun 19) | 28 | 28 | 28 |
 | Lun 19 | 22.4 | 28 | 28 |
-| Mar 20 | 16.8 | 20 | |
+| Mar 20 | 16.8 | 20 | 24 |
 | Mié 21 | 11.2 | 9 | |
 | Jue 22 | 5.6 | 1 | |
 | Vie 23 | 0 | 0 | |
