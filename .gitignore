@@ -1,0 +1,21 @@
+# Dependencias
+node_modules
+
+# Compilación
+dist
+
+# Resultados de Playwright
+test-results
+playwright-report
+blob-report
+playwright/.cache
+
+# Registros y archivos del sistema
+*.log
+.DS_Store
+Thumbs.db
+
+# Variables de entorno locales
+.env
+.env.*
+!.env.example
