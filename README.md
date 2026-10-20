@@ -64,4 +64,28 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 
 ## Despliegue y rollback
 
-*Pendiente: WP-4.*
+El sitio se publica en **Vercel**, conectado a este repositorio de GitHub.
+
+| Rama | Qué se publica |
+|---|---|
+| `main` | **Producción**: la URL pública del proyecto. Cada merge a `main` se despliega solo. |
+| Cualquier PR | Una **vista previa** con su propia URL `https://`. Vercel la deja como comentario en el PR. |
+
+- `vercel.json` hace que cualquier ruta (por ejemplo `/biblioteca/pmbok`) entregue `index.html`. Sin eso, abrir o recargar una ruta interna daría 404, porque la navegación la resuelve React en el navegador, no el servidor.
+- El CI (`.github/workflows/ci.yml`, check `CI`) corre lint, validador, pruebas unitarias, build y E2E en cada PR y en cada push a `main`. Si fallan las E2E, el reporte queda como artefacto `playwright-report` en la pestaña *Actions* de esa corrida.
+
+### Rollback (volver a una versión anterior)
+
+**Opción 1 · Vercel (inmediata, sin tocar el código).** Úsala cuando producción está rota y hay que arreglarlo ya:
+1. Vercel → proyecto `tamalecho` → **Deployments**.
+2. Busca el último despliegue de producción que funcionaba.
+3. Menú `⋯` → **Instant Rollback** (o **Promote to Production**).
+4. Abre la URL pública y comprueba que volvió la versión anterior.
+
+> **Por verificar en Vercel la primera vez que se use** (no se pudo consultar la documentación al escribir esto): (a) si, después de un rollback, los merges nuevos a `main` dejan de publicarse solos hasta que se promueve un despliegue desde el mismo menú, y (b) si el plan gratuito solo permite volver al despliegue de producción inmediatamente anterior. Anota aquí lo que observes.
+
+**Opción 2 · Git (deja registro en el historial).** Úsala para deshacer un cambio de forma definitiva:
+1. Identifica el commit del merge que causó el problema: `git log --oneline`.
+2. `git checkout main`, `git pull` y `git checkout -b fix/revert-<descripcion>`.
+3. `git revert <sha>` y luego `git push -u origin fix/revert-<descripcion>`.
+4. Abre un PR. Cuando el CI esté en verde, haz el merge: Vercel publica la versión corregida.
