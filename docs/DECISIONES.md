@@ -88,6 +88,8 @@
 - `react-router` se fija en **^7** aunque npm ya ofrece la v8. Es la versión que pide `CLAUDE.md` §4 y la más documentada; migrar no aporta valor en el S1.
 - Vite, `@vitejs/plugin-react` y Vitest: se usa la combinación más reciente **compatible entre sí**. El agente reporta en el PR del WP-1 las versiones exactas que quedaron y la versión mínima de Node que exigen.
 - `.nvmrc` y el README indican esa versión mínima de Node, y el equipo verifica que su Node local la cumpla.
+- Resultado del WP-1: Node mínimo **22.13.0** (lo exige jsdom 29; se descartó jsdom 30, que pide Node ≥ 22.22.2).
+- **ESLint se queda en 9.x aunque ya no tiene soporte (riesgo técnico aceptado).** `eslint-plugin-jsx-a11y` 6.10.2 solo declara compatibilidad hasta ESLint 9; subir a la 10 obligaría a instalar con `--legacy-peer-deps`. ESLint solo corre en desarrollo y no llega al sitio publicado. Se revisa en el S3.
 
 ## D-15 · Entorno de los agentes — VIGENTE (20/10/2026)
 - El agente de código trabaja en un entorno Linux en la nube. Sus pruebas en verde no demuestran que el proyecto funcione en Windows.
