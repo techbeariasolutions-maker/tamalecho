@@ -82,7 +82,10 @@ El sitio se publica en **Vercel**, conectado a este repositorio de GitHub.
 3. Menú `⋯` → **Instant Rollback** (o **Promote to Production**).
 4. Abre la URL pública y comprueba que volvió la versión anterior.
 
-> **Por verificar en Vercel la primera vez que se use** (no se pudo consultar la documentación al escribir esto): (a) si, después de un rollback, los merges nuevos a `main` dejan de publicarse solos hasta que se promueve un despliegue desde el mismo menú, y (b) si el plan gratuito solo permite volver al despliegue de producción inmediatamente anterior. Anota aquí lo que observes.
+**Importante después de un rollback** (según la [documentación oficial de Vercel](https://vercel.com/docs/instant-rollback)):
+- Vercel **desactiva la asignación automática de los dominios de producción**. Los merges nuevos a `main` **no se publican** en la URL pública.
+- Cuando el arreglo ya esté en `main`, presiona **Undo Rollback** en el recuadro de producción del proyecto para que los despliegues vuelvan a publicarse solos.
+- En el plan **Hobby** (gratuito) solo se puede volver al despliegue de producción **inmediatamente anterior**. Si hay que retroceder más, usa la opción 2.
 
 **Opción 2 · Git (deja registro en el historial).** Úsala para deshacer un cambio de forma definitiva:
 1. Identifica el commit del merge que causó el problema: `git log --oneline`.
