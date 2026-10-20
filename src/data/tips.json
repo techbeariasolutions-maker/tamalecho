@@ -1,0 +1,678 @@
+{
+  "catalogVersion": "0.9.0",
+  "updatedAt": "2026-10-20",
+  "tips": [
+    {
+      "id": "SCR-01",
+      "framework": "scrum",
+      "category": "Artefactos y compromisos",
+      "title": "Product Backlog",
+      "summary": "No todo es igual de urgente: ordena el trabajo por valor y reordénalo conforme aprendes.",
+      "knowledgeArea": "Artefactos de Scrum",
+      "action": "Revisa tu lista de pendientes y pon arriba lo que más valor entrega al usuario, no lo más fácil.",
+      "explanation": "El Product Backlog es una lista ordenada y emergente de lo que el producto necesita para mejorar. No es una lista fija: cambia a medida que el equipo aprende, y su orden refleja el valor. Es la única fuente del trabajo que realiza el equipo Scrum.",
+      "commonMistake": "Tratarlo como una lista de deseos sin orden, o como un documento que se escribe una vez y no se vuelve a tocar.",
+      "example": "En una web educativa, resolver alertas duplicadas puede valer más que añadir un nuevo emoji, así que va primero.",
+      "source": {
+        "title": "La Guía Scrum",
+        "authors": "Schwaber, K. y Sutherland, J.",
+        "edition": "Noviembre 2020",
+        "year": 2020,
+        "url": "https://scrumguides.org/scrum-guide.html",
+        "pages": ""
+      },
+      "tags": [
+        "backlog",
+        "artefacto",
+        "priorización"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "SCR-02",
+      "framework": "scrum",
+      "category": "Artefactos y compromisos",
+      "title": "Objetivo del Sprint (Sprint Goal)",
+      "summary": "Antes de elegir tareas, acuerden qué resultado útil debe producir el sprint.",
+      "knowledgeArea": "Artefactos de Scrum",
+      "action": "Escribe en una sola oración qué podrá hacer el usuario al terminar el sprint que hoy no puede hacer.",
+      "explanation": "El Objetivo del Sprint es el único objetivo del sprint y se define durante la Sprint Planning. Es el compromiso del Sprint Backlog: da enfoque al equipo y deja flexibilidad sobre cómo lograrlo.",
+      "commonMistake": "Usar como objetivo una lista de tareas («terminar HU-04, HU-05 y HU-06») en lugar de un resultado.",
+      "example": "Objetivo: un usuario recibe consejos cada 2 o 3 horas sin repeticiones.",
+      "source": {
+        "title": "La Guía Scrum",
+        "authors": "Schwaber, K. y Sutherland, J.",
+        "edition": "Noviembre 2020",
+        "year": 2020,
+        "url": "https://scrumguides.org/scrum-guide.html",
+        "pages": ""
+      },
+      "tags": [
+        "sprint goal",
+        "planning",
+        "compromiso"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "SCR-03",
+      "framework": "scrum",
+      "category": "Artefactos y compromisos",
+      "title": "Definición de Terminado (Definition of Done)",
+      "summary": "Terminado significa verificado y utilizable, no solo código escrito.",
+      "knowledgeArea": "Artefactos de Scrum",
+      "action": "Antes de decir «ya quedó», revisa punto por punto la Definición de Terminado del equipo.",
+      "explanation": "La Definición de Terminado describe el estado que debe cumplir el trabajo para formar parte del Incremento. Da transparencia, porque todos entienden lo mismo por «terminado». Si un elemento no la cumple, no se presenta en la Sprint Review y regresa al Product Backlog.",
+      "commonMistake": "Contar como terminado algo que funciona en la computadora de alguien pero no está probado ni integrado.",
+      "example": "Una alerta solo está terminada si tiene prueba de horario, accesibilidad y manejo de errores.",
+      "source": {
+        "title": "La Guía Scrum",
+        "authors": "Schwaber, K. y Sutherland, J.",
+        "edition": "Noviembre 2020",
+        "year": 2020,
+        "url": "https://scrumguides.org/scrum-guide.html",
+        "pages": ""
+      },
+      "tags": [
+        "definition of done",
+        "calidad",
+        "compromiso"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "SCR-04",
+      "framework": "scrum",
+      "category": "Eventos",
+      "title": "Daily Scrum",
+      "summary": "Una inspección diaria de 15 minutos para adaptar el plan hacia el Objetivo del Sprint.",
+      "knowledgeArea": "Eventos de Scrum",
+      "action": "En tu próxima daily, habla del Objetivo del Sprint y de lo que lo bloquea, no de lo ocupado que estuviste.",
+      "explanation": "La Daily Scrum es un evento de 15 minutos para los Developers. Su propósito es inspeccionar el avance hacia el Objetivo del Sprint y ajustar el Sprint Backlog cuando haga falta. Los Developers eligen el formato que mejor les funcione.",
+      "commonMistake": "Convertirla en un reporte de estado para el Scrum Master o para el profesor.",
+      "example": "Si la API de permisos falla, el equipo reorganiza tareas ese mismo día para desbloquear la entrega.",
+      "source": {
+        "title": "La Guía Scrum",
+        "authors": "Schwaber, K. y Sutherland, J.",
+        "edition": "Noviembre 2020",
+        "year": 2020,
+        "url": "https://scrumguides.org/scrum-guide.html",
+        "pages": ""
+      },
+      "tags": [
+        "daily",
+        "evento",
+        "inspección"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "SCR-05",
+      "framework": "scrum",
+      "category": "Eventos",
+      "title": "Sprint Review",
+      "summary": "Muestra el producto funcionando y recoge retroalimentación para decidir qué sigue.",
+      "knowledgeArea": "Eventos de Scrum",
+      "action": "Prepara la Review como una demostración en vivo del producto, no como una exposición con diapositivas.",
+      "explanation": "La Sprint Review sirve para inspeccionar el resultado del sprint y decidir adaptaciones futuras. El equipo presenta lo logrado a los interesados y juntos revisan qué hacer después; el Product Backlog puede ajustarse. Es una sesión de trabajo, no solo una presentación.",
+      "commonMistake": "Mostrar capturas o código en lugar del producto funcionando, o no tomar en cuenta la retroalimentación.",
+      "example": "Enseña el avatar a las 14:00 y deja que un compañero lo use mientras observas.",
+      "source": {
+        "title": "La Guía Scrum",
+        "authors": "Schwaber, K. y Sutherland, J.",
+        "edition": "Noviembre 2020",
+        "year": 2020,
+        "url": "https://scrumguides.org/scrum-guide.html",
+        "pages": ""
+      },
+      "tags": [
+        "review",
+        "evento",
+        "retroalimentación"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "SCR-06",
+      "framework": "scrum",
+      "category": "Eventos",
+      "title": "Sprint Retrospective",
+      "summary": "Dedica tiempo a mejorar cómo trabaja el equipo, no solo qué entrega.",
+      "knowledgeArea": "Eventos de Scrum",
+      "action": "Al cerrar el sprint, elijan una sola mejora concreta y pónganla en práctica en el siguiente.",
+      "explanation": "La Sprint Retrospective busca formas de aumentar la calidad y la efectividad. El equipo revisa cómo le fue con las personas, las interacciones, los procesos, las herramientas y su Definición de Terminado, y atiende lo antes posible las mejoras más útiles.",
+      "commonMistake": "Hacer una lista larga de quejas sin ninguna acción concreta ni responsable.",
+      "example": "Si las pruebas se retrasaron, la mejora puede ser escribir los casos de prueba desde el primer día del sprint.",
+      "source": {
+        "title": "La Guía Scrum",
+        "authors": "Schwaber, K. y Sutherland, J.",
+        "edition": "Noviembre 2020",
+        "year": 2020,
+        "url": "https://scrumguides.org/scrum-guide.html",
+        "pages": ""
+      },
+      "tags": [
+        "retrospectiva",
+        "evento",
+        "mejora continua"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "SCR-07",
+      "framework": "scrum",
+      "category": "Prácticas de trabajo",
+      "title": "Historias y tareas",
+      "summary": "Una historia explica el valor para el usuario; las tareas describen cómo construirlo.",
+      "knowledgeArea": "Prácticas complementarias (Scrum y XP)",
+      "action": "Revisa tu backlog: si un elemento dice «crear componente», es una tarea, no una historia de usuario.",
+      "explanation": "Kniberg distingue las historias, que expresan algo valioso para el usuario, de las tareas, que son el trabajo técnico para entregarlas. Dividir una historia grande en historias más pequeñas conserva el valor; descomponerla en tareas ayuda a planear y repartir el trabajo.",
+      "commonMistake": "Escribir el backlog solo con tareas técnicas, sin que se entienda qué gana el usuario.",
+      "example": "«Recibir un consejo» es un resultado para el usuario; «crear un hook» es una actividad técnica.",
+      "source": {
+        "title": "Scrum y XP desde las trincheras: cómo hacemos Scrum",
+        "authors": "Kniberg, H.",
+        "edition": "Trad. Á. Medinilla, C4Media/InfoQ",
+        "year": 2007,
+        "url": "https://www.infoq.com/minibooks/scrum-xp-from-the-trenches/",
+        "pages": ""
+      },
+      "tags": [
+        "historias de usuario",
+        "tareas",
+        "backlog"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "SCR-08",
+      "framework": "scrum",
+      "category": "Prácticas de trabajo",
+      "title": "Estimación en equipo",
+      "summary": "Estimaciones distintas suelen revelar supuestos distintos; conversen antes de comprometerse.",
+      "knowledgeArea": "Prácticas complementarias (Scrum y XP)",
+      "action": "Si dos personas estiman muy diferente la misma historia, pídeles que expliquen por qué antes de promediar.",
+      "explanation": "Kniberg describe cómo el equipo estima en conjunto, por ejemplo con planning poker, para que nadie se ancle en la opinión de otro. Lo valioso no es el número final, sino la conversación que surge cuando las estimaciones no coinciden.",
+      "commonMistake": "Promediar las estimaciones o dejar que la persona con más experiencia decida sola.",
+      "example": "Tal vez «alerta fuera de la web» exija backend y no solo React: la diferencia de estimaciones lo revela.",
+      "source": {
+        "title": "Scrum y XP desde las trincheras: cómo hacemos Scrum",
+        "authors": "Kniberg, H.",
+        "edition": "Trad. Á. Medinilla, C4Media/InfoQ",
+        "year": 2007,
+        "url": "https://www.infoq.com/minibooks/scrum-xp-from-the-trenches/",
+        "pages": ""
+      },
+      "tags": [
+        "estimación",
+        "planning poker",
+        "planificación"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "SCR-09",
+      "framework": "scrum",
+      "category": "Artefactos y compromisos",
+      "title": "Incremento",
+      "summary": "Cada sprint debe dejar una pieza demostrable y verificada que se sume a lo anterior.",
+      "knowledgeArea": "Artefactos de Scrum",
+      "action": "Al planear, pregúntate qué podrá usarse al final del sprint aunque lo demás no se termine.",
+      "explanation": "Un Incremento es un paso concreto hacia el Objetivo del Producto. Se suma a los incrementos anteriores y debe estar verificado para que todo funcione en conjunto. Un elemento solo forma parte del Incremento cuando cumple la Definición de Terminado.",
+      "commonMistake": "Entregar muchas funciones a medias en lugar de pocas terminadas y utilizables.",
+      "example": "Es preferible una alerta bien probada que cinco alertas incompletas.",
+      "source": {
+        "title": "La Guía Scrum",
+        "authors": "Schwaber, K. y Sutherland, J.",
+        "edition": "Noviembre 2020",
+        "year": 2020,
+        "url": "https://scrumguides.org/scrum-guide.html",
+        "pages": ""
+      },
+      "tags": [
+        "incremento",
+        "artefacto",
+        "entrega"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "SCR-10",
+      "framework": "scrum",
+      "category": "Prácticas de trabajo",
+      "title": "Refinamiento del Product Backlog",
+      "summary": "Divide los elementos grandes en piezas más pequeñas y precisas sin perder su valor.",
+      "knowledgeArea": "Artefactos de Scrum",
+      "action": "Toma la historia más grande de tu backlog y divídela en dos que entreguen algo útil por separado.",
+      "explanation": "El refinamiento es una actividad continua para dividir y precisar los elementos del Product Backlog, agregando detalles como descripción, orden y tamaño. Así los elementos quedan listos para seleccionarse en una Sprint Planning.",
+      "commonMistake": "Partir una historia por capas técnicas (base de datos, interfaz) en vez de por partes de valor.",
+      "example": "Separa avisos locales, personalización y push remoto en historias distintas.",
+      "source": {
+        "title": "La Guía Scrum",
+        "authors": "Schwaber, K. y Sutherland, J.",
+        "edition": "Noviembre 2020",
+        "year": 2020,
+        "url": "https://scrumguides.org/scrum-guide.html",
+        "pages": ""
+      },
+      "tags": [
+        "refinamiento",
+        "backlog",
+        "división de historias"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "SCR-11",
+      "framework": "scrum",
+      "category": "Responsabilidades",
+      "title": "Product Owner",
+      "summary": "Una sola persona es responsable de maximizar el valor del producto y ordenar sus prioridades.",
+      "knowledgeArea": "Equipo Scrum",
+      "action": "Identifica quién decide el orden del backlog en tu equipo; si son varias personas, hay un problema.",
+      "explanation": "El Product Owner es responsable de maximizar el valor del producto que resulta del trabajo del equipo. Gestiona el Product Backlog: lo comunica, lo ordena y lo hace transparente. Es una persona, no un comité.",
+      "commonMistake": "Que el Product Owner solo dicte requisitos y no esté disponible para aclarar dudas durante el sprint.",
+      "example": "El Product Owner decide qué resulta más útil al estudiante cuando dos historias compiten.",
+      "source": {
+        "title": "La Guía Scrum",
+        "authors": "Schwaber, K. y Sutherland, J.",
+        "edition": "Noviembre 2020",
+        "year": 2020,
+        "url": "https://scrumguides.org/scrum-guide.html",
+        "pages": ""
+      },
+      "tags": [
+        "product owner",
+        "roles",
+        "valor"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "SCR-12",
+      "framework": "scrum",
+      "category": "Prácticas de trabajo",
+      "title": "XP e integración continua",
+      "summary": "Probar y compilar con frecuencia descubre errores antes de la demo.",
+      "knowledgeArea": "Prácticas complementarias (Scrum y XP)",
+      "action": "Configura que las pruebas corran automáticamente cada vez que alguien sube cambios al repositorio.",
+      "explanation": "Kniberg explica cómo combinar Scrum con prácticas de XP como la integración continua, el desarrollo guiado por pruebas y la programación en parejas. Integrar y probar seguido reduce los errores que aparecen al final y hace más confiable el incremento.",
+      "commonMistake": "Juntar el trabajo de todos el último día y descubrir los errores durante la demo.",
+      "example": "Una prueba automática detecta que el avatar repite el consejo al recuperar la pestaña.",
+      "source": {
+        "title": "Scrum y XP desde las trincheras: cómo hacemos Scrum",
+        "authors": "Kniberg, H.",
+        "edition": "Trad. Á. Medinilla, C4Media/InfoQ",
+        "year": 2007,
+        "url": "https://www.infoq.com/minibooks/scrum-xp-from-the-trenches/",
+        "pages": ""
+      },
+      "tags": [
+        "xp",
+        "integración continua",
+        "pruebas"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "PMI-01",
+      "framework": "pmbok",
+      "category": "Fundamentos y entorno",
+      "title": "Valor del proyecto",
+      "summary": "Conecta el resultado del proyecto con una necesidad real, no solo con completar tareas.",
+      "knowledgeArea": "Documentos de negocio del proyecto",
+      "action": "Escribe qué beneficio concreto debe obtener el usuario y cómo sabrás que lo obtuvo.",
+      "explanation": "La Guía del PMBOK relaciona cada proyecto con el valor de negocio que justifica hacerlo. El caso de negocio explica por qué vale la pena, y el plan de gestión de beneficios describe cómo y cuándo se obtendrán. Terminar entregables no garantiza que el valor llegue.",
+      "commonMistake": "Medir el éxito solo por entregar a tiempo, sin revisar si alguien obtuvo el beneficio esperado.",
+      "example": "Mide si el usuario encuentra útil un concepto, además de contar páginas creadas.",
+      "source": {
+        "title": "Guía de los fundamentos para la dirección de proyectos (Guía del PMBOK)",
+        "authors": "Project Management Institute",
+        "edition": "Sexta edición",
+        "year": 2017,
+        "url": "https://www.pmi.org/es-es/standards/pmbok",
+        "pages": ""
+      },
+      "tags": [
+        "valor",
+        "caso de negocio",
+        "beneficios"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "PMI-02",
+      "framework": "pmbok",
+      "category": "Áreas de conocimiento",
+      "title": "Interesados",
+      "summary": "Identifica quiénes usarán, decidirán y se verán afectados por el proyecto.",
+      "knowledgeArea": "Gestión de los Interesados del Proyecto",
+      "action": "Haz una lista de interesados y anota qué espera cada uno y cuánto influye en el proyecto.",
+      "explanation": "Los interesados son personas o grupos que pueden afectar al proyecto o verse afectados por él. Identificarlos temprano y planear cómo involucrarlos ayuda a decidir con sus expectativas en mente y evita sorpresas al final.",
+      "commonMistake": "Pensar solo en el cliente y olvidar a quienes aprueban, operan o mantienen el producto.",
+      "example": "Estudiantes, profesores y revisores de contenido tienen expectativas distintas sobre la misma web.",
+      "source": {
+        "title": "Guía de los fundamentos para la dirección de proyectos (Guía del PMBOK)",
+        "authors": "Project Management Institute",
+        "edition": "Sexta edición",
+        "year": 2017,
+        "url": "https://www.pmi.org/es-es/standards/pmbok",
+        "pages": ""
+      },
+      "tags": [
+        "interesados",
+        "stakeholders",
+        "comunicación"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "PMI-03",
+      "framework": "pmbok",
+      "category": "Áreas de conocimiento",
+      "title": "Riesgos",
+      "summary": "Describe lo incierto, su efecto y una respuesta antes de que se convierta en problema.",
+      "knowledgeArea": "Gestión de los Riesgos del Proyecto",
+      "action": "Escribe un riesgo con la forma «Si ocurre X, entonces Y» y asígnale una respuesta y un responsable.",
+      "explanation": "Un riesgo es un evento incierto que, si ocurre, afecta positiva o negativamente los objetivos del proyecto. La gestión de riesgos los identifica, analiza su probabilidad e impacto, y planea respuestas antes de que ocurran.",
+      "commonMistake": "Confundir un riesgo con un problema que ya ocurrió, o registrar riesgos sin respuesta planeada.",
+      "example": "Riesgo: avisos retrasados con la web cerrada. Respuesta: Push con aviso de compatibilidad.",
+      "source": {
+        "title": "Guía de los fundamentos para la dirección de proyectos (Guía del PMBOK)",
+        "authors": "Project Management Institute",
+        "edition": "Sexta edición",
+        "year": 2017,
+        "url": "https://www.pmi.org/es-es/standards/pmbok",
+        "pages": ""
+      },
+      "tags": [
+        "riesgos",
+        "incertidumbre",
+        "respuesta"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "PMI-04",
+      "framework": "pmbok",
+      "category": "Áreas de conocimiento",
+      "title": "Alcance",
+      "summary": "Aclara qué está incluido y qué está excluido para tomar decisiones de entrega.",
+      "knowledgeArea": "Gestión del Alcance del Proyecto",
+      "action": "Agrega a tu documento de alcance una sección «Fuera de alcance» con al menos tres puntos.",
+      "explanation": "La gestión del alcance asegura que el proyecto incluya todo el trabajo requerido, y únicamente ese trabajo. Definir también lo que queda fuera evita que el proyecto crezca sin control y facilita decir que no a pedidos nuevos.",
+      "commonMistake": "Aceptar «pequeños» agregados sin evaluar su impacto en tiempo y costo.",
+      "example": "MVP con avisos dentro de la página; el push remoto se programa para después.",
+      "source": {
+        "title": "Guía de los fundamentos para la dirección de proyectos (Guía del PMBOK)",
+        "authors": "Project Management Institute",
+        "edition": "Sexta edición",
+        "year": 2017,
+        "url": "https://www.pmi.org/es-es/standards/pmbok",
+        "pages": ""
+      },
+      "tags": [
+        "alcance",
+        "edt",
+        "control de cambios"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "PMI-05",
+      "framework": "pmbok",
+      "category": "Áreas de conocimiento",
+      "title": "Cronograma",
+      "summary": "Relaciona actividades y dependencias para construir fechas plausibles.",
+      "knowledgeArea": "Gestión del Cronograma del Proyecto",
+      "action": "Antes de prometer una fecha, dibuja qué actividad depende de cuál y busca la ruta más larga.",
+      "explanation": "El cronograma se construye definiendo actividades, su secuencia, su duración y sus dependencias. El método de la ruta crítica identifica la secuencia más larga, que determina la duración mínima del proyecto: un retraso en ella retrasa todo.",
+      "commonMistake": "Fijar la fecha primero y repartir actividades hacia atrás sin revisar dependencias.",
+      "example": "Antes de probar avisos debe funcionar el motor de horario: esa dependencia define el orden.",
+      "source": {
+        "title": "Guía de los fundamentos para la dirección de proyectos (Guía del PMBOK)",
+        "authors": "Project Management Institute",
+        "edition": "Sexta edición",
+        "year": 2017,
+        "url": "https://www.pmi.org/es-es/standards/pmbok",
+        "pages": ""
+      },
+      "tags": [
+        "cronograma",
+        "ruta crítica",
+        "dependencias"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "PMI-06",
+      "framework": "pmbok",
+      "category": "Áreas de conocimiento",
+      "title": "Recursos",
+      "summary": "Identifica habilidades y disponibilidad reales antes de asignar trabajo.",
+      "knowledgeArea": "Gestión de los Recursos del Proyecto",
+      "action": "Pregunta a cada integrante cuántas horas reales tiene esta semana antes de repartir tareas.",
+      "explanation": "La gestión de recursos identifica, adquiere y gestiona a las personas y los recursos físicos que el proyecto necesita. Asignar trabajo sin conocer habilidades y disponibilidad reales produce planes que no se cumplen.",
+      "commonMistake": "Planear como si todos tuvieran tiempo completo y las mismas habilidades.",
+      "example": "No programes una historia de backend si el equipo aún necesita capacitación.",
+      "source": {
+        "title": "Guía de los fundamentos para la dirección de proyectos (Guía del PMBOK)",
+        "authors": "Project Management Institute",
+        "edition": "Sexta edición",
+        "year": 2017,
+        "url": "https://www.pmi.org/es-es/standards/pmbok",
+        "pages": ""
+      },
+      "tags": [
+        "recursos",
+        "equipo",
+        "capacidad"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "PMI-07",
+      "framework": "pmbok",
+      "category": "Áreas de conocimiento",
+      "title": "Costos",
+      "summary": "Estima costos de desarrollo y de operación, incluidos los que aparecen cuando el producto crece.",
+      "knowledgeArea": "Gestión de los Costos del Proyecto",
+      "action": "Lista los servicios que usará tu proyecto después de entregarlo y averigua cuánto costarían con más usuarios.",
+      "explanation": "La gestión de los costos estima, presupuesta y controla los costos para terminar dentro del presupuesto aprobado. También conviene considerar el costo de operar y mantener el producto después de la entrega, no solo el de construirlo.",
+      "commonMistake": "Presupuestar solo el desarrollo y olvidar hosting, licencias y mantenimiento.",
+      "example": "El hosting y las notificaciones push pueden requerir operación y pago continuos.",
+      "source": {
+        "title": "Guía de los fundamentos para la dirección de proyectos (Guía del PMBOK)",
+        "authors": "Project Management Institute",
+        "edition": "Sexta edición",
+        "year": 2017,
+        "url": "https://www.pmi.org/es-es/standards/pmbok",
+        "pages": ""
+      },
+      "tags": [
+        "costos",
+        "presupuesto",
+        "operación"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "PMI-08",
+      "framework": "pmbok",
+      "category": "Áreas de conocimiento",
+      "title": "Calidad",
+      "summary": "Define criterios de calidad observables y revísalos durante la construcción, no al final.",
+      "knowledgeArea": "Gestión de la Calidad del Proyecto",
+      "action": "Para cada entregable, escribe al menos un criterio que se pueda comprobar con una prueba.",
+      "explanation": "La gestión de la calidad incorpora la política de calidad para cumplir los requisitos de los interesados. La Guía del PMBOK enfatiza que la calidad se planifica y se diseña, no solo se inspecciona: prevenir errores cuesta menos que corregirlos.",
+      "commonMistake": "Dejar todas las pruebas para el último día del proyecto.",
+      "example": "Prueba si un lector de pantalla entiende el aviso y si el usuario puede pausarlo.",
+      "source": {
+        "title": "Guía de los fundamentos para la dirección de proyectos (Guía del PMBOK)",
+        "authors": "Project Management Institute",
+        "edition": "Sexta edición",
+        "year": 2017,
+        "url": "https://www.pmi.org/es-es/standards/pmbok",
+        "pages": ""
+      },
+      "tags": [
+        "calidad",
+        "prevención",
+        "pruebas"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "PMI-09",
+      "framework": "pmbok",
+      "category": "Fundamentos y entorno",
+      "title": "Adaptación (tailoring)",
+      "summary": "Ajusta procesos y documentos al contexto: no todo proyecto necesita la misma formalidad.",
+      "knowledgeArea": "Adaptación de la dirección de proyectos",
+      "action": "Revisa los documentos que te pidieron y decide, con justificación, cuáles aportan valor a tu proyecto.",
+      "explanation": "La Guía del PMBOK no es una receta: el equipo selecciona y adapta procesos, entradas, herramientas y salidas según el tamaño, el riesgo y el contexto del proyecto. A esto se le llama adaptación (tailoring).",
+      "commonMistake": "Aplicar todos los procesos y formatos por igual, aunque no aporten nada al proyecto.",
+      "example": "Para un MVP escolar basta un catálogo local; para operación remota se necesitan servicio y seguridad.",
+      "source": {
+        "title": "Guía de los fundamentos para la dirección de proyectos (Guía del PMBOK)",
+        "authors": "Project Management Institute",
+        "edition": "Sexta edición",
+        "year": 2017,
+        "url": "https://www.pmi.org/es-es/standards/pmbok",
+        "pages": ""
+      },
+      "tags": [
+        "adaptación",
+        "tailoring",
+        "contexto"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "PMI-10",
+      "framework": "pmbok",
+      "category": "Fundamentos y entorno",
+      "title": "Gobernanza",
+      "summary": "Aclara quién puede autorizar cambios importantes y publicar resultados.",
+      "knowledgeArea": "Entorno organizacional: marcos de gobernanza",
+      "action": "Escribe quién aprueba los cambios de alcance en tu proyecto y por qué medio se registran.",
+      "explanation": "La gobernanza es el marco de reglas, roles y procesos con el que una organización dirige y controla sus proyectos. Define quién toma qué decisiones y cómo se autorizan los cambios, para que lo importante no dependa de acuerdos informales.",
+      "commonMistake": "Que cualquier integrante cambie el alcance o publique sin aprobación.",
+      "example": "El responsable editorial aprueba un contenido antes de enviarlo a los usuarios.",
+      "source": {
+        "title": "Guía de los fundamentos para la dirección de proyectos (Guía del PMBOK)",
+        "authors": "Project Management Institute",
+        "edition": "Sexta edición",
+        "year": 2017,
+        "url": "https://www.pmi.org/es-es/standards/pmbok",
+        "pages": ""
+      },
+      "tags": [
+        "gobernanza",
+        "aprobación",
+        "decisiones"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "PMI-11",
+      "framework": "pmbok",
+      "category": "Fundamentos y entorno",
+      "title": "Ciclo de vida híbrido",
+      "summary": "Combina enfoques predictivos y adaptativos cuando aportan valor, sin perder una dirección común.",
+      "knowledgeArea": "Ciclos de vida del proyecto",
+      "action": "Identifica qué partes de tu proyecto tienen fechas fijas y cuáles pueden evolucionar por iteraciones.",
+      "explanation": "La Guía del PMBOK describe ciclos de vida predictivos, iterativos, incrementales, adaptativos e híbridos. Un ciclo híbrido combina enfoques: por ejemplo, hitos planeados de forma predictiva y un producto construido en iteraciones.",
+      "commonMistake": "Mezclar enfoques sin acordar cuál manda en cada parte del proyecto.",
+      "example": "Planifica los hitos académicos con cronograma y construye la web mediante sprints.",
+      "source": {
+        "title": "Guía de los fundamentos para la dirección de proyectos (Guía del PMBOK)",
+        "authors": "Project Management Institute",
+        "edition": "Sexta edición",
+        "year": 2017,
+        "url": "https://www.pmi.org/es-es/standards/pmbok",
+        "pages": ""
+      },
+      "tags": [
+        "híbrido",
+        "ciclo de vida",
+        "enfoques"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    },
+    {
+      "id": "PMI-12",
+      "framework": "pmbok",
+      "category": "Monitoreo y control",
+      "title": "Medición del desempeño",
+      "summary": "Comprueba con datos si un cambio produjo el beneficio que se buscaba.",
+      "knowledgeArea": "Monitorear y controlar el trabajo del proyecto",
+      "action": "Para tu próxima mejora, define antes qué dato medirás para saber si funcionó.",
+      "explanation": "Monitorear y controlar consiste en dar seguimiento al avance real, compararlo con lo planeado y decidir acciones. Para hacerlo bien hay que distinguir los datos del trabajo de lo que realmente significan para los objetivos del proyecto.",
+      "commonMistake": "Medir lo que es fácil de contar en lugar de lo que indica si se logró el objetivo.",
+      "example": "Distingue «alerta enviada» de «consejo realmente abierto».",
+      "source": {
+        "title": "Guía de los fundamentos para la dirección de proyectos (Guía del PMBOK)",
+        "authors": "Project Management Institute",
+        "edition": "Sexta edición",
+        "year": 2017,
+        "url": "https://www.pmi.org/es-es/standards/pmbok",
+        "pages": ""
+      },
+      "tags": [
+        "medición",
+        "monitoreo",
+        "control"
+      ],
+      "reviewedBy": "",
+      "reviewedAt": "",
+      "version": 1
+    }
+  ]
+}
