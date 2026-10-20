@@ -25,6 +25,7 @@ if (-not ($existing | Where-Object { $_.title -eq $milestone })) {
 Write-Host "3/5 Proyecto..."
 $proj = gh project create --owner $owner --title "TamalEcho · Sprint 1" --format json | ConvertFrom-Json
 $num = $proj.number
+if (-not $num) { throw "No se pudo crear el proyecto. ¿Corriste gh auth refresh -s project?" }
 gh project link $num --owner $owner --repo tamalecho | Out-Null
 gh project field-create $num --owner $owner --name "Estado" --data-type "SINGLE_SELECT" --single-select-options "Pendiente,En curso,En prueba,Terminado" | Out-Null
 $fields = gh project field-list $num --owner $owner --format json | ConvertFrom-Json
@@ -69,6 +70,7 @@ foreach ($a in $acts) {
     $title = "$($a.Id) · $($a.Title)"
     $body = "**Subhistoria:** $($a.Sub)`n**Prioridad (N4):** $($a.Prio)`n**Paquete de trabajo:** $($a.Wp) (docs/sprint-1/PROMPTS.md)`n`n**Criterio de aceptación (propuesta):** $($a.Crit)`n`n**Definition of Done:** docs/sprint-1/PLAN.md §7"
     $url = gh issue create --repo $repo --title $title --body $body --label "$($a.Type),$($a.Prio),sprint-1,$($a.Wp)" --milestone $milestone
+    if ($LASTEXITCODE -ne 0 -or -not $url) { throw "Falló la creación de: $title. Avísale a Claude antes de volver a correr el script." }
     $item = gh project item-add $num --owner $owner --url $url --format json | ConvertFrom-Json
     gh project item-edit --id $item.id --project-id $proj.id --field-id $estado.id --single-select-option-id $pendiente.id | Out-Null
     Write-Host "  [$i/28] $title"
