@@ -109,3 +109,44 @@ test('una ruta inexistente muestra NotFound con enlace al inicio', async ({ page
   await page.getByRole('link', { name: 'Volver al inicio' }).click();
   await expect(page).toHaveURL(/\/$/);
 });
+
+test('T-03: el botón «atrás» del navegador regresa por el mismo camino', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Explorar PMI/PMBOK' }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Biblioteca de PMI/PMBOK');
+  const card = page.getByRole('list', { name: /^Consejos de / }).getByRole('link', { name: /^Ver más sobre / }).first();
+  const title = (await card.textContent()).replace('Ver más sobre ', '');
+  await card.click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(title);
+
+  await page.goBack();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Biblioteca de PMI/PMBOK');
+  await page.goBack();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('TamalEcho Tips');
+});
+
+test('los enlaces de la portada llevan a donde dicen', async ({ page }) => {
+  for (const [name, h1] of [
+    ['Biblioteca', 'Biblioteca de Scrum'],
+    ['Ajustes', 'Ajustes'],
+    ['Ayuda', 'Ayuda'],
+  ]) {
+    await page.goto('/');
+    await page.getByRole('navigation', { name: 'Más secciones' }).getByRole('link', { name }).click();
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(h1);
+  }
+});
+
+test('el menú móvil se abre y se cierra con el botón', async ({ page, isMobile }) => {
+  test.skip(!isMobile, 'El botón de menú solo existe en móvil');
+  await page.goto('/');
+  const toggle = page.getByRole('button', { name: 'Menú' });
+  const firstLink = page.getByRole('navigation', { name: 'Principal' }).getByRole('link', { name: 'Inicio' });
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await expect(firstLink).toBeVisible();
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(firstLink).toBeHidden();
+});
+
