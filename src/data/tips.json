@@ -1,6 +1,6 @@
 {
-  "catalogVersion": "0.9.0",
-  "updatedAt": "2026-10-20",
+  "catalogVersion": "1.0.0",
+  "updatedAt": "2026-10-22",
   "tips": [
     {
       "id": "SCR-01",
@@ -10,25 +10,25 @@
       "summary": "No todo es igual de urgente: ordena el trabajo por valor y reordénalo conforme aprendes.",
       "knowledgeArea": "Artefactos de Scrum",
       "action": "Revisa tu lista de pendientes y pon arriba lo que más valor entrega al usuario, no lo más fácil.",
-      "explanation": "El Product Backlog es una lista ordenada y emergente de lo que el producto necesita para mejorar. No es una lista fija: cambia a medida que el equipo aprende, y su orden refleja el valor. Es la única fuente del trabajo que realiza el equipo Scrum.",
+      "explanation": "El Product Backlog es una lista ordenada y emergente de lo que el producto necesita para mejorar. No es una lista fija: cambia a medida que el equipo aprende, y el Product Owner la ordena para maximizar el valor. Es la única fuente del trabajo que realiza el equipo Scrum.",
       "commonMistake": "Tratarlo como una lista de deseos sin orden, o como un documento que se escribe una vez y no se vuelve a tocar.",
       "example": "En una web educativa, resolver alertas duplicadas puede valer más que añadir un nuevo emoji, así que va primero.",
       "source": {
         "title": "La Guía Scrum",
         "authors": "Schwaber, K. y Sutherland, J.",
-        "edition": "Noviembre 2020",
+        "edition": "Noviembre 2020, traducción al español",
         "year": 2020,
-        "url": "https://scrumguides.org/scrum-guide.html",
-        "pages": ""
+        "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Spanish-European.pdf",
+        "pages": "6, 11"
       },
       "tags": [
         "backlog",
         "artefacto",
         "priorización"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
-      "version": 1
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
+      "version": 2
     },
     {
       "id": "SCR-02",
@@ -44,18 +44,18 @@
       "source": {
         "title": "La Guía Scrum",
         "authors": "Schwaber, K. y Sutherland, J.",
-        "edition": "Noviembre 2020",
+        "edition": "Noviembre 2020, traducción al español",
         "year": 2020,
-        "url": "https://scrumguides.org/scrum-guide.html",
-        "pages": ""
+        "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Spanish-European.pdf",
+        "pages": "9, 12"
       },
       "tags": [
         "sprint goal",
         "planning",
         "compromiso"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -72,18 +72,18 @@
       "source": {
         "title": "La Guía Scrum",
         "authors": "Schwaber, K. y Sutherland, J.",
-        "edition": "Noviembre 2020",
+        "edition": "Noviembre 2020, traducción al español",
         "year": 2020,
-        "url": "https://scrumguides.org/scrum-guide.html",
-        "pages": ""
+        "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Spanish-European.pdf",
+        "pages": "13"
       },
       "tags": [
         "definition of done",
         "calidad",
         "compromiso"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -100,18 +100,18 @@
       "source": {
         "title": "La Guía Scrum",
         "authors": "Schwaber, K. y Sutherland, J.",
-        "edition": "Noviembre 2020",
+        "edition": "Noviembre 2020, traducción al español",
         "year": 2020,
-        "url": "https://scrumguides.org/scrum-guide.html",
-        "pages": ""
+        "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Spanish-European.pdf",
+        "pages": "9–10"
       },
       "tags": [
         "daily",
         "evento",
         "inspección"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -128,18 +128,18 @@
       "source": {
         "title": "La Guía Scrum",
         "authors": "Schwaber, K. y Sutherland, J.",
-        "edition": "Noviembre 2020",
+        "edition": "Noviembre 2020, traducción al español",
         "year": 2020,
-        "url": "https://scrumguides.org/scrum-guide.html",
-        "pages": ""
+        "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Spanish-European.pdf",
+        "pages": "10"
       },
       "tags": [
         "review",
         "evento",
         "retroalimentación"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -156,18 +156,18 @@
       "source": {
         "title": "La Guía Scrum",
         "authors": "Schwaber, K. y Sutherland, J.",
-        "edition": "Noviembre 2020",
+        "edition": "Noviembre 2020, traducción al español",
         "year": 2020,
-        "url": "https://scrumguides.org/scrum-guide.html",
-        "pages": ""
+        "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Spanish-European.pdf",
+        "pages": "10"
       },
       "tags": [
         "retrospectiva",
         "evento",
         "mejora continua"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -187,15 +187,15 @@
         "edition": "Trad. Á. Medinilla, C4Media/InfoQ",
         "year": 2007,
         "url": "https://www.infoq.com/minibooks/scrum-xp-from-the-trenches/",
-        "pages": ""
+        "pages": "42"
       },
       "tags": [
         "historias de usuario",
         "tareas",
         "backlog"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -215,15 +215,15 @@
         "edition": "Trad. Á. Medinilla, C4Media/InfoQ",
         "year": 2007,
         "url": "https://www.infoq.com/minibooks/scrum-xp-from-the-trenches/",
-        "pages": ""
+        "pages": "39–40"
       },
       "tags": [
         "estimación",
         "planning poker",
         "planificación"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -240,18 +240,18 @@
       "source": {
         "title": "La Guía Scrum",
         "authors": "Schwaber, K. y Sutherland, J.",
-        "edition": "Noviembre 2020",
+        "edition": "Noviembre 2020, traducción al español",
         "year": 2020,
-        "url": "https://scrumguides.org/scrum-guide.html",
-        "pages": ""
+        "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Spanish-European.pdf",
+        "pages": "12"
       },
       "tags": [
         "incremento",
         "artefacto",
         "entrega"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -259,7 +259,7 @@
       "framework": "scrum",
       "category": "Prácticas de trabajo",
       "title": "Refinamiento del Product Backlog",
-      "summary": "Divide los elementos grandes en piezas más pequeñas y precisas sin perder su valor.",
+      "summary": "Divide los elementos grandes del backlog en piezas más pequeñas y precisas.",
       "knowledgeArea": "Artefactos de Scrum",
       "action": "Toma la historia más grande de tu backlog y divídela en dos que entreguen algo útil por separado.",
       "explanation": "El refinamiento es una actividad continua para dividir y precisar los elementos del Product Backlog, agregando detalles como descripción, orden y tamaño. Así los elementos quedan listos para seleccionarse en una Sprint Planning.",
@@ -268,19 +268,19 @@
       "source": {
         "title": "La Guía Scrum",
         "authors": "Schwaber, K. y Sutherland, J.",
-        "edition": "Noviembre 2020",
+        "edition": "Noviembre 2020, traducción al español",
         "year": 2020,
-        "url": "https://scrumguides.org/scrum-guide.html",
-        "pages": ""
+        "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Spanish-European.pdf",
+        "pages": "11"
       },
       "tags": [
         "refinamiento",
         "backlog",
         "división de historias"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
-      "version": 1
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
+      "version": 2
     },
     {
       "id": "SCR-11",
@@ -296,18 +296,18 @@
       "source": {
         "title": "La Guía Scrum",
         "authors": "Schwaber, K. y Sutherland, J.",
-        "edition": "Noviembre 2020",
+        "edition": "Noviembre 2020, traducción al español",
         "year": 2020,
-        "url": "https://scrumguides.org/scrum-guide.html",
-        "pages": ""
+        "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Spanish-European.pdf",
+        "pages": "6"
       },
       "tags": [
         "product owner",
         "roles",
         "valor"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -327,15 +327,15 @@
         "edition": "Trad. Á. Medinilla, C4Media/InfoQ",
         "year": 2007,
         "url": "https://www.infoq.com/minibooks/scrum-xp-from-the-trenches/",
-        "pages": ""
+        "pages": "81–84"
       },
       "tags": [
         "xp",
         "integración continua",
         "pruebas"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -355,15 +355,15 @@
         "edition": "Sexta edición",
         "year": 2017,
         "url": "https://www.pmi.org/es-es/standards/pmbok",
-        "pages": ""
+        "pages": "7, 29–30"
       },
       "tags": [
         "valor",
         "caso de negocio",
         "beneficios"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -383,15 +383,15 @@
         "edition": "Sexta edición",
         "year": 2017,
         "url": "https://www.pmi.org/es-es/standards/pmbok",
-        "pages": ""
+        "pages": "503"
       },
       "tags": [
         "interesados",
         "stakeholders",
         "comunicación"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -411,15 +411,15 @@
         "edition": "Sexta edición",
         "year": 2017,
         "url": "https://www.pmi.org/es-es/standards/pmbok",
-        "pages": ""
+        "pages": "395, 397"
       },
       "tags": [
         "riesgos",
         "incertidumbre",
         "respuesta"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -439,15 +439,15 @@
         "edition": "Sexta edición",
         "year": 2017,
         "url": "https://www.pmi.org/es-es/standards/pmbok",
-        "pages": ""
+        "pages": "129"
       },
       "tags": [
         "alcance",
         "edt",
         "control de cambios"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -467,15 +467,15 @@
         "edition": "Sexta edición",
         "year": 2017,
         "url": "https://www.pmi.org/es-es/standards/pmbok",
-        "pages": ""
+        "pages": "210"
       },
       "tags": [
         "cronograma",
         "ruta crítica",
         "dependencias"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -495,15 +495,15 @@
         "edition": "Sexta edición",
         "year": 2017,
         "url": "https://www.pmi.org/es-es/standards/pmbok",
-        "pages": ""
+        "pages": "307"
       },
       "tags": [
         "recursos",
         "equipo",
         "capacidad"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -523,15 +523,15 @@
         "edition": "Sexta edición",
         "year": 2017,
         "url": "https://www.pmi.org/es-es/standards/pmbok",
-        "pages": ""
+        "pages": "231, 233"
       },
       "tags": [
         "costos",
         "presupuesto",
         "operación"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -551,15 +551,15 @@
         "edition": "Sexta edición",
         "year": 2017,
         "url": "https://www.pmi.org/es-es/standards/pmbok",
-        "pages": ""
+        "pages": "271, 274"
       },
       "tags": [
         "calidad",
         "prevención",
         "pruebas"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -579,15 +579,15 @@
         "edition": "Sexta edición",
         "year": 2017,
         "url": "https://www.pmi.org/es-es/standards/pmbok",
-        "pages": ""
+        "pages": "28"
       },
       "tags": [
         "adaptación",
         "tailoring",
         "contexto"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -607,15 +607,15 @@
         "edition": "Sexta edición",
         "year": 2017,
         "url": "https://www.pmi.org/es-es/standards/pmbok",
-        "pages": ""
+        "pages": "43"
       },
       "tags": [
         "gobernanza",
         "aprobación",
         "decisiones"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -635,15 +635,15 @@
         "edition": "Sexta edición",
         "year": 2017,
         "url": "https://www.pmi.org/es-es/standards/pmbok",
-        "pages": ""
+        "pages": "19"
       },
       "tags": [
         "híbrido",
         "ciclo de vida",
         "enfoques"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
       "version": 1
     },
     {
@@ -651,7 +651,7 @@
       "framework": "pmbok",
       "category": "Monitoreo y control",
       "title": "Medición del desempeño",
-      "summary": "Comprueba con datos si un cambio produjo el beneficio que se buscaba.",
+      "summary": "Compara el avance real con lo planeado y decide con datos.",
       "knowledgeArea": "Monitorear y controlar el trabajo del proyecto",
       "action": "Para tu próxima mejora, define antes qué dato medirás para saber si funcionó.",
       "explanation": "Monitorear y controlar consiste en dar seguimiento al avance real, compararlo con lo planeado y decidir acciones. Para hacerlo bien hay que distinguir los datos del trabajo de lo que realmente significan para los objetivos del proyecto.",
@@ -663,16 +663,16 @@
         "edition": "Sexta edición",
         "year": 2017,
         "url": "https://www.pmi.org/es-es/standards/pmbok",
-        "pages": ""
+        "pages": "26, 105"
       },
       "tags": [
         "medición",
         "monitoreo",
         "control"
       ],
-      "reviewedBy": "",
-      "reviewedAt": "",
-      "version": 1
+      "reviewedBy": "Equipo editorial TamalEcho",
+      "reviewedAt": "2026-10-22",
+      "version": 2
     }
   ]
 }
