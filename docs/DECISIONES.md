@@ -105,6 +105,12 @@
 - **Punto de control 2 aplicado:** el WP-7 no estaba en `main` al inicio del jueves, así que el **WP-8 (HU-02.2-A/B, HU-01.1-B; todas «Debería») pasa a opcional**. Si no entra, se reporta como pendiente para el S2.
 - **Congelación:** jueves al cierre de la sesión. El viernes solo se hacen el release, las evidencias, el reporte y la Review.
 
+## D-17 · Enlace de la fuente PMBOK — VIGENTE (22/10/2026)
+- Los tips PMI citan la Guía del PMBOK, **6.ª edición en español**; las páginas citadas son de esa edición.
+- PMI ya no tiene una página pública de la 6.ª edición: sus enlaces redirigen a la de la 8.ª (2025). Se conserva `https://www.pmi.org/es-es/standards/pmbok` como enlace oficial de la editorial.
+- Si alguien abre el enlace y ve la 8.ª edición, la respuesta es que la cita y sus páginas corresponden a la 6.ª (D-03) y que el enlace lleva a la página oficial del estándar.
+- El enlace responde 403 a peticiones automáticas (`check:links`), pero abre normalmente en el navegador (evidencia `regresion-jueves/5-enlace-pmi-manual.png`).
+
 ## D-12 · Versionado — VIGENTE
 - Catálogo: `0.9.0` mientras haya borradores; `1.0.0` solo cuando los 24 estén aprobados (HT-03.2-B).
 - Producto: etiqueta Git `v0.1.0` al cierre del S1, `v0.2.0` S2, `v1.0.0` entrega final 20/11.
