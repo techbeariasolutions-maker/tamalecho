@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "situation": "El cliente pide un cambio a mitad del proyecto",
+  "notEquivalent": "Scrum y PMI/PMBOK son enfoques distintos. Aquí se muestra cómo responde cada uno a la misma situación; no significa que hagan lo mismo ni que uno sustituya al otro.",
+  "perspectives": [
+    {
+      "framework": "scrum",
+      "title": "Desde Scrum",
+      "text": "El pedido se convierte en un elemento del Product Backlog, que es una lista emergente: cambia conforme el equipo aprende. El Product Owner decide en qué lugar queda según el valor que aporta, y en la Sprint Review el equipo y los interesados pueden ajustar el Product Backlog.",
+      "source": {
+        "title": "La Guía Scrum",
+        "authors": "Schwaber, K. y Sutherland, J.",
+        "edition": "Noviembre 2020, traducción al español",
+        "year": 2020,
+        "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Spanish-European.pdf",
+        "pages": "6, 10, 11"
+      }
+    },
+    {
+      "framework": "pmbok",
+      "title": "Desde PMI/PMBOK",
+      "text": "El pedido se compara con el alcance acordado, que debe incluir todo el trabajo requerido y únicamente ese trabajo. Antes de aceptarlo se evalúa su impacto en tiempo y costo, y lo autoriza quien la gobernanza del proyecto define para aprobar cambios.",
+      "source": {
+        "title": "Guía de los fundamentos para la dirección de proyectos (Guía del PMBOK)",
+        "authors": "Project Management Institute",
+        "edition": "Sexta edición",
+        "year": 2017,
+        "url": "https://www.pmi.org/es-es/standards/pmbok",
+        "pages": "43, 129"
+      }
+    }
+  ],
+  "reviewedBy": "",
+  "reviewedAt": ""
+}

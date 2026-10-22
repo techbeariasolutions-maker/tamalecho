@@ -4,6 +4,7 @@ import Message from '../../components/Message.jsx';
 import NotFoundPage from '../notfound/NotFoundPage.jsx';
 import FrameworkSwitch from './FrameworkSwitch.jsx';
 import CategoryFilter from './CategoryFilter.jsx';
+import CompareExample from './CompareExample.jsx';
 import { useCatalog } from '../../hooks/useCatalog.js';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 
@@ -38,6 +39,7 @@ function FrameworkLibrary({ framework }) {
       <h1>{title}</h1>
       <FrameworkSwitch />
       <p className="lead">{DESCRIPTIONS[framework]}</p>
+      <CompareExample />
       <CategoryFilter categories={categories} selected={selected} onChange={selectCategory} />
       <p className="library__count" role="status">
         {tips.length} {tips.length === 1 ? 'consejo' : 'consejos'}

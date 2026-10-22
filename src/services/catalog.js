@@ -1,5 +1,6 @@
 // Único punto de lectura del catálogo (CLAUDE.md §6). Ningún componente importa tips.json.
 import tipsData from '../data/tips.json';
+import compareData from '../data/compare.json';
 import { FRAMEWORKS } from '../data/schema.js';
 
 export const FRAMEWORK_LABELS = { scrum: 'Scrum', pmbok: 'PMI/PMBOK' };
@@ -61,3 +62,8 @@ export function createCatalog(catalog) {
 
 export const { getCatalogVersion, getTips, getTipById, getCategories, getNextTip, getFeaturedTip } =
   createCatalog(tipsData);
+
+// Ejemplo comparativo (WP-8): una situación vista desde cada enfoque.
+export function getComparison() {
+  return compareData;
+}

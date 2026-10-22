@@ -406,6 +406,60 @@ main dd {
   font-weight: var(--font-weight-bold);
 }
 
+/* ── Ejemplo comparativo ────────────────────────────────── */
+.compare {
+  margin-bottom: var(--space-6);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.compare__summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap-target-min);
+  padding: var(--space-2) var(--space-4);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+}
+
+.compare__body {
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.compare__body h2 {
+  font-size: var(--font-size-lg);
+  margin-top: var(--space-2);
+}
+
+.compare__note {
+  padding: var(--space-3);
+  border-left: var(--focus-width) solid var(--color-primary);
+  background: var(--color-surface-muted);
+}
+
+.compare__columns {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.compare__column h3 {
+  font-size: var(--font-size-base);
+  margin-bottom: var(--space-2);
+}
+
+.compare__column .tip-source {
+  margin-top: var(--space-3);
+}
+
+/* Breakpoint md (48em, ver --breakpoint-md en tokens.css): dos columnas en escritorio. */
+@media (min-width: 48em) {
+  .compare__columns {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 /* ── Ficha ───────────────────────────────────────────────── */
 .tip-detail h2 {
   font-size: var(--font-size-lg);
