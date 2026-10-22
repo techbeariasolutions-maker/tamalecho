@@ -258,3 +258,59 @@ a:hover {
 .message p:last-child {
   margin-bottom: 0;
 }
+
+/* ── Texto de apoyo ──────────────────────────────────────── */
+.lead {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+}
+
+main p,
+main li,
+main dd {
+  overflow-wrap: anywhere;
+}
+
+/* ── Tarjeta de consejo ─────────────────────────────────── */
+.tip-card {
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.tip-card__title {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--space-2);
+}
+
+.tip-card__meta {
+  margin: 0 0 var(--space-3);
+}
+
+.tip-card__meta div {
+  margin-bottom: var(--space-2);
+}
+
+.tip-card__meta dt {
+  font-weight: var(--font-weight-bold);
+}
+
+.tip-card__meta dd {
+  margin: 0;
+}
+
+.tip-card__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target-min);
+  font-weight: var(--font-weight-bold);
+}
+
+.tip-list {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
