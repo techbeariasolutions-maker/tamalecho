@@ -53,6 +53,8 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 | `npm run check:links` | Revisa que las URL de las fuentes respondan. Usa la red; solo local. *Pendiente: WP-7.* |
 | `npm run check` | `lint` + `validate:tips` + `test` + `build`. **Debe pasar antes de abrir un PR.** |
 
+> **Nota:** en Windows, la primera corrida de `test:e2e` después de instalar Chromium puede exceder el tiempo límite por el arranque en frío; repetirla una vez con el puerto 4173 libre.
+
 ## Flujo Git (resumen de `CLAUDE.md` §9)
 
 - `main` está protegida: solo entra código por PR con el CI en verde.

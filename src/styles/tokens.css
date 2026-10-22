@@ -1,0 +1,75 @@
+/*
+ * Tokens de diseño de TamalEcho Tips.
+ * Única fuente de colores, tipografía, espacios, radios, foco, breakpoints y movimiento.
+ * Los componentes y global.css solo usan estas variables (CLAUDE.md §6).
+ *
+ * Contrastes calculados con la fórmula de WCAG 2.2 (texto normal: mínimo 4.5:1;
+ * bordes y anillo de foco: mínimo 3:1).
+ */
+:root {
+  /* ── Colores ─────────────────────────────────────────────── */
+  --color-bg: #fffaf3;             /* fondo general */
+  --color-surface: #ffffff;        /* tarjetas y menú desplegado */
+  --color-surface-muted: #f3ebe0;  /* bandas: encabezado, pie */
+  --color-text: #1f1a17;           /* sobre --color-bg: 16.60:1 · sobre --color-surface-muted: 14.59:1 */
+  --color-text-muted: #5c524b;     /* sobre --color-bg: 7.32:1 · sobre --color-surface: 7.60:1 */
+  --color-primary: #8a3b12;        /* enlaces sobre --color-bg: 7.45:1 · sobre --color-surface-muted: 6.55:1 */
+  --color-primary-strong: #6b2c0b; /* hover; sobre --color-bg: 10.16:1 */
+  --color-on-primary: #ffffff;     /* texto sobre --color-primary: 7.73:1 · sobre --color-primary-strong: 10.55:1 */
+  --color-border: #8c7f74;         /* bordes de controles sobre --color-bg: 3.74:1 */
+  --color-error: #a1260d;          /* sobre --color-error-bg: 6.56:1 */
+  --color-error-bg: #fdecea;       /* --color-text sobre este fondo: 15.07:1 */
+
+  /* ── Foco ────────────────────────────────────────────────── */
+  /* Azul sobre --color-bg: 6.15:1. Sobre --color-primary solo da 1.21:1, por eso el
+     anillo se dibuja separado del elemento (offset) y queda sobre el fondo claro. */
+  --focus-color: #0b57d0;
+  --focus-width: 3px;
+  --focus-offset: 3px;
+
+  /* ── Tipografía (base 16 px; escala ×1.25) ──────────────── */
+  --font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-size-sm: 0.875rem;  /* 14 px: solo metadatos, nunca texto de lectura */
+  --font-size-base: 1rem;    /* 16 px */
+  --font-size-lg: 1.25rem;   /* 20 px */
+  --font-size-xl: 1.5625rem; /* 25 px */
+  --font-size-2xl: 1.953rem; /* 31 px */
+  --line-height-base: 1.6;
+  --line-height-tight: 1.25;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+
+  /* ── Espacios (múltiplos de 4 px) ───────────────────────── */
+  --space-1: 0.25rem; /* 4 px */
+  --space-2: 0.5rem;  /* 8 px */
+  --space-3: 0.75rem; /* 12 px */
+  --space-4: 1rem;    /* 16 px */
+  --space-6: 1.5rem;  /* 24 px */
+  --space-8: 2rem;    /* 32 px */
+  --space-12: 3rem;   /* 48 px */
+
+  /* ── Tamaños ─────────────────────────────────────────────── */
+  --tap-target-min: 2.75rem;    /* 44 px: objetivo táctil mínimo (CLAUDE.md §10) */
+  --content-max-width: 60rem;   /* 960 px */
+  --border-width: 1px;
+
+  /* ── Radios ──────────────────────────────────────────────── */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-pill: 999px;
+
+  /* ── Breakpoints ─────────────────────────────────────────── */
+  /* CSS no permite variables dentro de @media. Estos valores son la referencia
+     documentada; global.css repite el valor literal con un comentario que la cita.
+     - md: 48em (768 px): el menú pasa de botón desplegable a barra horizontal. */
+  --breakpoint-md: 48em;
+
+  /* ── Movimiento ──────────────────────────────────────────── */
+  --motion-duration: 150ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration: 0ms;
+  }
+}
