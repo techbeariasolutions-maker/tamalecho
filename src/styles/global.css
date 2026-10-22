@@ -405,3 +405,58 @@ main dd {
 .library__count {
   font-weight: var(--font-weight-bold);
 }
+
+/* ── Ficha ───────────────────────────────────────────────── */
+.tip-detail h2 {
+  font-size: var(--font-size-lg);
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-2);
+}
+
+.tip-detail__context {
+  margin-bottom: var(--space-2);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-bold);
+}
+
+.tip-source {
+  margin-top: var(--space-6);
+  padding: var(--space-4);
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-md);
+}
+
+.tip-source p:last-child {
+  margin-bottom: 0;
+}
+
+.tip-source a {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--space-1);
+  min-height: var(--tap-target-min);
+}
+
+.tip-detail__meta {
+  margin-top: var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.tip-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.tip-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target-min);
+  font-weight: var(--font-weight-bold);
+}

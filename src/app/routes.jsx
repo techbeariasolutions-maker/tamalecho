@@ -2,6 +2,7 @@ import { Navigate } from 'react-router';
 import Layout from './Layout.jsx';
 import HomePage from '../features/home/HomePage.jsx';
 import LibraryPage from '../features/library/LibraryPage.jsx';
+import TipDetailPage from '../features/tips/TipDetailPage.jsx';
 import PlaceholderPage from '../features/placeholders/PlaceholderPage.jsx';
 import NotFoundPage from '../features/notfound/NotFoundPage.jsx';
 
@@ -13,7 +14,7 @@ export const routes = [
       { path: '/', element: <HomePage /> },
       { path: '/biblioteca', element: <Navigate to="/biblioteca/scrum" replace /> },
       { path: '/biblioteca/:enfoque', element: <LibraryPage /> },
-      { path: '/tip/:id', element: <PlaceholderPage title="Consejo" sprint={1} /> },
+      { path: '/tip/:id', element: <TipDetailPage /> },
       { path: '/historial', element: <PlaceholderPage title="Historial" sprint={2} /> },
       { path: '/progreso', element: <PlaceholderPage title="Progreso" sprint={2} /> },
       { path: '/ajustes', element: <PlaceholderPage title="Ajustes" sprint={2} /> },
