@@ -57,7 +57,7 @@
 - E2E y accesibilidad automática: **Playwright + @axe-core/playwright** en `tests/e2e/`. Cumple RNF-02 (“herramienta automática”) y RNF-18 (“E2E de flujos críticos en el pipeline”).
 - Ubicación según la propuesta §14 (`tests/unit`, `tests/e2e`), no junto al código.
 
-## D-08 · Tablero — VIGENTE
+## D-08 · Tablero — SUSTITUIDA por D-18 (22/10/2026)
 - **GitHub Projects**, columnas de la propuesta §13: Pendiente / En curso / En prueba / Terminado.
 - Una *issue* por actividad (28 en S1), con el ID de la propuesta en el título.
 - Burndown por **actividades restantes** (28 → 0) en `docs/sprint-1/DAILY.md`. Los puntos se usan para velocidad, no para el burndown diario.
@@ -110,6 +110,12 @@
 - PMI ya no tiene una página pública de la 6.ª edición: sus enlaces redirigen a la de la 8.ª (2025). Se conserva `https://www.pmi.org/es-es/standards/pmbok` como enlace oficial de la editorial.
 - Si alguien abre el enlace y ve la 8.ª edición, la respuesta es que la cita y sus páginas corresponden a la 6.ª (D-03) y que el enlace lleva a la página oficial del estándar.
 - El enlace responde 403 a peticiones automáticas (`check:links`), pero abre normalmente en el navegador (evidencia `regresion-jueves/5-enlace-pmi-manual.png`).
+
+## D-18 · Taiga como tablero oficial — VIGENTE (22/10/2026)
+- Por indicación de la profesora, la gestión Scrum (backlog, sprints, tareas y burndown) se lleva en **Taiga** (proyecto «TamalEcho Tips»), una de las herramientas que nombra el programa del curso (Trello o Taiga).
+- Se cargaron las 23 historias (126 puntos), el Sprint 1 con sus 28 tareas y las historias de S2 y S3 en el backlog.
+- GitHub queda solo para el código, los cambios revisados y el CI. Sustituye a D-08.
+- La burndown de Taiga refleja las fechas de carga (22/10); la burndown día a día del Sprint 1 es la de `docs/sprint-1/DAILY.md`.
 
 ## D-12 · Versionado — VIGENTE
 - Catálogo: `0.9.0` mientras haya borradores; `1.0.0` solo cuando los 24 estén aprobados (HT-03.2-B).
