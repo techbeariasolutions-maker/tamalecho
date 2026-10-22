@@ -265,10 +265,21 @@ a:hover {
   color: var(--color-text-muted);
 }
 
+/* Palabras largas (URL, términos en inglés) se parten para no desbordar a 360 px. */
+h1,
+h2,
+h3,
 main p,
 main li,
 main dd {
   overflow-wrap: anywhere;
+}
+
+/* Enlace que va solo en su párrafo: objetivo táctil de 44 × 44 px (CLAUDE.md §10). */
+.standalone-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target-min);
 }
 
 /* ── Tarjeta de consejo ─────────────────────────────────── */
@@ -380,6 +391,15 @@ main dd {
   text-decoration: none;
 }
 
+/* El fondo del segmento activo sigue las esquinas redondeadas del control. */
+.framework-switch__list li:first-child .framework-switch__link {
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.framework-switch__list li:last-child .framework-switch__link {
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
 .framework-switch__link[aria-current] {
   background: var(--color-primary);
   color: var(--color-on-primary);
@@ -422,6 +442,17 @@ main dd {
   color: var(--color-primary);
   font-weight: var(--font-weight-bold);
   cursor: pointer;
+}
+
+/* Indicador de abrir/cerrar (display:flex quita el triángulo nativo). El texto
+   alternativo vacío evita que el lector de pantalla lea el símbolo. */
+.compare__summary::before {
+  content: '▸' / '';
+  margin-right: var(--space-2);
+}
+
+.compare[open] .compare__summary::before {
+  content: '▾' / '';
 }
 
 .compare__body {

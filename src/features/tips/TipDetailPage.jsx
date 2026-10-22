@@ -79,7 +79,9 @@ function TipNotFound() {
       <h1>Consejo no encontrado</h1>
       <Message variant="empty" title="Este consejo no existe o fue retirado.">
         <p>
-          <Link to="/biblioteca">Ir a la biblioteca de consejos</Link>
+          <Link to="/biblioteca" className="standalone-link">
+            Ir a la biblioteca de consejos
+          </Link>
         </p>
       </Message>
     </>

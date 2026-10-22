@@ -8,7 +8,9 @@ export default function NotFoundPage() {
       <h1>No encontramos esta página</h1>
       <p>Es posible que la dirección esté mal escrita o que la página ya no exista.</p>
       <p>
-        <Link to="/">Volver al inicio</Link>
+        <Link to="/" className="standalone-link">
+          Volver al inicio
+        </Link>
       </p>
     </>
   );
