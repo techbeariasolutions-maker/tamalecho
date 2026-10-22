@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Link, useLocation, useParams } from 'react-router';
-import NotFoundPage from '../notfound/NotFoundPage.jsx';
+import Message from '../../components/Message.jsx';
 import { useCatalog } from '../../hooks/useCatalog.js';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 
@@ -18,11 +18,13 @@ export function TipSource({ source }) {
         <strong>Fuente:</strong> {source.authors} ({source.year}). <cite>{source.title}</cite>, {source.edition}.
         {pages && ` p. ${pages}.`}
       </p>
-      <p>
-        <a href={source.url} target="_blank" rel="noopener noreferrer">
-          Consultar «{source.title}» <span className="external-hint">(se abre en otra pestaña)</span>
-        </a>
-      </p>
+      {source.url && (
+        <p>
+          <a href={source.url} target="_blank" rel="noopener noreferrer">
+            Consultar «{source.title}» <span className="external-hint">(se abre en otra pestaña)</span>
+          </a>
+        </p>
+      )}
     </section>
   );
 }
@@ -31,7 +33,7 @@ export default function TipDetailPage() {
   const { id } = useParams();
   const { getTipById } = useCatalog();
   const tip = getTipById(id);
-  return tip ? <TipDetail key={tip.id} tip={tip} /> : <NotFoundPage />;
+  return tip ? <TipDetail key={tip.id} tip={tip} /> : <TipNotFound />;
 }
 
 function TipDetail({ tip }) {
@@ -79,6 +81,20 @@ function TipDetail({ tip }) {
           </Link>
         )}
       </nav>
+    </>
+  );
+}
+
+function TipNotFound() {
+  useDocumentTitle('Consejo no encontrado');
+  return (
+    <>
+      <h1>Consejo no encontrado</h1>
+      <Message variant="empty" title="Este consejo no existe o fue retirado.">
+        <p>
+          <Link to="/biblioteca">Ir a la biblioteca de consejos</Link>
+        </p>
+      </Message>
     </>
   );
 }

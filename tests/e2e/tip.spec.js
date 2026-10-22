@@ -20,6 +20,13 @@ test('T-07: biblioteca filtrada → consejo → «Siguiente» → «Volver» con
   await expect(page.getByRole('button', { name: category })).toHaveAttribute('aria-pressed', 'true');
 });
 
+test('T-09: un consejo inexistente muestra el estado alterno', async ({ page }) => {
+  await page.goto('/tip/SCR-99');
+  await expect(page.getByText('Este consejo no existe o fue retirado.')).toBeVisible();
+  await page.getByRole('link', { name: 'Ir a la biblioteca de consejos' }).click();
+  await expect(page).toHaveURL(/\/biblioteca\/scrum$/);
+});
+
 test('T-06: los 24 consejos abren su ficha con explicación, ejemplo y fuente con edición', async ({ page }) => {
   const errors = [];
   page.on('pageerror', (error) => errors.push(error.message));
