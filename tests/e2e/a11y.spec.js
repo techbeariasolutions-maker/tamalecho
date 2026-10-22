@@ -31,6 +31,11 @@ function saveSummary(project, results) {
 }
 
 test('T-12: axe sin violaciones serias ni críticas en cada ruta', async ({ page }, testInfo) => {
+  // Recorre 12 rutas y 2 estados con axe en una sola prueba. En Windows, con 2 workers en paralelo,
+  // superó el límite por defecto de 30 s (34 s medidos) aunque no hubo violaciones. Se amplía el
+  // límite solo para esta prueba en lugar de relajar el de toda la suite.
+  test.setTimeout(120_000);
+
   const results = [];
   const blocking = [];
 
