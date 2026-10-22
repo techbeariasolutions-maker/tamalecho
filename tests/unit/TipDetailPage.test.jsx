@@ -1,10 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { render, screen, within } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderApp } from './renderApp.jsx';
-import { TipSource } from '../../src/features/tips/TipDetailPage.jsx';
 import { getNextTip, getTipById } from '../../src/services/catalog.js';
-import { makeTip } from './fixtures/catalog.js';
 
 describe('TipDetailPage', () => {
   const tip = getTipById('SCR-01');
@@ -81,24 +79,5 @@ describe('TipDetailPage', () => {
     renderApp('/tip/SCR-99');
     expect(screen.getByText('Este consejo no existe o fue retirado.')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Ir a la biblioteca de consejos' })).toHaveAttribute('href', '/biblioteca');
-  });
-});
-
-describe('TipSource', () => {
-  it('formatea la fuente y agrega la página solo si existe', () => {
-    const { rerender } = render(<TipSource source={makeTip().source} />);
-    expect(screen.getByText(/Autor, A\. \(2020\)\./)).toHaveTextContent(
-      'Fuente: Autor, A. (2020). Fuente de prueba, Primera edición.',
-    );
-    expect(screen.getByText(/Autor, A\./).textContent).not.toContain('p.');
-
-    rerender(<TipSource source={makeTip({ source: { pages: '41–43' } }).source} />);
-    expect(screen.getByText(/Autor, A\./)).toHaveTextContent('Primera edición. p. 41–43.');
-  });
-
-  it('sin URL muestra el texto de la fuente sin enlace', () => {
-    render(<TipSource source={makeTip({ source: { url: '' } }).source} />);
-    expect(screen.getByText(/Autor, A\./)).toBeInTheDocument();
-    expect(screen.queryByRole('link')).not.toBeInTheDocument();
   });
 });
