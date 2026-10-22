@@ -17,7 +17,7 @@
 ## Scrum
 | ID | Título | Fuente | Dónde verificar | Página verificada | Aprobado por | Fecha | Observaciones |
 |---|---|---|---|---|---|---|---|
-| SCR-01 | Product Backlog | Guía Scrum 2020 | Artefactos de Scrum → Product Backlog | | | | |
+| SCR-01 | Product Backlog | Guía Scrum 2020 | Artefactos de Scrum → Product Backlog | | Obdulio Rincón Flores | | |
 | SCR-02 | Objetivo del Sprint | Guía Scrum 2020 | Sprint Backlog → Compromiso: Objetivo del Sprint | | | | |
 | SCR-03 | Definición de Terminado | Guía Scrum 2020 | Incremento → Compromiso: Definición de Terminado | | | | |
 | SCR-04 | Daily Scrum | Guía Scrum 2020 | Eventos de Scrum → Daily Scrum | | | | |
