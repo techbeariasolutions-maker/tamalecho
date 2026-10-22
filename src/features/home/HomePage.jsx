@@ -25,6 +25,10 @@ export default function HomePage() {
 
       <section className="home-section" aria-labelledby="explorar">
         <h2 id="explorar">Explora por enfoque</h2>
+        <p>
+          ¿Por dónde empezar? Si tu equipo trabaja en iteraciones cortas, empieza por Scrum; si necesitas planear todo
+          el ciclo del proyecto, empieza por PMI/PMBOK.
+        </p>
         <ul className="home-access">
           <li>
             <Link to="/biblioteca/scrum" className="button button--primary home-access__link">

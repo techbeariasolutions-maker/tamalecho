@@ -1,0 +1,128 @@
+{
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "projects": {
+    "desktop": {
+      "generatedAt": "2026-10-22T17:35:03.686Z",
+      "routes": [
+        {
+          "route": "/",
+          "violations": []
+        },
+        {
+          "route": "/biblioteca/scrum",
+          "violations": []
+        },
+        {
+          "route": "/biblioteca/pmbok",
+          "violations": []
+        },
+        {
+          "route": "/biblioteca/scrum?categoria=Eventos",
+          "violations": []
+        },
+        {
+          "route": "/tip/SCR-01",
+          "violations": []
+        },
+        {
+          "route": "/tip/PMI-01",
+          "violations": []
+        },
+        {
+          "route": "/tip/SCR-99",
+          "violations": []
+        },
+        {
+          "route": "/historial",
+          "violations": []
+        },
+        {
+          "route": "/progreso",
+          "violations": []
+        },
+        {
+          "route": "/ajustes",
+          "violations": []
+        },
+        {
+          "route": "/ayuda",
+          "violations": []
+        },
+        {
+          "route": "/ruta-que-no-existe",
+          "violations": []
+        },
+        {
+          "route": "/biblioteca/scrum (comparación abierta)",
+          "violations": []
+        }
+      ]
+    },
+    "mobile-360": {
+      "generatedAt": "2026-10-22T17:35:18.775Z",
+      "routes": [
+        {
+          "route": "/",
+          "violations": []
+        },
+        {
+          "route": "/biblioteca/scrum",
+          "violations": []
+        },
+        {
+          "route": "/biblioteca/pmbok",
+          "violations": []
+        },
+        {
+          "route": "/biblioteca/scrum?categoria=Eventos",
+          "violations": []
+        },
+        {
+          "route": "/tip/SCR-01",
+          "violations": []
+        },
+        {
+          "route": "/tip/PMI-01",
+          "violations": []
+        },
+        {
+          "route": "/tip/SCR-99",
+          "violations": []
+        },
+        {
+          "route": "/historial",
+          "violations": []
+        },
+        {
+          "route": "/progreso",
+          "violations": []
+        },
+        {
+          "route": "/ajustes",
+          "violations": []
+        },
+        {
+          "route": "/ayuda",
+          "violations": []
+        },
+        {
+          "route": "/ruta-que-no-existe",
+          "violations": []
+        },
+        {
+          "route": "/biblioteca/scrum (comparación abierta)",
+          "violations": []
+        },
+        {
+          "route": "/biblioteca/scrum (menú móvil abierto)",
+          "violations": []
+        }
+      ]
+    }
+  }
+}

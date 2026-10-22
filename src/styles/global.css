@@ -265,10 +265,21 @@ a:hover {
   color: var(--color-text-muted);
 }
 
+/* Palabras largas (URL, términos en inglés) se parten para no desbordar a 360 px. */
+h1,
+h2,
+h3,
 main p,
 main li,
 main dd {
   overflow-wrap: anywhere;
+}
+
+/* Enlace que va solo en su párrafo: objetivo táctil de 44 × 44 px (CLAUDE.md §10). */
+.standalone-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target-min);
 }
 
 /* ── Tarjeta de consejo ─────────────────────────────────── */
@@ -380,7 +391,16 @@ main dd {
   text-decoration: none;
 }
 
-.framework-switch__link[aria-current='page'] {
+/* El fondo del segmento activo sigue las esquinas redondeadas del control. */
+.framework-switch__list li:first-child .framework-switch__link {
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.framework-switch__list li:last-child .framework-switch__link {
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.framework-switch__link[aria-current] {
   background: var(--color-primary);
   color: var(--color-on-primary);
 }
@@ -404,6 +424,71 @@ main dd {
 
 .library__count {
   font-weight: var(--font-weight-bold);
+}
+
+/* ── Ejemplo comparativo ────────────────────────────────── */
+.compare {
+  margin-bottom: var(--space-6);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.compare__summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--tap-target-min);
+  padding: var(--space-2) var(--space-4);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+}
+
+/* Indicador de abrir/cerrar (display:flex quita el triángulo nativo). El texto
+   alternativo vacío evita que el lector de pantalla lea el símbolo. */
+.compare__summary::before {
+  content: '▸' / '';
+  margin-right: var(--space-2);
+}
+
+.compare[open] .compare__summary::before {
+  content: '▾' / '';
+}
+
+.compare__body {
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.compare__body h2 {
+  font-size: var(--font-size-lg);
+  margin-top: var(--space-2);
+}
+
+.compare__note {
+  padding: var(--space-3);
+  border-left: var(--focus-width) solid var(--color-primary);
+  background: var(--color-surface-muted);
+}
+
+.compare__columns {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.compare__column h3 {
+  font-size: var(--font-size-base);
+  margin-bottom: var(--space-2);
+}
+
+.compare__column .tip-source {
+  margin-top: var(--space-3);
+}
+
+/* Breakpoint md (48em, ver --breakpoint-md en tokens.css): dos columnas en escritorio. */
+@media (min-width: 48em) {
+  .compare__columns {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 /* ── Ficha ───────────────────────────────────────────────── */
@@ -464,4 +549,18 @@ main dd {
   align-items: center;
   min-height: var(--tap-target-min);
   font-weight: var(--font-weight-bold);
+}
+
+/* ── Movimiento reducido ─────────────────────────────────── */
+/* Regla global: con prefers-reduced-motion, --motion-duration vale 0ms (tokens.css) y
+   ninguna animación ni transición se ejecuta, aunque un componente olvide usar el token. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: var(--motion-duration) !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: var(--motion-duration) !important;
+    scroll-behavior: auto !important;
+  }
 }

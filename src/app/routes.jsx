@@ -1,10 +1,13 @@
+import { lazy } from 'react';
 import { Navigate } from 'react-router';
 import Layout from './Layout.jsx';
-import HomePage from '../features/home/HomePage.jsx';
-import LibraryPage from '../features/library/LibraryPage.jsx';
-import TipDetailPage from '../features/tips/TipDetailPage.jsx';
-import PlaceholderPage from '../features/placeholders/PlaceholderPage.jsx';
-import NotFoundPage from '../features/notfound/NotFoundPage.jsx';
+
+// Cada página se carga por separado (React.lazy); Layout muestra «Cargando…» mientras tanto.
+const HomePage = lazy(() => import('../features/home/HomePage.jsx'));
+const LibraryPage = lazy(() => import('../features/library/LibraryPage.jsx'));
+const TipDetailPage = lazy(() => import('../features/tips/TipDetailPage.jsx'));
+const PlaceholderPage = lazy(() => import('../features/placeholders/PlaceholderPage.jsx'));
+const NotFoundPage = lazy(() => import('../features/notfound/NotFoundPage.jsx'));
 
 // Rutas de CLAUDE.md §7.
 export const routes = [

@@ -8,7 +8,9 @@ export default function PlaceholderPage({ title, sprint }) {
       <h1>{title}</h1>
       <p>Esta sección estará disponible en el Sprint {sprint}.</p>
       <p>
-        <Link to="/biblioteca">Ir a la biblioteca de consejos</Link>
+        <Link to="/biblioteca" className="standalone-link">
+          Ir a la biblioteca de consejos
+        </Link>
       </p>
     </>
   );

@@ -10,14 +10,14 @@ function getNav() {
 }
 
 describe('NavMenu', () => {
-  it('muestra las seis secciones en orden', () => {
-    renderApp('/');
+  it('muestra las seis secciones en orden', async () => {
+    await renderApp('/');
     const links = within(getNav()).getAllByRole('link');
     expect(links.map((link) => link.textContent)).toEqual(LABELS);
   });
 
-  it('marca solo el enlace activo con aria-current="page"', () => {
-    renderApp('/ajustes');
+  it('marca solo el enlace activo con aria-current="page"', async () => {
+    await renderApp('/ajustes');
     const nav = getNav();
     expect(within(nav).getByRole('link', { name: 'Ajustes' })).toHaveAttribute('aria-current', 'page');
     expect(within(nav).getByRole('link', { name: 'Inicio' })).not.toHaveAttribute('aria-current');
@@ -25,7 +25,7 @@ describe('NavMenu', () => {
 
   it('el botón controla la lista y alterna aria-expanded', async () => {
     const user = userEvent.setup();
-    renderApp('/');
+    await renderApp('/');
     const toggle = screen.getByRole('button', { name: 'Menú' });
     const list = document.getElementById(toggle.getAttribute('aria-controls'));
     expect(list).not.toBeNull();
@@ -42,7 +42,7 @@ describe('NavMenu', () => {
 
   it('Escape cierra el menú y devuelve el foco al botón', async () => {
     const user = userEvent.setup();
-    renderApp('/');
+    await renderApp('/');
     const toggle = screen.getByRole('button', { name: 'Menú' });
     await user.click(toggle);
     await user.tab();
@@ -55,12 +55,12 @@ describe('NavMenu', () => {
 
   it('al navegar se cierra el menú, cambia la página y el foco vuelve al botón', async () => {
     const user = userEvent.setup();
-    renderApp('/');
+    await renderApp('/');
     const toggle = screen.getByRole('button', { name: 'Menú' });
     await user.click(toggle);
     await user.click(within(getNav()).getByRole('link', { name: 'Ayuda' }));
 
-    expect(screen.getByRole('heading', { level: 1, name: 'Ayuda' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Ayuda' })).toBeInTheDocument();
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
     expect(toggle).toHaveFocus();
   });

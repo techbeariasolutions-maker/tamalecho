@@ -39,3 +39,15 @@ test('un enfoque inválido muestra NotFound', async ({ page }) => {
   await page.goto('/biblioteca/kanban');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('No encontramos esta página');
 });
+
+for (const framework of ['scrum', 'pmbok']) {
+  test(`T-05: el ejemplo comparativo se abre desde la biblioteca de ${framework}`, async ({ page }) => {
+    await page.goto(`/biblioteca/${framework}`);
+    const heading = page.getByRole('heading', { level: 2, name: 'Mismo problema, dos enfoques' });
+    await expect(heading).toBeHidden();
+    await page.getByText('Ver ejemplo: mismo problema, dos enfoques').click();
+    await expect(heading).toBeVisible();
+    await expect(page.getByRole('article', { name: 'Desde Scrum' })).toBeVisible();
+    await expect(page.getByRole('article', { name: 'Desde PMI/PMBOK' })).toBeVisible();
+  });
+}

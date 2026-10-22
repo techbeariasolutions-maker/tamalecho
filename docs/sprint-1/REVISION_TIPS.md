@@ -52,6 +52,13 @@
 - **SCR-07, SCR-08 y SCR-12 citan a Kniberg**, no la Guía Scrum, porque esas prácticas no vienen de la guía.
 
 ## Textos de comparación (WP-8)
-| Texto | Fuente | Aprobado por | Fecha | Observaciones |
-|---|---|---|---|---|
-| (lo agrega el agente en WP-8) | | | | |
+Archivo: `src/data/compare.json`. Situación: «El cliente pide un cambio a mitad del proyecto».
+**Cómo se eligieron las páginas:** el agente no tiene las guías. Solo citó páginas que el equipo ya verificó en el catálogo 1.0.0 para consejos del mismo tema: Scrum, pp. 6, 10 y 11 (SCR-01, SCR-05 y SCR-11); PMBOK, pp. 43 y 129 (PMI-10 y PMI-04). Las **frases son nuevas**: hay que confirmar que cada afirmación está en esas páginas antes de aprobar.
+**Sugerencia para el PO:** la referencia más precisa del PMBOK 6.ª ed. para este caso es §4.6 «Realizar el Control Integrado de Cambios». No se cita porque su página no está verificada. Si la verifican, anótenla aquí y el agente la agrega.
+
+| Texto | Fuente | Página citada | Aprobado por | Fecha | Observaciones |
+|---|---|---|---|---|---|
+| Aclaración: «Scrum y PMI/PMBOK son enfoques distintos. Aquí se muestra cómo responde cada uno a la misma situación; no significa que hagan lo mismo ni que uno sustituya al otro.» | Regla del producto (CLAUDE.md §2), sin fuente externa | — | | | |
+| Desde Scrum: «El pedido se convierte en un elemento del Product Backlog, que es una lista emergente: cambia conforme el equipo aprende. El Product Owner decide en qué lugar queda según el valor que aporta, y en la Sprint Review el equipo y los interesados pueden ajustar el Product Backlog.» | Guía Scrum 2020 (español) | 6, 10, 11 | | | |
+| Desde PMI/PMBOK: «El pedido se compara con el alcance acordado, que debe incluir todo el trabajo requerido y únicamente ese trabajo. Antes de aceptarlo se evalúa su impacto en tiempo y costo, y lo autoriza quien la gobernanza del proyecto define para aprobar cambios.» | Guía del PMBOK, 6.ª ed. | 43, 129 | | | |
+| Sugerencia inicial en la portada: «¿Por dónde empezar? Si tu equipo trabaja en iteraciones cortas, empieza por Scrum; si necesitas planear todo el ciclo del proyecto, empieza por PMI/PMBOK.» | Texto del WP-8 (PROMPTS.md) | — | | | |
