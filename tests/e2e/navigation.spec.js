@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 const SECTIONS = [
   { label: 'Inicio', url: /\/$/, h1: 'TamalEcho Tips' },
-  { label: 'Biblioteca', url: /\/biblioteca\/scrum$/, h1: 'Biblioteca' },
+  { label: 'Biblioteca', url: /\/biblioteca\/scrum$/, h1: 'Biblioteca de Scrum' },
   { label: 'Historial', url: /\/historial$/, h1: 'Historial' },
   { label: 'Progreso', url: /\/progreso$/, h1: 'Progreso' },
   { label: 'Ajustes', url: /\/ajustes$/, h1: 'Ajustes' },
@@ -97,7 +97,7 @@ test.describe('menú móvil solo con teclado', () => {
     await page.keyboard.press('Enter');
 
     await expect(page).toHaveURL(/\/biblioteca\/scrum$/);
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Biblioteca');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Biblioteca de Scrum');
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
     await expect(toggle).toBeFocused();
   });

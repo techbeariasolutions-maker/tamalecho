@@ -258,3 +258,210 @@ a:hover {
 .message p:last-child {
   margin-bottom: 0;
 }
+
+/* ── Texto de apoyo ──────────────────────────────────────── */
+.lead {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+}
+
+main p,
+main li,
+main dd {
+  overflow-wrap: anywhere;
+}
+
+/* ── Tarjeta de consejo ─────────────────────────────────── */
+.tip-card {
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.tip-card__title {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--space-2);
+}
+
+.tip-card__meta {
+  margin: 0 0 var(--space-3);
+}
+
+.tip-card__meta div {
+  margin-bottom: var(--space-2);
+}
+
+.tip-card__meta dt {
+  font-weight: var(--font-weight-bold);
+}
+
+.tip-card__meta dd {
+  margin: 0;
+}
+
+.tip-card__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target-min);
+  font-weight: var(--font-weight-bold);
+}
+
+.tip-list {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ── Portada ─────────────────────────────────────────────── */
+.home-section {
+  margin-top: var(--space-8);
+}
+
+.home-access {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-access__link {
+  width: 100%;
+  min-height: var(--space-12);
+  text-decoration: none;
+}
+
+.home-access__link:hover {
+  color: var(--color-on-primary);
+}
+
+.inline-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.inline-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target-min);
+}
+
+/* Breakpoint md (48em, ver --breakpoint-md en tokens.css): accesos en dos columnas. */
+@media (min-width: 48em) {
+  .home-access {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ── Biblioteca ──────────────────────────────────────────── */
+.framework-switch__list {
+  display: inline-flex;
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  list-style: none;
+  border: var(--border-width) solid var(--color-primary);
+  border-radius: var(--radius-md);
+}
+
+.framework-switch__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target-min);
+  padding: 0 var(--space-4);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+.framework-switch__link[aria-current='page'] {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.category-filter .button {
+  font-weight: var(--font-weight-normal);
+}
+
+.button[aria-pressed='true'] {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.library__count {
+  font-weight: var(--font-weight-bold);
+}
+
+/* ── Ficha ───────────────────────────────────────────────── */
+.tip-detail h2 {
+  font-size: var(--font-size-lg);
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-2);
+}
+
+.tip-detail__context {
+  margin-bottom: var(--space-2);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-bold);
+}
+
+.tip-source {
+  margin-top: var(--space-6);
+  padding: var(--space-4);
+  background: var(--color-surface-muted);
+  border-radius: var(--radius-md);
+}
+
+.tip-source p:last-child {
+  margin-bottom: 0;
+}
+
+.tip-source a {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--space-1);
+  min-height: var(--tap-target-min);
+}
+
+.tip-detail__tags {
+  margin-top: var(--space-4);
+  margin-bottom: 0;
+}
+
+.tip-detail__meta {
+  margin-top: var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.tip-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+.tip-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target-min);
+  font-weight: var(--font-weight-bold);
+}

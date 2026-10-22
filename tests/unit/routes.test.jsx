@@ -4,8 +4,10 @@ import { renderApp } from './renderApp.jsx';
 
 const CASES = [
   { path: '/', h1: 'TamalEcho Tips', title: 'TamalEcho Tips' },
-  { path: '/biblioteca/scrum', h1: 'Biblioteca', title: 'Biblioteca · TamalEcho Tips', sprint: 1 },
-  { path: '/tip/SCR-01', h1: 'Consejo', title: 'Consejo · TamalEcho Tips', sprint: 1 },
+  { path: '/biblioteca/scrum', h1: 'Biblioteca de Scrum', title: 'Biblioteca de Scrum · TamalEcho Tips' },
+  { path: '/biblioteca/pmbok', h1: 'Biblioteca de PMI/PMBOK', title: 'Biblioteca de PMI/PMBOK · TamalEcho Tips' },
+  { path: '/tip/SCR-01', h1: 'Product Backlog', title: 'Product Backlog · TamalEcho Tips' },
+  { path: '/tip/SCR-99', h1: 'Consejo no encontrado', title: 'Consejo no encontrado · TamalEcho Tips' },
   { path: '/historial', h1: 'Historial', title: 'Historial · TamalEcho Tips', sprint: 2 },
   { path: '/progreso', h1: 'Progreso', title: 'Progreso · TamalEcho Tips', sprint: 2 },
   { path: '/ajustes', h1: 'Ajustes', title: 'Ajustes · TamalEcho Tips', sprint: 2 },
@@ -26,8 +28,13 @@ describe('rutas', () => {
 
   it('/biblioteca redirige a la biblioteca de Scrum', () => {
     renderApp('/biblioteca');
-    expect(screen.getByRole('heading', { level: 1, name: 'Biblioteca' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Biblioteca' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('heading', { level: 1, name: 'Biblioteca de Scrum' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Biblioteca', exact: true })).toHaveAttribute('aria-current', 'page');
+  });
+
+  it('un enfoque inválido muestra NotFound', () => {
+    renderApp('/biblioteca/kanban');
+    expect(screen.getByRole('heading', { level: 1, name: 'No encontramos esta página' })).toBeInTheDocument();
   });
 
   it('una ruta desconocida muestra NotFound con enlace al inicio', () => {
