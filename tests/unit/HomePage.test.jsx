@@ -3,27 +3,27 @@ import { screen, within } from '@testing-library/react';
 import { renderApp } from './renderApp.jsx';
 
 describe('HomePage', () => {
-  it('muestra un consejo destacado en una tarjeta', () => {
-    renderApp('/');
+  it('muestra un consejo destacado en una tarjeta', async () => {
+    await renderApp('/');
     const section = screen.getByRole('region', { name: 'Consejo del día' });
     expect(within(section).getByRole('article')).toBeInTheDocument();
     expect(within(section).getByRole('link', { name: /^Ver más sobre / })).toBeInTheDocument();
   });
 
-  it('tiene accesos a Scrum y a PMI/PMBOK', () => {
-    renderApp('/');
+  it('tiene accesos a Scrum y a PMI/PMBOK', async () => {
+    await renderApp('/');
     expect(screen.getByRole('link', { name: 'Explorar Scrum' })).toHaveAttribute('href', '/biblioteca/scrum');
     expect(screen.getByRole('link', { name: 'Explorar PMI/PMBOK' })).toHaveAttribute('href', '/biblioteca/pmbok');
   });
 
-  it('tiene enlaces visibles a Biblioteca, Ajustes y Ayuda fuera del menú', () => {
-    renderApp('/');
+  it('tiene enlaces visibles a Biblioteca, Ajustes y Ayuda fuera del menú', async () => {
+    await renderApp('/');
     const more = screen.getByRole('navigation', { name: 'Más secciones' });
     expect(within(more).getAllByRole('link').map((link) => link.textContent)).toEqual(['Biblioteca', 'Ajustes', 'Ayuda']);
   });
 
-  it('muestra la sugerencia inicial de por dónde empezar', () => {
-    renderApp('/');
+  it('muestra la sugerencia inicial de por dónde empezar', async () => {
+    await renderApp('/');
     expect(screen.getByText(/^¿Por dónde empezar\? Si tu equipo trabaja en iteraciones cortas/)).toBeInTheDocument();
   });
 });

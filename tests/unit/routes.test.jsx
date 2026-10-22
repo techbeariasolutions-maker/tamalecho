@@ -15,8 +15,8 @@ const CASES = [
 ];
 
 describe('rutas', () => {
-  it.each(CASES)('$path muestra un único h1 «$h1» y su título', ({ path, h1, title, sprint }) => {
-    renderApp(path);
+  it.each(CASES)('$path muestra un único h1 «$h1» y su título', async ({ path, h1, title, sprint }) => {
+    await renderApp(path);
     const headings = screen.getAllByRole('heading', { level: 1 });
     expect(headings).toHaveLength(1);
     expect(headings[0]).toHaveTextContent(h1);
@@ -26,19 +26,19 @@ describe('rutas', () => {
     }
   });
 
-  it('/biblioteca redirige a la biblioteca de Scrum', () => {
-    renderApp('/biblioteca');
+  it('/biblioteca redirige a la biblioteca de Scrum', async () => {
+    await renderApp('/biblioteca');
     expect(screen.getByRole('heading', { level: 1, name: 'Biblioteca de Scrum' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Biblioteca', exact: true })).toHaveAttribute('aria-current', 'page');
   });
 
-  it('un enfoque inválido muestra NotFound', () => {
-    renderApp('/biblioteca/kanban');
+  it('un enfoque inválido muestra NotFound', async () => {
+    await renderApp('/biblioteca/kanban');
     expect(screen.getByRole('heading', { level: 1, name: 'No encontramos esta página' })).toBeInTheDocument();
   });
 
-  it('una ruta desconocida muestra NotFound con enlace al inicio', () => {
-    renderApp('/no-existe');
+  it('una ruta desconocida muestra NotFound con enlace al inicio', async () => {
+    await renderApp('/no-existe');
     expect(screen.getByRole('heading', { level: 1, name: 'No encontramos esta página' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Volver al inicio' })).toHaveAttribute('href', '/');
     expect(document.title).toBe('Página no encontrada · TamalEcho Tips');
