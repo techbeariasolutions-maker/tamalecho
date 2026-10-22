@@ -1,5 +1,24 @@
 import { expect, test } from '@playwright/test';
-import { catalog } from './catalog-data.js';
+import { catalog, categoriesOf, tipsOf } from './catalog-data.js';
+
+test('T-07: biblioteca filtrada → consejo → «Siguiente» → «Volver» conserva el filtro', async ({ page }) => {
+  const category = categoriesOf('scrum').find((name) => tipsOf('scrum', name).length > 1);
+  const [first, second] = tipsOf('scrum', category);
+
+  await page.goto('/biblioteca/scrum');
+  await page.getByRole('button', { name: category }).click();
+  const filteredUrl = page.url();
+
+  await page.getByRole('link', { name: `Ver más sobre ${first.title}` }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(first.title);
+
+  await page.getByRole('link', { name: `Siguiente consejo: ${second.title}` }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(second.title);
+
+  await page.getByRole('link', { name: 'Volver a la biblioteca' }).click();
+  expect(page.url()).toBe(filteredUrl);
+  await expect(page.getByRole('button', { name: category })).toHaveAttribute('aria-pressed', 'true');
+});
 
 test('T-06: los 24 consejos abren su ficha con explicación, ejemplo y fuente con edición', async ({ page }) => {
   const errors = [];

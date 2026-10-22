@@ -1,7 +1,14 @@
-import { useParams } from 'react-router';
+import { useEffect } from 'react';
+import { Link, useLocation, useParams } from 'react-router';
 import NotFoundPage from '../notfound/NotFoundPage.jsx';
 import { useCatalog } from '../../hooks/useCatalog.js';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
+
+// Solo se acepta volver a una URL de la biblioteca; cualquier otra cosa usa la categoría del tip.
+function libraryUrlFor(tip, from) {
+  if (typeof from === 'string' && from.startsWith('/biblioteca/')) return from;
+  return `/biblioteca/${tip.framework}?${new URLSearchParams({ categoria: tip.category })}`;
+}
 
 export function TipSource({ source }) {
   const pages = source.pages?.trim();
@@ -28,8 +35,17 @@ export default function TipDetailPage() {
 }
 
 function TipDetail({ tip }) {
-  const { FRAMEWORK_LABELS } = useCatalog();
+  const location = useLocation();
+  const { FRAMEWORK_LABELS, getNextTip } = useCatalog();
   useDocumentTitle(tip.title);
+
+  // Al pasar al siguiente consejo, la lectura empieza arriba.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [tip.id]);
+
+  const backTo = libraryUrlFor(tip, location.state?.from);
+  const next = getNextTip(tip.id);
 
   return (
     <>
@@ -54,6 +70,15 @@ function TipDetail({ tip }) {
           {tip.id} · versión {tip.version}
         </p>
       </article>
+
+      <nav className="tip-nav" aria-label="Navegación entre consejos">
+        <Link to={backTo}>Volver a la biblioteca</Link>
+        {next && (
+          <Link to={`/tip/${next.id}`} state={{ from: backTo }}>
+            Siguiente consejo: {next.title}
+          </Link>
+        )}
+      </nav>
     </>
   );
 }
