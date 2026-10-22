@@ -21,4 +21,9 @@ describe('HomePage', () => {
     const more = screen.getByRole('navigation', { name: 'Más secciones' });
     expect(within(more).getAllByRole('link').map((link) => link.textContent)).toEqual(['Biblioteca', 'Ajustes', 'Ayuda']);
   });
+
+  it('muestra la sugerencia inicial de por dónde empezar', () => {
+    renderApp('/');
+    expect(screen.getByText(/^¿Por dónde empezar\? Si tu equipo trabaja en iteraciones cortas/)).toBeInTheDocument();
+  });
 });

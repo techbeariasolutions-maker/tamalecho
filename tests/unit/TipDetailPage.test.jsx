@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderApp } from './renderApp.jsx';
 import { TipSource } from '../../src/features/tips/TipDetailPage.jsx';
@@ -25,6 +25,14 @@ describe('TipDetailPage', () => {
   it('muestra las etiquetas del consejo', () => {
     renderApp('/tip/SCR-01');
     expect(screen.getByText('Etiquetas:').parentElement).toHaveTextContent(`Etiquetas: ${tip.tags.join(', ')}`);
+  });
+
+  it('muestra el selector de enfoque con el enfoque del consejo marcado', () => {
+    renderApp('/tip/PMI-01');
+    const nav = screen.getByRole('navigation', { name: 'Enfoque' });
+    expect(within(nav).getByRole('link', { name: 'PMI/PMBOK' })).toHaveAttribute('aria-current', 'true');
+    expect(within(nav).getByRole('link', { name: 'Scrum' })).not.toHaveAttribute('aria-current');
+    expect(within(nav).getByRole('link', { name: 'Scrum' })).toHaveAttribute('href', '/biblioteca/scrum');
   });
 
   it('el enlace externo de la fuente abre en otra pestaña y lo dice', () => {

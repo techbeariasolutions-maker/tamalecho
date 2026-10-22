@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useLocation, useParams } from 'react-router';
 import Message from '../../components/Message.jsx';
+import FrameworkSwitch from '../library/FrameworkSwitch.jsx';
 import { useCatalog } from '../../hooks/useCatalog.js';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 
@@ -51,6 +52,7 @@ function TipDetail({ tip }) {
 
   return (
     <>
+      <FrameworkSwitch current={tip.framework} />
       <article className="tip-detail">
         <p className="tip-detail__context">
           {FRAMEWORK_LABELS[tip.framework]} · {tip.category}

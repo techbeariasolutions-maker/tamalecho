@@ -19,6 +19,7 @@ test('T-01: sin cuenta, la portada muestra un consejo y lleva a ambos enfoques',
   const featured = page.getByRole('region', { name: 'Consejo del día' });
   await expect(featured.getByRole('article')).toBeVisible();
   await expect(featured.getByRole('link', { name: /^Ver más sobre / })).toBeVisible();
+  await expect(page.getByText(/^¿Por dónde empezar\?/)).toBeVisible();
 
   await page.getByRole('link', { name: 'Explorar Scrum' }).click();
   await expect(page).toHaveURL(/\/biblioteca\/scrum$/);

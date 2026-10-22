@@ -33,6 +33,15 @@ test('«Volver» regresa a la biblioteca de origen aunque no tenga filtro', asyn
   await expect(page.getByRole('button', { name: 'Todas' })).toHaveAttribute('aria-pressed', 'true');
 });
 
+test('T-05: desde la ficha se cambia de enfoque sin volver al inicio', async ({ page }) => {
+  await page.goto('/tip/SCR-04');
+  const nav = page.getByRole('navigation', { name: 'Enfoque' });
+  await expect(nav.getByRole('link', { name: 'Scrum' })).toHaveAttribute('aria-current', 'true');
+  await nav.getByRole('link', { name: 'PMI/PMBOK' }).click();
+  await expect(page).toHaveURL(/\/biblioteca\/pmbok$/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Biblioteca de PMI/PMBOK');
+});
+
 test('T-09: un consejo inexistente muestra el estado alterno', async ({ page }) => {
   await page.goto('/tip/SCR-99');
   await expect(page.getByText('Este consejo no existe o fue retirado.')).toBeVisible();
