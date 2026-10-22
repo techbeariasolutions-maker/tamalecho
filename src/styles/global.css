@@ -550,3 +550,17 @@ main dd {
   min-height: var(--tap-target-min);
   font-weight: var(--font-weight-bold);
 }
+
+/* ── Movimiento reducido ─────────────────────────────────── */
+/* Regla global: con prefers-reduced-motion, --motion-duration vale 0ms (tokens.css) y
+   ninguna animación ni transición se ejecuta, aunque un componente olvide usar el token. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: var(--motion-duration) !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: var(--motion-duration) !important;
+    scroll-behavior: auto !important;
+  }
+}
