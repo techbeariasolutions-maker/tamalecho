@@ -43,6 +43,7 @@ test('T-06: los 24 consejos abren su ficha con explicación, ejemplo y fuente co
     const link = source.getByRole('link', { name: /se abre en otra pestaña/ });
     await expect(link, tip.id).toHaveAttribute('href', tip.source.url);
     await expect(link, tip.id).toHaveAttribute('target', '_blank');
+    await expect(page.getByText(`Etiquetas: ${tip.tags.join(', ')}`), tip.id).toBeVisible();
   }
   expect(errors).toEqual([]);
 });

@@ -22,6 +22,11 @@ describe('TipDetailPage', () => {
     expect(screen.getByText(`SCR-01 · versión ${tip.version}`)).toBeInTheDocument();
   });
 
+  it('muestra las etiquetas del consejo', () => {
+    renderApp('/tip/SCR-01');
+    expect(screen.getByText('Etiquetas:').parentElement).toHaveTextContent(`Etiquetas: ${tip.tags.join(', ')}`);
+  });
+
   it('el enlace externo de la fuente abre en otra pestaña y lo dice', () => {
     renderApp('/tip/SCR-01');
     const link = screen.getByRole('link', { name: /se abre en otra pestaña/ });

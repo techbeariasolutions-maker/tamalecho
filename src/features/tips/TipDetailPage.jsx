@@ -68,6 +68,9 @@ function TipDetail({ tip }) {
         <p>{tip.action}</p>
 
         <TipSource source={tip.source} />
+        <p className="tip-detail__tags">
+          <strong>Etiquetas:</strong> {tip.tags.join(', ')}
+        </p>
         <p className="tip-detail__meta">
           {tip.id} · versión {tip.version}
         </p>
