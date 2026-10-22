@@ -96,6 +96,15 @@
 - La prueba de aceptación de HT-01.1 (caso T-15: clonar y correr en otra máquina) la hace el equipo en Windows con PowerShell y deja una captura como evidencia.
 - El agente puede crear y subir las ramas de WP con la convención de `CLAUDE.md` §9.
 
+## D-16 · Replaneación por tiempo del Sprint 1 — VIGENTE (22/10/2026)
+- **Motivo:** el miércoles 21 no hubo avance en código. Al jueves 09:40 quedan 24 de 28 actividades y unas 8 h de capacidad hasta la Review.
+- **Bloques en lugar de un PR por paquete:**
+  - **Bloque A:** WP-3, WP-5, WP-6 y WP-7 en una sola rama y un solo PR, con al menos un commit por actividad con su ID.
+  - **Bloque B:** WP-9, más WP-8 si se integra antes de las 14:00 del jueves.
+  - La trazabilidad se conserva por actividad en los commits y en el tablero.
+- **Punto de control 2 aplicado:** el WP-7 no estaba en `main` al inicio del jueves, así que el **WP-8 (HU-02.2-A/B, HU-01.1-B; todas «Debería») pasa a opcional**. Si no entra, se reporta como pendiente para el S2.
+- **Congelación:** jueves al cierre de la sesión. El viernes solo se hacen el release, las evidencias, el reporte y la Review.
+
 ## D-12 · Versionado — VIGENTE
 - Catálogo: `0.9.0` mientras haya borradores; `1.0.0` solo cuando los 24 estén aprobados (HT-03.2-B).
 - Producto: etiqueta Git `v0.1.0` al cierre del S1, `v0.2.0` S2, `v1.0.0` entrega final 20/11.
