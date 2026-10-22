@@ -314,3 +314,48 @@ main dd {
   padding: 0;
   list-style: none;
 }
+
+/* ── Portada ─────────────────────────────────────────────── */
+.home-section {
+  margin-top: var(--space-8);
+}
+
+.home-access {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-access__link {
+  width: 100%;
+  min-height: var(--space-12);
+  text-decoration: none;
+}
+
+.home-access__link:hover {
+  color: var(--color-on-primary);
+}
+
+.inline-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.inline-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target-min);
+}
+
+/* Breakpoint md (48em, ver --breakpoint-md en tokens.css): accesos en dos columnas. */
+@media (min-width: 48em) {
+  .home-access {
+    grid-template-columns: 1fr 1fr;
+  }
+}
