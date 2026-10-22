@@ -48,6 +48,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 | `npm run test` | Pruebas unitarias y de renderizado (Vitest, en `tests/unit/`). |
 | `npm run test:watch` | Igual que `test`, pero se repite al guardar cambios. |
 | `npm run test:e2e` | Pruebas de extremo a extremo (Playwright, en `tests/e2e/`) en escritorio (1280 × 800) y móvil (360 × 740). |
+| `npm run evidence` | Corre las pruebas de 360 px y de accesibilidad (axe) y guarda las evidencias: capturas en `docs/evidencias/sprint-1/360/` y `docs/evidencias/sprint-1/axe-resumen.json`. Solo este script escribe esos archivos; `test:e2e` y el CI no los tocan. |
 | `npm run validate:tips` | Valida `src/data/tips.json` con las reglas de `src/data/schema.js`. Sale con código 1 y dice qué tip y qué regla fallan. La falta de aprobación es solo advertencia. |
 | `npm run validate:tips:release` | Igual, pero exige al menos 12 consejos por enfoque y `reviewedBy` + `reviewedAt` en todos. |
 | `npm run check:links` | Revisa que cada URL de fuente responda. Usa la red: solo local, no va en CI. Si un sitio bloquea scripts, ábrelo a mano antes de darlo por roto. |

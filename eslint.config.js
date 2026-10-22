@@ -26,7 +26,12 @@ export default defineConfig([
     languageOptions: { globals: globals.browser },
   },
   {
-    files: ['*.config.js', 'scripts/**/*.mjs', 'tests/e2e/**/*.js'],
+    files: ['*.config.js', 'scripts/**/*.mjs'],
     languageOptions: { globals: globals.node },
+  },
+  {
+    // Las E2E corren en Node, pero el código dentro de page.evaluate corre en el navegador.
+    files: ['tests/e2e/**/*.js'],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
   },
 ]);

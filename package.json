@@ -14,6 +14,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "evidence": "playwright test responsive.spec a11y.spec --workers=1",
     "validate:tips": "node scripts/validate-tips.mjs",
     "validate:tips:release": "node scripts/validate-tips.mjs --release",
     "check:links": "node scripts/check-links.mjs",
