@@ -20,6 +20,19 @@ test('T-07: biblioteca filtrada → consejo → «Siguiente» → «Volver» con
   await expect(page.getByRole('button', { name: category })).toHaveAttribute('aria-pressed', 'true');
 });
 
+test('«Volver» regresa a la biblioteca de origen aunque no tenga filtro', async ({ page }) => {
+  const category = categoriesOf('pmbok').find((name) => tipsOf('pmbok', name).length > 1);
+  const [first, second] = tipsOf('pmbok', category);
+
+  await page.goto('/biblioteca/pmbok');
+  await page.getByRole('link', { name: `Ver más sobre ${first.title}` }).click();
+  await page.getByRole('link', { name: `Siguiente consejo: ${second.title}` }).click();
+  await page.getByRole('link', { name: 'Volver a la biblioteca' }).click();
+
+  await expect(page).toHaveURL(/\/biblioteca\/pmbok$/);
+  await expect(page.getByRole('button', { name: 'Todas' })).toHaveAttribute('aria-pressed', 'true');
+});
+
 test('T-09: un consejo inexistente muestra el estado alterno', async ({ page }) => {
   await page.goto('/tip/SCR-99');
   await expect(page.getByText('Este consejo no existe o fue retirado.')).toBeVisible();
