@@ -13,7 +13,7 @@
 |---|---|---|
 | Sprint Planning 2 | Lunes 26/10, con todo el equipo | No se realizó; planeación efectiva el 29/10 (D-19) |
 | Spike de Web Push | Antes del 26/10 | No se realizó; se ejecuta el viernes 30/10 (WP-S2-1) |
-| Integrantes con capacidad para código y pruebas | 6 developers + QA | 2: Diego (implementa) y Alan (QA y revisión) |
+| Integrantes que participan | 7 | 4: Diego (implementa) y Alan (QA y revisión) con código; Obdulio (PO) y Ana (SM) sin código (D-19) |
 | Capacidad | La de 7 personas | ≈ 2 h por día hábil cada uno → **≈ 44 h brutas, ≈ 31 h netas** (factor 0.7, como en el S1) |
 | Días hábiles restantes | 15 (26/10–13/11) | **11** (30/10–13/11). Verificar si el lunes 2/11 es inhábil en la UANL; si lo es, quedan 10 (ver §5) |
 | Backlog del S2 | 13 historias · 52 actividades · 78 pts | Se comprometen **27 actividades · 47 pts** (D-20) |
@@ -52,13 +52,13 @@ El colchón equivale a un día de trabajo. Si se usa antes del miércoles 11, se
 
 ## 4. Responsables y tareas que no son de código
 
-Cada actividad tiene un **«Responsable (plan)»**, que es el rol de la propuesta (D-04), y se registra **«Lo integró»** al hacer el merge (D-19). En la tabla de §5 la columna «Ejecuta» es la asignación real esperada al 29/10. Si un integrante confirma antes del **viernes 30/10 a las 18:00** que toma una actividad, se actualiza.
+Cada actividad tiene un **«Responsable (plan)»**, que es el rol de la propuesta (D-04), y se registra **«Lo integró»** al hacer el merge (D-19). En la tabla de §6.1 la columna «Ejecuta» es quién la hará realmente.
 
 | Integrante | Rol | Qué se le solicita en el S2 | Fecha | Respaldo si no llega |
 |---|---|---|---|---|
 | Obdulio Rincón Flores | PO | (1) Visto bueno a D-20 (prioridad de HU-15). (2) Escribir las 4 frases del personaje (HU-05.1-B). (3) Aceptar o rechazar historias en la Review | (1) vie 30/10 · (2) vie 6/11 · (3) vie 13/11 | (1) Sin visto bueno, el compromiso queda en 43 pts. (2) Se usan como borrador las frases del backlog («Buen día…», «Hora de comer…», «Una pausa…», «Es hora de dormir…») y se marcan como pendientes de aprobación |
 | Ana Clara Rocha Benassuli | SM | (1) Cargar el Sprint 2 en Taiga con las 27 tareas y su responsable por plan. (2) Burndown en Taiga cada viernes. (3) Facilitar la Review y la Retro | (1) vie 30/10 · (2) 6 y 13/11 · (3) 13/11 | Lo hace Alan, y así se registra |
-| Christian Salvador Gallegos, Sinai Esquivel Elizondo, Ian Alexander Perez | Developers | Confirmar si toman alguna de sus actividades por plan | vie 30/10, 18:00 | Las ejecuta Diego (D-19) |
+| Christian Salvador Gallegos, Sinai Esquivel Elizondo, Ian Alexander Perez | Developers | No participan en el S2 al 29/10 (D-19). Siguen como responsables por plan | — | Sus actividades las ejecutan Diego o Alan |
 | Diego Rodríguez Álvarez | Developer frontend | Dirigir al agente (un WP a la vez), abrir los PR, spike, release y reporte | — | — |
 | Alan Francisco Ochoa Hernández | QA | Aprobar cada PR, pruebas manuales y evidencias, `PRUEBAS.md`, regresión | — | — |
 
@@ -218,5 +218,5 @@ Si sobra capacidad, entran **de arriba hacia abajo**. Si falta, se recortan **de
 | Lógica de horario con errores sutiles (medianoche, suspensión, zona horaria) | Media | Funciones puras con fechas fijas; casos límite en HT-04.1-B y HU-04.2-B; E2E con `page.clock` |
 | Una clave privada o un secreto se cuela al repositorio o al bundle | Baja | `.env*` ignorado; `.env.example` sin valores; caso de prueba que busca la clave privada en `dist/` |
 | Lunes 2/11 inhábil | Por confirmar | Se recorre el calendario y el colchón se consume (§5) |
-| El resto del equipo no confirma ni entrega sus tareas | Alta | Respaldo definido en §4; se registra tal como ocurra (D-19) |
+| PO o SM no entregan sus tareas a tiempo | Media | Respaldo definido en §4; se registra tal como ocurra (D-19) |
 | Sin dispositivo Apple para probar Web Push en iPhone | Alta | Se declara «no probado» en la tabla de compatibilidad; requiere la PWA (recortable) |

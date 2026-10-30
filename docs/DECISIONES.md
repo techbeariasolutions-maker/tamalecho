@@ -136,9 +136,10 @@
 - **Atribución (complementa D-04).** Cada actividad tiene dos datos distintos:
   - **«Responsable (plan)»:** el integrante que le corresponde por su rol en la propuesta. Es una **asignación**, no una afirmación de autoría.
   - **«Lo integró»:** quién la implementó y quién la revisó, tomado del historial de PR de GitHub. Se llena al integrar, nunca antes.
-- **Responsables por plan:**
-  - Ana Clara Rocha Benassuli (SM) y Obdulio Rincón Flores (PO) tienen tareas que no son de código, solicitadas en PLAN §4.
-  - Christian Salvador Gallegos, Sinai Esquivel Elizondo e Ian Alexander Perez conservan sus actividades por plan. Si no confirman antes del **viernes 30/10 a las 18:00** que las toman, las ejecutan Diego o Alan, y así se registra en «Lo integró».
+- **Quién participa en el S2:**
+  - Diego y Alan: código, revisión y pruebas.
+  - Ana Clara Rocha Benassuli (SM) y Obdulio Rincón Flores (PO): tareas que no son de código (PLAN §4).
+  - Christian Salvador Gallegos, Sinai Esquivel Elizondo e Ian Alexander Perez **no participan en el S2 al 29/10**. Conservan sus actividades como responsables por plan, según su rol (D-04); las ejecutan Diego o Alan, y así se registra en «Lo integró».
 - **Registros:**
   - Dailies, horas, actas, aprobaciones y firmas solo de quien participó.
   - Nadie aprueba ni firma por otro.
