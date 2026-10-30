@@ -1,0 +1,25 @@
+name: push-dispatch
+
+# Envío de prueba de Web Push (HT-07.1-B, HU-15.2-B). Se corre a mano: GitHub → Actions → push-dispatch → Run workflow.
+# El envío programado (`schedule`) entra con HT-07.2-A, que es recortable (D-21).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dispatch:
+    name: Dispatch
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Apunta a producción: las vistas previas están protegidas y Actions no puede llamarlas (D-21).
+      - name: Call the production dispatch endpoint
+        env:
+          DISPATCH_SECRET: ${{ secrets.DISPATCH_SECRET }}
+        run: |
+          curl --fail-with-body --silent --show-error --max-time 120 \
+            --request POST \
+            --header "Authorization: Bearer $DISPATCH_SECRET" \
+            https://tamalecho.vercel.app/api/push/dispatch

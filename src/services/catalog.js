@@ -1,6 +1,8 @@
 // Único punto de lectura del catálogo (CLAUDE.md §6). Ningún componente importa tips.json.
-import tipsData from '../data/tips.json';
-import compareData from '../data/compare.json';
+// `with { type: 'json' }` hace que este archivo también cargue en Node sin Vite: lo importan las
+// funciones de Vercel (api/), que corren como módulos nativos.
+import tipsData from '../data/tips.json' with { type: 'json' };
+import compareData from '../data/compare.json' with { type: 'json' };
 import { FRAMEWORKS } from '../data/schema.js';
 
 export const FRAMEWORK_LABELS = { scrum: 'Scrum', pmbok: 'PMI/PMBOK' };
