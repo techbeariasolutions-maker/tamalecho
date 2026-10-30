@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Spike Web Push · TamalEcho Tips</title>
+    <style>
+      body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+      button { font-size: 1rem; min-height: 44px; padding: 0 1rem; margin: 0.25rem 0; }
+      #estado { padding: 0.75rem; background: #f3efe8; border-radius: 6px; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <h1>Spike de Web Push (prueba local)</h1>
+    <p>Página desechable del WP-S2-1. No es parte del producto.</p>
+    <ol>
+      <li><button id="activar" type="button">1. Activar avisos</button></li>
+      <li><button id="enviar" type="button">2. Enviar aviso en 15 segundos</button> y <strong>cierra esta pestaña</strong> de inmediato (deja el navegador abierto).</li>
+    </ol>
+    <p id="estado" role="status">Sin suscripción.</p>
+    <script type="module">
+      const estado = document.getElementById('estado');
+      const show = (text) => (estado.textContent = text);
+
+      // Convierte la clave pública VAPID (base64url) al formato que pide PushManager.
+      const toUint8 = (base64) => {
+        const padded = (base64 + '='.repeat((4 - (base64.length % 4)) % 4)).replace(/-/g, '+').replace(/_/g, '/');
+        return Uint8Array.from(atob(padded), (char) => char.charCodeAt(0));
+      };
+
+      if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+        show('Este navegador no soporta Web Push.');
+      }
+
+      document.getElementById('activar').addEventListener('click', async () => {
+        try {
+          // El permiso se pide solo después de un clic (regla del producto).
+          const permission = await Notification.requestPermission();
+          if (permission !== 'granted') return show(`Permiso: ${permission}. Sin permiso no hay avisos.`);
+          const registration = await navigator.serviceWorker.register('/sw.js');
+          await navigator.serviceWorker.ready;
+          const { publicKey } = await (await fetch('/config')).json();
+          const subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: toUint8(publicKey),
+          });
+          const res = await fetch('/subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(subscription),
+          });
+          show(`Suscripción ${res.ok ? 'guardada' : 'rechazada'} (${new URL(subscription.endpoint).host}).`);
+        } catch (error) {
+          show(`Error: ${error.message}`);
+        }
+      });
+
+      document.getElementById('enviar').addEventListener('click', async () => {
+        await fetch('/send?delay=15', { method: 'POST' });
+        show('Envío programado en 15 s. Cierra esta pestaña ahora.');
+      });
+    </script>
+  </body>
+</html>
