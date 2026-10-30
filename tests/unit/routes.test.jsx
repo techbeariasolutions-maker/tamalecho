@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { renderApp } from './renderApp.jsx';
 
 const CASES = [
@@ -20,7 +20,8 @@ describe('rutas', () => {
     const headings = screen.getAllByRole('heading', { level: 1 });
     expect(headings).toHaveLength(1);
     expect(headings[0]).toHaveTextContent(h1);
-    expect(document.title).toBe(title);
+    // El título se define en un efecto; en la primera carga (en frío) puede llegar después del h1.
+    await waitFor(() => expect(document.title).toBe(title));
     if (sprint) {
       expect(screen.getByText(`Esta sección estará disponible en el Sprint ${sprint}.`)).toBeInTheDocument();
     }
