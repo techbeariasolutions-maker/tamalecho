@@ -1,7 +1,7 @@
 # Registro de decisiones — TamalEcho Tips
 
 > Cada decisión tiene ID, fecha, motivo y estado. Si un agente o una persona encuentra una contradicción nueva, **no la resuelve en silencio**: la agrega aquí como `PENDIENTE` y pregunta.
-> Última actualización: 29/10/2026.
+> Última actualización: 30/10/2026.
 
 ## D-01 · Jerarquía de fuentes de verdad — VIGENTE
 1. **Propuesta aprobada** (`TamalEcho_Propuesta_Sprints.pdf`). Manda sobre todo lo demás. Alcance cerrado.
@@ -49,7 +49,7 @@
 - **S2 (29/10/2026):** la revisión cruzada es obligatoria. Cada PR lo aprueba un integrante distinto del autor antes del merge (ver D-19).
 - **Excepción registrada (20/10):** el PR del WP-1 entra sin check automático porque el CI se crea en el WP-4. La protección de `main` se activa al terminar el WP-4; a partir de ahí no hay excepciones.
 
-## D-06 · Hosting — VIGENTE (S1) / PENDIENTE (S2)
+## D-06 · Hosting — VIGENTE (S1) / RESUELTA para el S2 en D-21 (30/10/2026)
 - S1: **Vercel** (HTTPS, vista previa por PR, *Instant Rollback*). SPA con `vercel.json` (todas las rutas reescritas a `/index.html`).
 - S2: la arquitectura del backend Web Push **no está decidida**. Antes del Sprint Planning 2 (26/10) se hace un *spike* que responda: ¿dónde corre el programador cada 2–3 h?, ¿dónde se guardan las suscripciones?, ¿funciona en un navegador real con la pestaña cerrada? Restricciones conocidas: Vercel no ofrece almacenamiento persistente propio y su cron gratuito es limitado (verificar); en iPhone, Web Push solo funciona con la PWA instalada.
 - **29/10/2026:** el spike no se hizo antes del 26/10. Se ejecuta como WP-S2-1 y su resultado confirma o cambia D-21.
@@ -165,7 +165,7 @@
   - Se pide el visto bueno del PO (Obdulio Rincón Flores).
   - Si lo rechaza, HU-15.1-A y HU-15.2-B vuelven a «Debería» y el compromiso queda en 43 pts.
 
-## D-21 · Arquitectura de Web Push — PROPUESTA (29/10/2026) · se confirma o cambia con el spike (WP-S2-1)
+## D-21 · Arquitectura de Web Push — VIGENTE (30/10/2026) · opción A confirmada por el spike (WP-S2-1)
 - **Opción A (propuesta):**
   - Funciones de Vercel en `api/`, solo como adaptadores; la lógica va en `server/`.
   - Las suscripciones se guardan en un almacén clave-valor del Marketplace de Vercel (propuesto: Upstash Redis).
@@ -187,7 +187,14 @@
   - Que la protección de las vistas previas de Vercel no bloquee `/api/`.
   - Que llegue un aviso real con la pestaña cerrada en Chrome o Edge de escritorio y en Chrome de Android.
 - **Restricción conocida:** en iPhone, Web Push requiere la PWA instalada (HU-12, recortable). Si HU-12 no entra, se declara como «no soportado en el S2».
-- **Hecho cuando:** esta decisión pasa a VIGENTE con la opción elegida y las respuestas del spike en `docs/sprint-2/SPIKE_WEBPUSH.md`.
+- **Resultado del spike (30/10/2026, `docs/sprint-2/SPIKE_WEBPUSH.md`):**
+  - **Disparador:**
+    - El cron de Vercel en Hobby solo corre una vez al día (±59 min), así que se descarta.
+    - Se usa GitHub Actions: `workflow_dispatch` en el compromiso y `schedule` cada 30 min fuera de la hora en punto si entra HT-07.2-A.
+    - Como `schedule` puede retrasarse o perder corridas, cada corrida envía la ventana **vigente** si no se ha enviado (clave idempotente). Un aviso puede llegar hasta unos 30 min tarde, pero no se pierde ni se duplica.
+  - **Almacén:** Upstash Redis Free (256 MB, 500 000 comandos al mes). El uso estimado es de ≈ 36 000 al mes. La conexión al proyecto queda pendiente antes de WP-S2-3.
+  - **Prueba real:** llegó un aviso con la pestaña cerrada en Chrome de escritorio (Windows), con un retraso de 0 s. Edge, Firefox y Chrome Android se prueban en producción en T2-21 (hito del 6/11).
+  - **Vistas previas:** la protección estándar de Vercel impide que Actions las llame, así que el disparador apunta solo a producción.
 
 ## D-12 · Versionado — VIGENTE
 - Catálogo: `0.9.0` mientras haya borradores; `1.0.0` solo cuando los 24 estén aprobados (HT-03.2-B).
