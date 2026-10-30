@@ -65,6 +65,25 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 - Squash merge y se borra la rama.
 - Código, ramas y commits en inglés (salvo los IDs). Interfaz en español de México.
 
+## Web Push
+
+Los avisos con la pestaña cerrada usan funciones de Vercel (`api/push/`), con la lógica en `server/` (D-21). Las suscripciones se guardan en Upstash Redis.
+
+**Variables de entorno.** Sus nombres están en `.env.example`. Los valores se configuran en Vercel (proyecto → Settings → Environment Variables) y nunca entran al repositorio.
+
+| Variable | Tipo en Vercel | Para qué |
+|---|---|---|
+| `VAPID_PUBLIC_KEY`, `VITE_VAPID_PUBLIC_KEY` | Config | Clave pública; la segunda la recibe el navegador |
+| `VAPID_SUBJECT` | Config | Identifica al remitente ante los servicios de push |
+| `VAPID_PRIVATE_KEY`, `DISPATCH_SECRET` | Secret | Firmar los avisos y proteger el disparador |
+| `KV_REST_API_URL`, `KV_REST_API_TOKEN` | Las crea Upstash | Conexión al almacén |
+
+`DISPATCH_SECRET` también va en GitHub → Settings → Secrets and variables → Actions.
+
+**Envío de prueba.** GitHub → Actions → `push-dispatch` → Run workflow. Llama a `/api/push/dispatch` en producción y su registro muestra cuántos avisos se enviaron, cuántas suscripciones caducadas se borraron y cuántos envíos fallaron.
+
+Las vistas previas de Vercel están protegidas, así que el flujo solo funciona contra producción.
+
 ## Despliegue y rollback
 
 El sitio se publica en **Vercel**, conectado a este repositorio de GitHub.

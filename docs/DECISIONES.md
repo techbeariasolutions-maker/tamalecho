@@ -1,7 +1,7 @@
 # Registro de decisiones — TamalEcho Tips
 
 > Cada decisión tiene ID, fecha, motivo y estado. Si un agente o una persona encuentra una contradicción nueva, **no la resuelve en silencio**: la agrega aquí como `PENDIENTE` y pregunta.
-> Última actualización: 30/10/2026.
+> Última actualización: 30/10/2026 (conexión del almacén).
 
 ## D-01 · Jerarquía de fuentes de verdad — VIGENTE
 1. **Propuesta aprobada** (`TamalEcho_Propuesta_Sprints.pdf`). Manda sobre todo lo demás. Alcance cerrado.
@@ -192,7 +192,7 @@
     - El cron de Vercel en Hobby solo corre una vez al día (±59 min), así que se descarta.
     - Se usa GitHub Actions: `workflow_dispatch` en el compromiso y `schedule` cada 30 min fuera de la hora en punto si entra HT-07.2-A.
     - Como `schedule` puede retrasarse o perder corridas, cada corrida envía la ventana **vigente** si no se ha enviado (clave idempotente). Un aviso puede llegar hasta unos 30 min tarde, pero no se pierde ni se duplica.
-  - **Almacén:** Upstash Redis Free (256 MB, 500 000 comandos al mes). El uso estimado es de ≈ 36 000 al mes. La conexión al proyecto queda pendiente antes de WP-S2-3.
+  - **Almacén:** Upstash Redis Free (256 MB, 500 000 comandos al mes). El uso estimado es de ≈ 36 000 al mes. Se conectó al proyecto el 30/10; el backend usa `KV_REST_API_URL` y `KV_REST_API_TOKEN`.
   - **Prueba real:** llegó un aviso con la pestaña cerrada en Chrome de escritorio (Windows), con un retraso de 0 s. Edge, Firefox y Chrome Android se prueban en producción en T2-21 (hito del 6/11).
   - **Vistas previas:** la protección estándar de Vercel impide que Actions las llame, así que el disparador apunta solo a producción.
 

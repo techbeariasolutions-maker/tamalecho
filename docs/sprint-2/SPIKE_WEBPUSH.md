@@ -20,7 +20,16 @@
 
 **Estimación de uso.** Supuestos: unas 10 suscripciones y una corrida cada 30 min (48 al día). Cada corrida lee la lista y, por suscripción, lee y guarda la última ventana enviada: unos 25 comandos por corrida. Eso da **≈ 36 000 comandos al mes, alrededor del 7 % del límite.**
 
-**Pendiente:** conectar el almacén al proyecto de Vercel (lo hace Diego en el dashboard) y anotar aquí los **nombres** de las variables que crea. Se hace antes de lanzar WP-S2-3. El spike guardó las suscripciones en un archivo temporal local, así que la conexión real se verifica en ese WP.
+**Conexión al proyecto (30/10/2026).** Alan conectó el almacén en Vercel, porque la cuenta es suya. Upstash creó estas variables:
+
+| Variable | ¿La usa el backend? | Motivo |
+|---|---|---|
+| `KV_REST_API_URL` | **Sí** | `Redis.fromEnv()` de `@upstash/redis` 1.40.0 la lee cuando no existe `UPSTASH_REDIS_REST_URL` (comprobado en el paquete) |
+| `KV_REST_API_TOKEN` | **Sí** | Lo mismo, con `UPSTASH_REDIS_REST_TOKEN` |
+| `KV_REST_API_READ_ONLY_TOKEN` | No | El backend también escribe |
+| `KV_URL`, `REDIS_URL` | No | Son para el protocolo Redis; las funciones usan la API REST |
+
+El spike guardó las suscripciones en un archivo temporal local, así que la conexión real se verifica con T2-17 en producción.
 
 ### P2 · ¿Qué dispara el envío cada 2–3 h?
 **Respuesta:** un **workflow programado de GitHub Actions** que llama a `/api/push/dispatch` en **producción**, protegido con `DISPATCH_SECRET`.
@@ -76,6 +85,6 @@ Las evidencias están en `docs/evidencias/sprint-2/spike/`.
 |---|---|
 | ¿Se respondieron las 3 preguntas? | ✅ P1 y P2 con fuentes oficiales; P3 con prueba real |
 | ¿Llegó un aviso de prueba? | ✅ Chrome de escritorio, con la pestaña cerrada |
-| Pendiente antes de WP-S2-3 | Conectar Upstash y crear las 5 variables en Vercel (Diego) |
+| Pendiente antes de WP-S2-3 | ✅ Upstash conectado y secreto en GitHub (Alan, 30/10/2026) |
 
 **Acción:** D-21 pasa a VIGENTE con la opción A. Web Push sigue en el compromiso (D-20).
