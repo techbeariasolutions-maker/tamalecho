@@ -1,4 +1,5 @@
 // SPIKE desechable (WP-S2-1). Service worker mínimo: solo push y notificationclick, sin caché (D-20).
+/* global self */
 self.addEventListener('push', (event) => {
   const data = event.data ? event.data.json() : {};
   const receivedAt = new Date();
