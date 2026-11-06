@@ -83,6 +83,58 @@ a:hover {
   margin: 0;
 }
 
+/* ── Aviso dentro de la página (HU-06.1-A) ──────────────── */
+/* A 360 px el aviso va en el flujo, arriba del contenido: lo empuja hacia abajo y no lo tapa.
+   Desde el breakpoint md flota abajo a la derecha. La región vacía no ocupa espacio. */
+.notice-host:empty {
+  display: none;
+}
+
+.notice {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-left: var(--space-1) solid var(--color-primary);
+  border-radius: var(--radius-md);
+}
+
+.notice__eyebrow {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.notice__title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.notice__summary {
+  margin: var(--space-2) 0 var(--space-3);
+}
+
+/* Breakpoint md (48em, ver --breakpoint-md en tokens.css): aviso flotante. */
+@media (min-width: 48em) {
+  .notice-host {
+    position: fixed;
+    right: var(--space-4);
+    bottom: var(--space-4);
+    z-index: var(--z-notice);
+    width: min(var(--notice-max-width), calc(100vw - 2 * var(--space-4)));
+  }
+
+  .notice {
+    margin-bottom: 0;
+    box-shadow: var(--shadow-raised);
+  }
+}
+
 /* ── Saltar al contenido ─────────────────────────────────── */
 .skip-link {
   position: absolute;
@@ -489,6 +541,21 @@ main dd {
 
 .avatar[data-expression='somnoliento'] .avatar__eye--closed {
   opacity: 1;
+}
+
+/* Personaje dentro del aviso (HU-06.1-A). */
+.avatar--small {
+  margin: 0;
+  gap: var(--space-2);
+}
+
+.avatar--small .avatar__image {
+  width: var(--avatar-size-small);
+  height: var(--avatar-size-small);
+}
+
+.avatar--small .avatar__phrase {
+  font-size: var(--font-size-base);
 }
 
 /* Versión estática de respaldo: ningún rasgo se mueve. */

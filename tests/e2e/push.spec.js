@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures.js';
 
 // HU-15.1-A en el navegador. La suscripción real no se puede probar aquí: suscribirse necesita el
 // servicio de push real, y el permiso inicial depende del binario (el headless shell de Chromium

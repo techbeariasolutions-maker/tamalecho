@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures.js';
 
 // HT-05.2-A (T2-09, parte de la portada): con prefers-reduced-motion el personaje no se anima.
 // Para no depender de tiempos, la prueba cambia data-expression a mano y cuenta las
@@ -56,5 +56,21 @@ test.describe('sin movimiento reducido (control)', () => {
     await expect(page.getByRole('figure')).toHaveAttribute('data-expression', 'sonriente');
 
     expect(await animationsAfterChange(page, 'somnoliento')).toBeGreaterThan(0);
+  });
+});
+
+// T2-09 con el aviso visible (pendiente de WP-S2-10, se completa con HU-06.1-A).
+test.describe('con movimiento reducido y el aviso visible', () => {
+  test.use({ reducedMotion: 'reduce', noticesPaused: false });
+
+  test('T2-09: ni la portada ni el aviso tienen animaciones; el texto y los botones siguen ahí', async ({ page }) => {
+    await page.clock.setFixedTime(at(14, 5));
+    await page.goto('/');
+    const notice = page.getByRole('status').filter({ hasText: 'Consejo de ahora' });
+    await expect(notice).toBeVisible();
+    await expect(notice.getByRole('figure')).toHaveAttribute('data-day-part', 'hambre');
+    await expect(notice.getByRole('link', { name: /^Ver consejo sobre / })).toBeVisible();
+    await expect(notice.getByRole('button', { name: 'Cerrar aviso' })).toBeVisible();
+    expect(await page.evaluate(() => document.getAnimations().length)).toBe(0);
   });
 });

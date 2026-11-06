@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures.js';
 import avatarCatalog from '../../src/data/avatarStates.json' with { type: 'json' };
 
 // HU-05.2-B · Expresividad accesible. Con movimiento reducido el personaje es estático, pero
@@ -16,13 +16,14 @@ const CASES = [
   { hour: 20, dayPart: 'cansado' },
 ];
 
-// Siembra la franja de comida como la guardaría Ajustes (esquema v1 de storage.js).
+// Siembra la franja de comida como la guardaría Ajustes (esquema v1 de storage.js). La pausa
+// evita que un aviso (con su propio personaje) aparezca en la portada durante la prueba.
 async function seedLunch(page, lunchStart, lunchEnd) {
   await page.addInitScript(
     ([start, end]) => {
       window.localStorage.setItem(
         'tamalecho:v1',
-        JSON.stringify({ schemaVersion: 1, settings: { lunchStart: start, lunchEnd: end } }),
+        JSON.stringify({ schemaVersion: 1, settings: { lunchStart: start, lunchEnd: end, paused: true } }),
       );
     },
     [lunchStart, lunchEnd],

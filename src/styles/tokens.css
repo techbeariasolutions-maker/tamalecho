@@ -52,6 +52,11 @@
   --tap-target-min: 2.75rem;    /* 44 px: objetivo táctil mínimo (CLAUDE.md §10) */
   --content-max-width: 60rem;   /* 960 px */
   --choice-min-width: 8rem;     /* 128 px: columnas de casillas en Ajustes («Miércoles» cabe) */
+  --notice-max-width: 26rem;    /* 416 px: ancho del aviso flotante en escritorio */
+
+  /* ── Elevación ───────────────────────────────────────────── */
+  --shadow-raised: 0 0.25rem 1rem rgb(31 26 23 / 0.2); /* aviso flotante sobre el contenido */
+  --z-notice: 20;               /* por encima del menú (5) y de «Saltar al contenido» (10) */
   --border-width: 1px;
 
   /* ── Radios ──────────────────────────────────────────────── */
@@ -81,6 +86,7 @@
   --avatar-color-atento: #bfe3c6;    /* fondo; --avatar-color-ink encima: 12.33:1 */
   --avatar-color-cansado: #c9cdf2;   /* fondo; --avatar-color-ink encima: 11.08:1 */
   --avatar-size: 6rem;               /* 96 px: deja espacio a la frase a 360 px */
+  --avatar-size-small: 3.5rem;       /* 56 px: dentro del aviso */
   --avatar-stroke-width: 2.5;        /* grosor de trazo en unidades del viewBox (0–120) */
   --avatar-transition-duration: 300ms; /* cambio de expresión (HU-05.1-A) */
   --avatar-transition-easing: ease-in-out;

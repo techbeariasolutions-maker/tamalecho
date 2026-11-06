@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures.js';
 
 test('la portada carga sin errores en la consola', async ({ page }) => {
   const errors = [];
