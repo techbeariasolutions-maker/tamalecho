@@ -157,6 +157,19 @@ export function createRepository(storage) {
       return write(data);
     },
 
+    // Registro de lecturas (HU-08.1-A): abrir una ficha cuenta como lectura, pero dos aperturas
+    // seguidas del mismo consejo (recargar, volver con el navegador) cuentan una sola vez.
+    // Devuelve true si se agregó una entrada nueva.
+    recordReading({ id, at } = {}) {
+      const iso = toIsoDate(at);
+      if (typeof id !== 'string' || !ID_PATTERN.test(id) || !iso) return false;
+      const data = read();
+      const last = data.history[data.history.length - 1];
+      if (last?.id === id) return false;
+      data.history = [...data.history, { id, at: iso }].slice(-MAX_HISTORY_ENTRIES);
+      return write(data);
+    },
+
     getPushState() {
       return read().push;
     },

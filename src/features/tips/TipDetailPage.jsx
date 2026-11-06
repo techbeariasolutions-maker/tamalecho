@@ -5,6 +5,7 @@ import SourceCitation from '../../components/SourceCitation.jsx';
 import FrameworkSwitch from '../library/FrameworkSwitch.jsx';
 import { useCatalog } from '../../hooks/useCatalog.js';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
+import { useReadingLog } from '../../hooks/useReadingLog.js';
 
 // Solo se acepta volver a una URL de la biblioteca; cualquier otra cosa usa la categoría del tip.
 function libraryUrlFor(tip, from) {
@@ -23,6 +24,8 @@ function TipDetail({ tip }) {
   const location = useLocation();
   const { FRAMEWORK_LABELS, getNextTip } = useCatalog();
   useDocumentTitle(tip.title);
+  // Abrir la ficha cuenta como lectura (HU-08.1-A).
+  useReadingLog(tip.id);
 
   // Al pasar al siguiente consejo, la lectura empieza arriba.
   useEffect(() => {
