@@ -3,16 +3,23 @@ import TipCard from '../../components/TipCard.jsx';
 import Message from '../../components/Message.jsx';
 import { useCatalog } from '../../hooks/useCatalog.js';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
+import { useDayPart } from '../../hooks/useDayPart.js';
+import { useSettings } from '../../hooks/useSettings.js';
+import Avatar from '../avatar/Avatar.jsx';
 
 export default function HomePage() {
   useDocumentTitle();
   const { getFeaturedTip } = useCatalog();
   const featured = getFeaturedTip(new Date());
+  // El personaje usa la franja de comida guardada en Ajustes (getDayPart en schedule.js).
+  const { settings } = useSettings();
+  const dayPart = useDayPart(settings);
 
   return (
     <>
       <h1>TamalEcho Tips</h1>
       <p className="lead">Consejos breves para aprender Scrum y PMI/PMBOK, cada uno con su fuente.</p>
+      <Avatar dayPart={dayPart} />
 
       <section className="home-section" aria-labelledby="consejo-del-dia">
         <h2 id="consejo-del-dia">Consejo del día</h2>

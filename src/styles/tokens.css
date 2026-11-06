@@ -66,10 +66,27 @@
 
   /* ── Movimiento ──────────────────────────────────────────── */
   --motion-duration: 150ms;
+
+  /* ── Personaje (HT-05.1-A) ───────────────────────────────── */
+  /* Los rasgos de la cara se dibujan con --avatar-color-ink, así que su contraste se mide
+     contra el relleno que tienen detrás (WCAG 1.4.11, gráficos: mínimo 3:1).
+     El color de fondo de cada estado es decorativo: el círculo lleva un borde
+     --avatar-color-ink (16.60:1 sobre --color-bg) y el estado también se dice con texto. */
+  --avatar-color-ink: #1f1a17;       /* ojos, boca, cejas y bordes */
+  --avatar-color-masa: #f6dfa4;      /* cuerpo; --avatar-color-ink encima: 13.14:1 */
+  --avatar-color-hoja: #c98a3c;      /* hoja de maíz; --avatar-color-ink encima: 5.90:1 */
+  --avatar-color-despierto: #fde68a; /* fondo; --avatar-color-ink encima: 13.84:1 */
+  --avatar-color-hambre: #fdc79b;    /* fondo; --avatar-color-ink encima: 11.34:1 */
+  --avatar-color-atento: #bfe3c6;    /* fondo; --avatar-color-ink encima: 12.33:1 */
+  --avatar-color-cansado: #c9cdf2;   /* fondo; --avatar-color-ink encima: 11.08:1 */
+  --avatar-size: 6rem;               /* 96 px: deja espacio a la frase a 360 px */
+  --avatar-stroke-width: 2.5;        /* grosor de trazo en unidades del viewBox (0–120) */
+  --avatar-transition-duration: 300ms; /* cambio de expresión (WP-S2-10) */
 }
 
 @media (prefers-reduced-motion: reduce) {
   :root {
     --motion-duration: 0ms;
+    --avatar-transition-duration: 0ms;
   }
 }
