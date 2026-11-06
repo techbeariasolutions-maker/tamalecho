@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { notify } from '../services/notificationService.js';
 import { getCurrentWindow, getDayPart, getNextWindow, idempotencyKey, isQuietTime } from '../services/schedule.js';
 import { getBrowserRepository } from '../services/storage.js';
 import { pickTipForWindow } from '../services/tipPicker.js';
@@ -31,10 +32,24 @@ export function computeNotice({ now, settings, repository, tips, recentIds = [],
 // - con un solo setTimeout hasta la siguiente ventana, que se reprograma después de cada cálculo.
 // Nunca usa setInterval. Lee los ajustes del repositorio en cada cálculo, así una pausa guardada
 // en Ajustes aplica sin recargar.
-// `tips` es la lista de consejos (catalog.getTips()); `repository` y `clock` se inyectan en las pruebas.
-export function useNoticeScheduler({ tips, repository = getBrowserRepository(), clock = systemClock }) {
+// El aviso se emite con notificationService.notify (HT-06.1-A): notificación nativa si hay permiso
+// y la pestaña está oculta; si no, el aviso de la página (`notice`).
+// `tips` es la lista de consejos (catalog.getTips()); `openTip(id)` abre la ficha al pulsar la
+// notificación nativa. `repository`, `clock` y `emit` se inyectan en las pruebas.
+export function useNoticeScheduler({
+  tips,
+  openTip,
+  repository = getBrowserRepository(),
+  clock = systemClock,
+  emit = notify,
+}) {
   const [notice, setNotice] = useState(null);
   const shownKeys = useRef(new Set());
+  // openTip cambia con cada navegación; se guarda en una ref para no reprogramar el temporizador.
+  const openTipRef = useRef(openTip);
+  useEffect(() => {
+    openTipRef.current = openTip;
+  }, [openTip]);
 
   useEffect(() => {
     let timer;
@@ -44,7 +59,9 @@ export function useNoticeScheduler({ tips, repository = getBrowserRepository(), 
       const settings = repository.getSettings();
       const next = computeNotice({ now, settings, repository, tips, shownKeys: shownKeys.current });
       // Un solo aviso a la vez: uno nuevo reemplaza al anterior.
-      if (next) setNotice(next);
+      if (next) {
+        emit(next, { showInPage: () => setNotice(next), openTip: (id) => openTipRef.current?.(id) });
+      }
       clearTimeout(timer);
       // La pausa no se considera aquí: si se reanuda, el siguiente cálculo ya la ve.
       const upcoming = getNextWindow(now, { ...settings, paused: false });
@@ -63,7 +80,7 @@ export function useNoticeScheduler({ tips, repository = getBrowserRepository(), 
       document.removeEventListener('visibilitychange', recalculateIfVisible);
       window.removeEventListener('focus', recalculate);
     };
-  }, [tips, repository, clock]);
+  }, [tips, repository, clock, emit]);
 
   const dismiss = useCallback(() => setNotice(null), []);
 
