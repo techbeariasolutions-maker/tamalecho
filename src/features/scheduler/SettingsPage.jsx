@@ -3,6 +3,7 @@ import Button from '../../components/Button.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { useSettings } from '../../hooks/useSettings.js';
 import { disablePush, getPushStatus } from '../../services/pushClient.js';
+import NextTip from './NextTip.jsx';
 import PauseControl from './PauseControl.jsx';
 import PushSection from './PushSection.jsx';
 import ScheduleForm from './ScheduleForm.jsx';
@@ -36,6 +37,7 @@ export default function SettingsPage() {
   return (
     <>
       <h1>Ajustes</h1>
+      <NextTip settings={settings} />
       <section className="settings-section" aria-labelledby="horario-titulo">
         <h2 id="horario-titulo">Horario de los avisos</h2>
         <ScheduleForm key={formVersion} settings={settings} onSave={saveSettings} />

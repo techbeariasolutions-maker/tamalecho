@@ -1,7 +1,7 @@
 import { mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { expect, test } from '@playwright/test';
-import { EVIDENCE_DIR, ROUTES, WRITE_EVIDENCE } from './routes.js';
+import { EVIDENCE_DIR, ROUTES, WRITE_EVIDENCE, openRoute } from './routes.js';
 
 const SCREENSHOT_DIR = fileURLToPath(new URL('360/', EVIDENCE_DIR));
 const MIN_TARGET = 44;
@@ -9,9 +9,10 @@ const MIN_TARGET = 44;
 test.describe('T-10: cada ruta a 360 px', () => {
   test.skip(({ isMobile }) => !isMobile, 'Solo se revisa en el proyecto mobile-360');
 
-  for (const { path, file } of ROUTES) {
-    test(`${path} sin desplazamiento horizontal y con objetivos táctiles ≥ 44 px`, async ({ page }) => {
-      await page.goto(path);
+  for (const route of ROUTES) {
+    const { path, file, seed } = route;
+    test(`${path}${seed ? ' (con datos)' : ''} sin desplazamiento horizontal y con objetivos táctiles ≥ 44 px`, async ({ page }) => {
+      await openRoute(page, route);
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);

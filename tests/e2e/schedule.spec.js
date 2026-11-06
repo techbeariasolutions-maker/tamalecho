@@ -112,3 +112,28 @@ test('el silencio se guarda y se conserva al recargar', async ({ page }) => {
   await expect(section.getByLabel('Inicio del silencio')).toHaveValue('20:00');
   await expect(section.getByLabel('Fin del silencio')).toHaveValue('07:00');
 });
+
+// HU-04.1-A (T2-05): «Próximo consejo» con la hora local, en la portada y en Ajustes.
+test('T2-05: a las 13:00 con cadencia de 2 h el próximo consejo es hoy a las 14:00', async ({ page }) => {
+  // A las 14:30 con 3 h la siguiente es a las 17:00; con 2 h, a las 16:00.
+  await page.clock.setFixedTime(at(14, 30));
+  await page.goto('/ajustes');
+  await expect(page.getByText('Próximo consejo: hoy a las 17:00.')).toBeVisible();
+  await page.clock.setFixedTime(at(13));
+  await page.reload();
+  await scheduleSection(page).getByRole('radio', { name: 'Cada 2 horas' }).check();
+  await scheduleSection(page).getByRole('button', { name: 'Guardar horario' }).click();
+  await expect(page.getByText('Próximo consejo: hoy a las 14:00.')).toBeVisible();
+
+  await page.goto('/');
+  await expect(page.getByText('Próximo consejo: hoy a las 14:00.')).toBeVisible();
+});
+
+test('en pausa, la portada y Ajustes dicen «Avisos en pausa»', async ({ page }) => {
+  await page.clock.setFixedTime(at(13));
+  await page.goto('/ajustes');
+  await page.getByRole('button', { name: 'Pausar avisos' }).click();
+  await expect(page.getByText('Avisos en pausa.')).toBeVisible();
+  await page.goto('/');
+  await expect(page.getByText('Avisos en pausa.')).toBeVisible();
+});

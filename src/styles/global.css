@@ -717,6 +717,12 @@ main dd {
   margin: 0;
 }
 
+/* «Próximo consejo» (HU-04.1-A), en la portada y en Ajustes. */
+.next-tip {
+  margin: var(--space-4) 0 0;
+  font-weight: var(--font-weight-bold);
+}
+
 /* Formulario de horario (HU-07.1-A). Etiquetas visibles y objetivos de 44 px. */
 .schedule-form {
   display: grid;

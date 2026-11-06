@@ -2,7 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { EVIDENCE_DIR, ROUTES, WRITE_EVIDENCE } from './routes.js';
+import { EVIDENCE_DIR, ROUTES, WRITE_EVIDENCE, clearSeed, openRoute } from './routes.js';
 
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
 const BLOCKING = ['serious', 'critical'];
@@ -47,10 +47,11 @@ test('T-12: axe sin violaciones serias ni críticas en cada ruta', async ({ page
     }
   };
 
-  for (const { path } of ROUTES) {
-    await page.goto(path);
+  for (const route of ROUTES) {
+    await openRoute(page, route);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    await audit(path);
+    await audit(route.seed ? `${route.path} (con datos)` : route.path);
+    await clearSeed(page, route);
   }
 
   // El ejemplo comparativo abierto y el menú móvil abierto también se revisan.
