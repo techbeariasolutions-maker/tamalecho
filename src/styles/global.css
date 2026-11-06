@@ -784,6 +784,13 @@ main dd {
   margin: 0;
 }
 
+/* Enlace suelto (fuera de una lista de enlaces) con objetivo táctil de 44 px. */
+.tap-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target-min);
+}
+
 /* «Próximo consejo» (HU-04.1-A), en la portada y en Ajustes. */
 .next-tip {
   margin: var(--space-4) 0 0;

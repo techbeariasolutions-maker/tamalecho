@@ -88,7 +88,7 @@ test.describe('HU-06.2-B: alternativa sin permiso', () => {
   test('el enlace lleva a la sección de Web Push', async ({ page }) => {
     await simulatePermission(page, 'denied');
     await page.goto('/ajustes');
-    await section(page).getByRole('link', { name: 'ver «Avisos con la pestaña cerrada»' }).click();
+    await section(page).getByRole('link', { name: 'Ver «Avisos con la pestaña cerrada»' }).click();
     await expect(page).toHaveURL(/#avisos-pestana-cerrada$/);
     await expect(page.getByRole('heading', { name: 'Avisos con la pestaña cerrada' })).toBeInViewport();
   });

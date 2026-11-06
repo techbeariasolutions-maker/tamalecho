@@ -25,7 +25,12 @@ function Alternative({ permission }) {
       <p>{BLOCKED_TEXT[permission]}</p>
       <p>
         Los avisos dentro de la página siguen funcionando. Para recibirlos con la pestaña cerrada se necesita Web
-        Push: <a href="#avisos-pestana-cerrada">ver «Avisos con la pestaña cerrada»</a>.
+        Push.
+      </p>
+      <p>
+        <a className="tap-link" href="#avisos-pestana-cerrada">
+          Ver «Avisos con la pestaña cerrada»
+        </a>
       </p>
     </div>
   );

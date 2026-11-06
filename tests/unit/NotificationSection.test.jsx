@@ -28,7 +28,9 @@ describe('sección «Notificaciones del navegador» (HU-06.2-A)', () => {
 
   it('T2-13: cargar la portada y Ajustes no pide el permiso', async () => {
     const Notification = stubNotification('default');
-    await renderApp('/');
+    // Se desmonta la portada antes de montar Ajustes para que solo haya un h1 a la vez.
+    const home = await renderApp('/');
+    home.unmount();
     await renderApp('/ajustes');
     expect(Notification.requestPermission).not.toHaveBeenCalled();
   });
@@ -69,7 +71,7 @@ describe('sección «Notificaciones del navegador» (HU-06.2-A)', () => {
     await renderApp('/ajustes');
     expect(within(section()).getByText(/Bloqueaste las notificaciones de este sitio/)).toBeInTheDocument();
     expect(within(section()).getByText(/Los avisos dentro de la página siguen funcionando\./)).toBeInTheDocument();
-    const link = within(section()).getByRole('link', { name: 'ver «Avisos con la pestaña cerrada»' });
+    const link = within(section()).getByRole('link', { name: 'Ver «Avisos con la pestaña cerrada»' });
     expect(link).toHaveAttribute('href', '#avisos-pestana-cerrada');
     expect(document.getElementById('avisos-pestana-cerrada')).toHaveAccessibleName('Avisos con la pestaña cerrada');
     expect(within(section()).queryByRole('button')).not.toBeInTheDocument();
@@ -78,7 +80,7 @@ describe('sección «Notificaciones del navegador» (HU-06.2-A)', () => {
   it('sin soporte (jsdom no trae Notification) lo dice y no ofrece el botón', async () => {
     await renderApp('/ajustes');
     expect(within(section()).getByText('Tu navegador no permite notificaciones.')).toBeInTheDocument();
-    expect(within(section()).getByText(/se necesita Web\s+Push/)).toBeInTheDocument();
+    expect(within(section()).getByText(/se necesita Web Push/)).toBeInTheDocument();
     expect(within(section()).queryByRole('button')).not.toBeInTheDocument();
   });
 
