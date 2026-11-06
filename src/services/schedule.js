@@ -158,9 +158,22 @@ export function getNextWindow(now, settings = DEFAULT_SETTINGS) {
   return null;
 }
 
+// Hora local de una fecha con el formato 'HH:MM' (24 h), igual que los ajustes: '14:00'.
+export function formatClock(date) {
+  return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+// Días de calendario local entre dos fechas: 0 = mismo día, 1 = el día siguiente.
+// Se cuenta por fecha (año, mes, día) y no por horas, para que un cambio de horario no lo altere.
+export function calendarDaysBetween(from, to) {
+  const start = Date.UTC(from.getFullYear(), from.getMonth(), from.getDate());
+  const end = Date.UTC(to.getFullYear(), to.getMonth(), to.getDate());
+  return Math.round((end - start) / (MINUTES_PER_DAY * 60 * 1000));
+}
+
 // Clave única de una ventana con la fecha y la hora locales: '2026-10-29@14:00'.
 // Sirve para no mostrar ni enviar dos veces el mismo aviso.
 export function idempotencyKey(windowStart) {
   const date = `${windowStart.getFullYear()}-${pad(windowStart.getMonth() + 1)}-${pad(windowStart.getDate())}`;
-  return `${date}@${pad(windowStart.getHours())}:${pad(windowStart.getMinutes())}`;
+  return `${date}@${formatClock(windowStart)}`;
 }

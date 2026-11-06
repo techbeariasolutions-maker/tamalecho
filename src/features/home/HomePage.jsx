@@ -6,6 +6,7 @@ import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { useDayPart } from '../../hooks/useDayPart.js';
 import { useSettings } from '../../hooks/useSettings.js';
 import Avatar from '../avatar/Avatar.jsx';
+import NextTip from '../scheduler/NextTip.jsx';
 
 export default function HomePage() {
   useDocumentTitle();
@@ -20,6 +21,7 @@ export default function HomePage() {
       <h1>TamalEcho Tips</h1>
       <p className="lead">Consejos breves para aprender Scrum y PMI/PMBOK, cada uno con su fuente.</p>
       <Avatar dayPart={dayPart} />
+      <NextTip settings={settings} />
 
       <section className="home-section" aria-labelledby="consejo-del-dia">
         <h2 id="consejo-del-dia">Consejo del día</h2>

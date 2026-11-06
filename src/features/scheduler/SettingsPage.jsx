@@ -3,17 +3,24 @@ import Button from '../../components/Button.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { useSettings } from '../../hooks/useSettings.js';
 import { disablePush, getPushStatus } from '../../services/pushClient.js';
+import NextTip from './NextTip.jsx';
+import PauseControl from './PauseControl.jsx';
 import PushSection from './PushSection.jsx';
+import ScheduleForm from './ScheduleForm.jsx';
+import SchedulePreview from './SchedulePreview.jsx';
 
-// Ajustes: avisos con la pestaña cerrada (HU-15.1-A) y datos locales (HT-04.2-B).
-// El panel de horario, el silencio y la pausa llegan en WP-S2-6.
+// Ajustes: horario de los avisos (HU-07.1), avisos con la pestaña cerrada (HU-15.1-A) y
+// datos locales (HT-04.2-B).
 export default function SettingsPage() {
   useDocumentTitle('Ajustes');
-  const { settings, historyCount, resetAll } = useSettings();
+  const { settings, historyCount, saveSettings, resetAll } = useSettings();
   // null mientras se consulta al navegador. Consultar no registra nada ni pide permiso.
   const [pushStatus, setPushStatus] = useState(null);
+  // Al restablecer los datos el formulario se vuelve a montar para mostrar los valores recomendados.
+  const [formVersion, setFormVersion] = useState(0);
 
   const refreshPushStatus = useCallback(async () => {
+    setFormVersion((version) => version + 1);
     setPushStatus(await getPushStatus());
   }, []);
 
@@ -30,6 +37,13 @@ export default function SettingsPage() {
   return (
     <>
       <h1>Ajustes</h1>
+      <NextTip settings={settings} />
+      <section className="settings-section" aria-labelledby="horario-titulo">
+        <h2 id="horario-titulo">Horario de los avisos</h2>
+        <ScheduleForm key={formVersion} settings={settings} onSave={saveSettings} />
+        <SchedulePreview settings={settings} now={new Date()} />
+      </section>
+      <PauseControl paused={settings.paused} onSave={saveSettings} />
       <PushSection status={pushStatus} settings={settings} onStatusChange={setPushStatus} />
       <LocalDataSection historyCount={historyCount} resetAll={resetAll} onReset={refreshPushStatus} />
     </>

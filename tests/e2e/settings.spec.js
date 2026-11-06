@@ -118,9 +118,10 @@ test('T2-04 con teclado: restablecer y cancelar sin ratón', async ({ page }) =>
   await seed(page);
 
   const reset = page.getByRole('button', { name: 'Restablecer mis datos' });
-  // Llegar con Tab desde el h1 de la página.
+  // Llegar con Tab desde el h1 de la página. Antes están el formulario de horario (WP-S2-6) y la
+  // sección de push; los campos de hora de Chrome tienen una parada por cada parte (hora y minuto).
   await page.locator('main#contenido').focus();
-  for (let tries = 0; tries < 10 && !(await reset.evaluate((node) => node === document.activeElement)); tries += 1) {
+  for (let tries = 0; tries < 40 &&!(await reset.evaluate((node) => node === document.activeElement)); tries += 1) {
     await page.keyboard.press('Tab');
   }
   await expect(reset).toBeFocused();

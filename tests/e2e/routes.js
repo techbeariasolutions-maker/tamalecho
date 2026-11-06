@@ -1,5 +1,7 @@
 // Rutas que recorren las pruebas de 360 px y de accesibilidad.
-// `file` es el nombre de la captura en docs/evidencias/sprint-1/360/.
+// `file` es el nombre de la captura en docs/evidencias/sprint-2/360/.
+// `seed` (opcional): datos locales con la forma del esquema v1 de storage.js. La prueba los guarda,
+// recarga, revisa la ruta y después borra el almacenamiento para no afectar a las demás rutas.
 export const ROUTES = [
   { path: '/', file: 'inicio' },
   { path: '/biblioteca/scrum', file: 'biblioteca-scrum' },
@@ -11,11 +13,49 @@ export const ROUTES = [
   { path: '/historial', file: 'historial' },
   { path: '/progreso', file: 'progreso' },
   { path: '/ajustes', file: 'ajustes' },
+  {
+    // WP-S2-6: Ajustes con un horario guardado, la pausa activa y lecturas registradas.
+    path: '/ajustes',
+    file: 'ajustes-con-datos',
+    seed: {
+      schemaVersion: 1,
+      settings: {
+        intervalMinutes: 120,
+        startTime: '09:00',
+        quietStart: '22:00',
+        quietEnd: '07:00',
+        lunchStart: '13:00',
+        lunchEnd: '15:00',
+        activeDays: [1, 2, 3, 4, 5],
+        paused: true,
+      },
+      history: [
+        { id: 'SCR-01', at: '2026-11-04T15:00:00.000Z' },
+        { id: 'PMI-02', at: '2026-11-04T16:00:00.000Z' },
+      ],
+    },
+  },
   { path: '/ayuda', file: 'ayuda' },
   { path: '/ruta-que-no-existe', file: 'no-encontrada' },
 ];
 
+export const STORAGE_KEY = 'tamalecho:v1';
+
+// Abre la ruta; si tiene datos, los guarda en el almacenamiento y recarga para que la app los lea.
+export async function openRoute(page, { path, seed }) {
+  await page.goto(path);
+  if (!seed) return;
+  await page.evaluate(([key, value]) => window.localStorage.setItem(key, JSON.stringify(value)), [STORAGE_KEY, seed]);
+  await page.reload();
+}
+
+// Borra los datos sembrados para que la siguiente ruta empiece con el almacenamiento vacío.
+export async function clearSeed(page, { seed }) {
+  if (seed) await page.evaluate(() => window.localStorage.clear());
+}
+
 // Las evidencias solo se escriben con `npm run evidence` (npm define npm_lifecycle_event
 // en Windows, macOS y Linux). Así `npm run test:e2e` y el CI no modifican docs/.
 export const WRITE_EVIDENCE = process.env.npm_lifecycle_event === 'evidence';
-export const EVIDENCE_DIR = new URL('../../docs/evidencias/sprint-1/', import.meta.url);
+// Desde el Sprint 2 (WP-S2-6) las evidencias van a su propia carpeta; las del Sprint 1 no se tocan.
+export const EVIDENCE_DIR = new URL('../../docs/evidencias/sprint-2/', import.meta.url);

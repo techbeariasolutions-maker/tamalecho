@@ -51,6 +51,7 @@
   /* ── Tamaños ─────────────────────────────────────────────── */
   --tap-target-min: 2.75rem;    /* 44 px: objetivo táctil mínimo (CLAUDE.md §10) */
   --content-max-width: 60rem;   /* 960 px */
+  --choice-min-width: 8rem;     /* 128 px: columnas de casillas en Ajustes («Miércoles» cabe) */
   --border-width: 1px;
 
   /* ── Radios ──────────────────────────────────────────────── */

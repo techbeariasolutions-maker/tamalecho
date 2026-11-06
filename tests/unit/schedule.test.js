@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
   DEFAULT_SETTINGS,
+  calendarDaysBetween,
+  formatClock,
   getCurrentWindow,
   getDayPart,
   getNextDayPartChange,
@@ -143,6 +145,20 @@ describe('motor de horario', () => {
       expect(getDayPart(at(29, 12, 30), lunch)).toBe('despierto');
       expect(getDayPart(at(29, 13, 30), lunch)).toBe('hambre');
       expect(getDayPart(at(29, 15, 0), lunch)).toBe('atento');
+    });
+  });
+
+  describe('formatClock y calendarDaysBetween (HU-07.1-A, HU-04.1-A)', () => {
+    it('formatClock da HH:MM en 24 h con ceros', () => {
+      expect(formatClock(at(29, 8, 5))).toBe('08:05');
+      expect(formatClock(at(29, 20, 0))).toBe('20:00');
+    });
+
+    it('calendarDaysBetween cuenta días de calendario, no horas', () => {
+      expect(calendarDaysBetween(at(29, 23, 59), at(29, 0))).toBe(0);
+      expect(calendarDaysBetween(at(29, 23, 59), at(30, 0, 1))).toBe(1);
+      // Del jueves 29/10 al lunes 2/11 (cruza el cambio de mes).
+      expect(calendarDaysBetween(at(29, 9), new Date(2026, 10, 2, 8))).toBe(4);
     });
   });
 
