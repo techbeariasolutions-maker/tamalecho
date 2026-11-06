@@ -1,6 +1,7 @@
 // Lógica de los endpoints de Web Push. Reciben un Request y devuelven un Response, así que se prueban
 // sin desplegar. Los archivos de api/ solo les pasan sus dependencias reales (CLAUDE.md §6).
 import { createHash, timingSafeEqual } from 'node:crypto';
+import { shouldDeliver } from './delivery.js';
 import { buildTipPayload, readVapidConfig, sendToAll } from './push.js';
 import { MAX_BODY_BYTES, subscriptionId, validateSubscription } from './subscriptions.js';
 
@@ -49,7 +50,7 @@ function isAuthorized(header, secret) {
   return timingSafeEqual(digest(header), digest(`Bearer ${secret}`));
 }
 
-// Envía el consejo destacado a todas las suscripciones. Lo dispara GitHub Actions (D-21).
+// Envía el consejo destacado a las suscripciones que no están en silencio. Lo dispara GitHub Actions (D-21).
 export async function handleDispatch(request, { store, webpush, env, now, getFeaturedTip }) {
   if (!isAuthorized(request.headers.get('authorization'), env.DISPATCH_SECRET)) {
     return json(401, { error: 'No autorizado.' });
@@ -62,5 +63,8 @@ export async function handleDispatch(request, { store, webpush, env, now, getFea
   if (!vapid) return json(503, { error: 'Faltan las claves VAPID en el servidor.' });
 
   const payload = buildTipPayload(getFeaturedTip(now));
-  return json(200, await sendToAll(payload, { webpush, store, vapid }));
+  // Silencio remoto (HU-07.2-B): se omiten las suscripciones en silencio, en pausa o en un día
+  // sin avisos según su propia zona horaria.
+  const shouldSend = (record) => shouldDeliver(record, now);
+  return json(200, await sendToAll(payload, { webpush, store, vapid, shouldSend }));
 }

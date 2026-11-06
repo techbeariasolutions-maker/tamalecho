@@ -38,11 +38,15 @@ export async function sendToSubscription(record, payload, { webpush, store, vapi
 }
 
 // Envía a todas las suscripciones. Una que falle no detiene a las demás.
-export async function sendToAll(payload, { webpush, store, vapid }) {
+// `shouldSend(record)` decide cuáles reciben el aviso ahora (silencio remoto, HU-07.2-B); las
+// demás se cuentan como 'skipped' y no se tocan.
+export async function sendToAll(payload, { webpush, store, vapid, shouldSend = () => true }) {
   const records = await store.list();
   const results = await Promise.all(
-    records.map((record) => sendToSubscription(record, payload, { webpush, store, vapid })),
+    records.map((record) =>
+      shouldSend(record) ? sendToSubscription(record, payload, { webpush, store, vapid }) : 'skipped',
+    ),
   );
   const count = (outcome) => results.filter((result) => result === outcome).length;
-  return { sent: count('sent'), removed: count('removed'), failed: count('failed') };
+  return { sent: count('sent'), removed: count('removed'), failed: count('failed'), skipped: count('skipped') };
 }

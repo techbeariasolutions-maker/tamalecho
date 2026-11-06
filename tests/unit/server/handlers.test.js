@@ -83,7 +83,9 @@ describe('handleDispatch (T2-19)', () => {
     await store.save(makeRecord('a'));
     const webpush = { sendNotification: vi.fn().mockResolvedValue({ statusCode: 201 }) };
     const getFeaturedTip = vi.fn(() => TIP);
-    const now = new Date(2026, 10, 2, 9, 0);
+    // 15:00 UTC = 09:00 en Monterrey (UTC−6), la zona del registro de prueba: fuera del silencio en
+    // cualquier máquina, también en el CI, que corre en UTC.
+    const now = new Date(Date.UTC(2026, 10, 2, 15, 0));
     return { store, webpush, env, now, getFeaturedTip };
   }
 
@@ -129,7 +131,7 @@ describe('handleDispatch (T2-19)', () => {
     const deps = await setup();
     const response = await handleDispatch(dispatchRequest('Bearer secreto-de-prueba'), deps);
     expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ sent: 1, removed: 0, failed: 0 });
+    expect(await response.json()).toEqual({ sent: 1, removed: 0, failed: 0, skipped: 0 });
     expect(deps.getFeaturedTip).toHaveBeenCalledWith(deps.now);
     const [, payload] = deps.webpush.sendNotification.mock.calls[0];
     expect(JSON.parse(payload).url).toBe('/tip/SCR-01');

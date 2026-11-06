@@ -86,14 +86,14 @@ describe('sendToAll', () => {
         return { statusCode: 201 };
       }),
     };
-    expect(await sendToAll(PAYLOAD, { webpush, store, vapid: VAPID })).toEqual({ sent: 1, removed: 1, failed: 1 });
+    expect(await sendToAll(PAYLOAD, { webpush, store, vapid: VAPID })).toEqual({ sent: 1, removed: 1, failed: 1, skipped: 0 });
     expect((await store.list()).map((record) => record.id).sort()).toEqual(['falla', 'ok']);
   });
 
   it('sin suscripciones no envía nada', async () => {
     const webpush = { sendNotification: vi.fn() };
     const summary = await sendToAll(PAYLOAD, { webpush, store: createMemoryStore(), vapid: VAPID });
-    expect(summary).toEqual({ sent: 0, removed: 0, failed: 0 });
+    expect(summary).toEqual({ sent: 0, removed: 0, failed: 0, skipped: 0 });
     expect(webpush.sendNotification).not.toHaveBeenCalled();
   });
 });

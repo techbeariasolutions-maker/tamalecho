@@ -9,6 +9,7 @@ import { disablePush, enablePush } from '../../src/services/pushClient.js';
 vi.mock('../../src/services/pushClient.js', () => ({
   enablePush: vi.fn(),
   disablePush: vi.fn(),
+  currentTimeZone: () => 'America/Monterrey',
 }));
 
 const SETTINGS = { ...DEFAULT_SETTINGS, activeDays: [...DEFAULT_SETTINGS.activeDays] };
@@ -77,7 +78,7 @@ describe('PushSection (HU-15.1-A)', () => {
     render(<Harness initial="off" />);
     await user.click(screen.getByRole('button', { name: 'Activar avisos' }));
 
-    expect(enablePush).toHaveBeenCalledWith(SETTINGS, Intl.DateTimeFormat().resolvedOptions().timeZone);
+    expect(enablePush).toHaveBeenCalledWith(SETTINGS, 'America/Monterrey');
     const button = await screen.findByRole('button', { name: 'Desactivar avisos' });
     expect(button).toHaveFocus();
     expect(screen.getByRole('status')).toHaveTextContent('quedaron activados');
