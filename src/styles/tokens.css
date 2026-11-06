@@ -81,7 +81,8 @@
   --avatar-color-cansado: #c9cdf2;   /* fondo; --avatar-color-ink encima: 11.08:1 */
   --avatar-size: 6rem;               /* 96 px: deja espacio a la frase a 360 px */
   --avatar-stroke-width: 2.5;        /* grosor de trazo en unidades del viewBox (0–120) */
-  --avatar-transition-duration: 300ms; /* cambio de expresión (WP-S2-10) */
+  --avatar-transition-duration: 300ms; /* cambio de expresión (HU-05.1-A) */
+  --avatar-transition-easing: ease-in-out;
 }
 
 @media (prefers-reduced-motion: reduce) {

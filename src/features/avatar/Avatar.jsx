@@ -3,57 +3,24 @@ import avatarCatalog from '../../data/avatarStates.json';
 // Estado de respaldo si llega una franja desconocida: el personaje nunca desaparece.
 const FALLBACK_DAY_PART = 'despierto';
 
-// Rasgos de cada expresión dentro del viewBox de 120 × 120. Los trazos usan la clase
-// avatar__line (solo contorno) y los rellenos avatar__fill; los colores salen de tokens.css.
-function Face({ expression }) {
-  switch (expression) {
-    case 'antojado':
-      return (
-        <g className="avatar__face" data-expression="antojado">
-          <path className="avatar__line" d="M44 48 Q50 43 56 47" />
-          <path className="avatar__line" d="M64 47 Q70 43 76 48" />
-          <circle className="avatar__fill" cx="50" cy="57" r="3.5" />
-          <circle className="avatar__fill" cx="70" cy="57" r="3.5" />
-          <ellipse className="avatar__fill" cx="60" cy="74" rx="6" ry="7" />
-        </g>
-      );
-    case 'concentrado':
-      return (
-        <g className="avatar__face" data-expression="concentrado">
-          <path className="avatar__line" d="M44 50 L56 52" />
-          <path className="avatar__line" d="M64 52 L76 50" />
-          <circle className="avatar__fill" cx="50" cy="58" r="3" />
-          <circle className="avatar__fill" cx="70" cy="58" r="3" />
-          <path className="avatar__line" d="M52 74 L68 74" />
-        </g>
-      );
-    case 'somnoliento':
-      return (
-        <g className="avatar__face" data-expression="somnoliento">
-          <path className="avatar__line" d="M44 51 Q50 50 56 53" />
-          <path className="avatar__line" d="M64 53 Q70 50 76 51" />
-          <path className="avatar__line" d="M45 58 Q50 62 55 58" />
-          <path className="avatar__line" d="M65 58 Q70 62 75 58" />
-          <ellipse className="avatar__fill" cx="60" cy="75" rx="3.5" ry="4.5" />
-        </g>
-      );
-    case 'sonriente':
-    default:
-      return (
-        <g className="avatar__face" data-expression="sonriente">
-          <path className="avatar__line" d="M44 50 Q50 46 56 50" />
-          <path className="avatar__line" d="M64 50 Q70 46 76 50" />
-          <circle className="avatar__fill" cx="50" cy="58" r="3.5" />
-          <circle className="avatar__fill" cx="70" cy="58" r="3.5" />
-          <path className="avatar__line" d="M50 71 Q60 80 70 71" />
-        </g>
-      );
-  }
-}
+// Bocas de cada expresión. Solo se ve la que coincide con data-expression de la figura;
+// el cambio entre ellas es un fundido de opacidad definido en global.css.
+const MOUTHS = [
+  { expression: 'sonriente', element: <path className="avatar__line" d="M50 71 Q60 80 70 71" /> },
+  { expression: 'antojado', element: <ellipse className="avatar__fill" cx="60" cy="74" rx="6" ry="7" /> },
+  { expression: 'concentrado', element: <path className="avatar__line" d="M52 74 L68 74" /> },
+  { expression: 'somnoliento', element: <ellipse className="avatar__fill" cx="60" cy="75" rx="3.5" ry="4.5" /> },
+];
 
-// Personaje según la franja del día (HT-05.1-B).
+// Personaje según la franja del día (HT-05.1-B, HU-05.1-A).
 // - `dayPart`: 'despierto' | 'hambre' | 'atento' | 'cansado' (lo calcula getDayPart en schedule.js).
 // - `isStatic`: versión estática de respaldo, sin ningún movimiento. El texto no cambia.
+//
+// Las 4 expresiones viven en el mismo SVG: las cejas y los ojos son los mismos elementos y
+// cambian de posición, giro o escala con CSS según data-expression; las bocas se funden.
+// No hay JavaScript de animación: React solo cambia el atributo y CSS hace la transición.
+// Con prefers-reduced-motion la duración vale 0 ms y el cambio es inmediato (HT-05.2-A).
+//
 // El SVG es una imagen con nombre propio (role="img" + aria-label con el estado) y la frase va
 // como texto visible en el figcaption, fuera del SVG, para que se lea y se pueda ampliar.
 export default function Avatar({ dayPart, isStatic = false }) {
@@ -65,6 +32,7 @@ export default function Avatar({ dayPart, isStatic = false }) {
     <figure
       className={className}
       data-day-part={key}
+      data-expression={state.expression}
       data-animation={isStatic ? 'ninguna' : state.animation}
       style={{ '--avatar-bg': `var(${state.colorToken})` }}
     >
@@ -72,7 +40,19 @@ export default function Avatar({ dayPart, isStatic = false }) {
         <circle className="avatar__bg" cx="60" cy="60" r="56" />
         <path className="avatar__husk" d="M60 8 C90 30 94 82 60 112 C26 82 30 30 60 8 Z" />
         <path className="avatar__body" d="M60 24 C84 40 86 80 60 100 C34 80 36 40 60 24 Z" />
-        <Face expression={state.expression} />
+        <g className="avatar__face">
+          <path className="avatar__line avatar__brow avatar__brow--left" d="M44 50 Q50 46 56 50" />
+          <path className="avatar__line avatar__brow avatar__brow--right" d="M64 50 Q70 46 76 50" />
+          <circle className="avatar__fill avatar__eye avatar__eye--open" cx="50" cy="58" r="3.5" />
+          <circle className="avatar__fill avatar__eye avatar__eye--open" cx="70" cy="58" r="3.5" />
+          <path className="avatar__line avatar__eye avatar__eye--closed" d="M45 58 Q50 62 55 58" />
+          <path className="avatar__line avatar__eye avatar__eye--closed" d="M65 58 Q70 62 75 58" />
+          {MOUTHS.map(({ expression, element }) => (
+            <g key={expression} className="avatar__mouth" data-mouth={expression}>
+              {element}
+            </g>
+          ))}
+        </g>
       </svg>
       <figcaption className="avatar__phrase">{state.phrase}</figcaption>
     </figure>
