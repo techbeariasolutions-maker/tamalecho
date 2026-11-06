@@ -45,16 +45,16 @@ describe('guardado validado del horario (HU-07.1-B)', () => {
     expect(browserRepository().getSettings().startTime).toBe('09:00');
   });
 
-  it('si la comida termina antes de empezar, el error va en «Termina a las» y no se guarda nada', async () => {
+  it('si la comida termina antes de empezar, el error va en «Fin de la comida» y no se guarda nada', async () => {
     const user = userEvent.setup();
     await renderApp('/ajustes');
     await user.click(screen.getByRole('radio', { name: 'Cada 2 horas' }));
-    setTime('Empieza a las', '15:00');
-    setTime('Termina a las', '13:00');
+    setTime('Inicio de la comida', '15:00');
+    setTime('Fin de la comida', '13:00');
     await save(user);
 
-    expectDescribedError(screen.getByLabelText('Termina a las'), 'La comida debe terminar después de empezar.');
-    expect(screen.getByLabelText('Termina a las')).toHaveFocus();
+    expectDescribedError(screen.getByLabelText('Fin de la comida'), 'La comida debe terminar después de empezar.');
+    expect(screen.getByLabelText('Fin de la comida')).toHaveFocus();
     // Tampoco se guardó la cadencia, que sí era válida: el guardado es todo o nada.
     expect(browserRepository().getSettings()).toMatchObject({ intervalMinutes: 180, lunchStart: '12:00' });
   });

@@ -20,6 +20,8 @@ const FIELD_CONTROL = {
   activeDays: 'dia-1',
   lunchStart: 'comida-inicio',
   lunchEnd: 'comida-fin',
+  quietStart: 'silencio-inicio',
+  quietEnd: 'silencio-fin',
 };
 const FIELD_ORDER = Object.keys(FIELD_CONTROL);
 
@@ -31,6 +33,8 @@ function pickSchedule(settings) {
     activeDays: [...settings.activeDays],
     lunchStart: settings.lunchStart,
     lunchEnd: settings.lunchEnd,
+    quietStart: settings.quietStart,
+    quietEnd: settings.quietEnd,
   };
 }
 
@@ -188,7 +192,7 @@ export default function ScheduleForm({ settings, onSave }) {
         <TimeField
           id="comida-inicio"
           field="lunchStart"
-          label="Empieza a las"
+          label="Inicio de la comida"
           value={draft.lunchStart}
           error={errors.lunchStart}
           onChange={(value) => update('lunchStart', value)}
@@ -196,10 +200,34 @@ export default function ScheduleForm({ settings, onSave }) {
         <TimeField
           id="comida-fin"
           field="lunchEnd"
-          label="Termina a las"
+          label="Fin de la comida"
           value={draft.lunchEnd}
           error={errors.lunchEnd}
           onChange={(value) => update('lunchEnd', value)}
+        />
+      </fieldset>
+
+      {/* HU-07.2-A: silencio. Puede cruzar la medianoche (por defecto de 21:00 a 08:00). */}
+      <fieldset className="fieldset">
+        <legend className="fieldset__legend">Silencio</legend>
+        <p className="fieldset__hint">
+          En este horario no te enviamos avisos. Puede cruzar la medianoche; lo recomendado es de 21:00 a 08:00.
+        </p>
+        <TimeField
+          id="silencio-inicio"
+          field="quietStart"
+          label="Inicio del silencio"
+          value={draft.quietStart}
+          error={errors.quietStart}
+          onChange={(value) => update('quietStart', value)}
+        />
+        <TimeField
+          id="silencio-fin"
+          field="quietEnd"
+          label="Fin del silencio"
+          value={draft.quietEnd}
+          error={errors.quietEnd}
+          onChange={(value) => update('quietEnd', value)}
         />
       </fieldset>
 

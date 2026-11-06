@@ -3,6 +3,7 @@ import Button from '../../components/Button.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { useSettings } from '../../hooks/useSettings.js';
 import { disablePush, getPushStatus } from '../../services/pushClient.js';
+import PauseControl from './PauseControl.jsx';
 import PushSection from './PushSection.jsx';
 import ScheduleForm from './ScheduleForm.jsx';
 import SchedulePreview from './SchedulePreview.jsx';
@@ -40,6 +41,7 @@ export default function SettingsPage() {
         <ScheduleForm key={formVersion} settings={settings} onSave={saveSettings} />
         <SchedulePreview settings={settings} now={new Date()} />
       </section>
+      <PauseControl paused={settings.paused} onSave={saveSettings} />
       <PushSection status={pushStatus} settings={settings} onStatusChange={setPushStatus} />
       <LocalDataSection historyCount={historyCount} resetAll={resetAll} onReset={refreshPushStatus} />
     </>

@@ -33,8 +33,8 @@ describe('panel de horario (HU-07.1-A)', () => {
     expect(within(section).getByRole('radio', { name: 'Cada 3 horas' })).toBeChecked();
     expect(within(section).getByLabelText('Hora del primer aviso')).toHaveValue('08:00');
     expect(within(section).getAllByRole('checkbox')).toHaveLength(7);
-    expect(within(section).getByLabelText('Empieza a las')).toHaveValue('12:00');
-    expect(within(section).getByLabelText('Termina a las')).toHaveValue('16:00');
+    expect(within(section).getByLabelText('Inicio de la comida')).toHaveValue('12:00');
+    expect(within(section).getByLabelText('Fin de la comida')).toHaveValue('16:00');
   });
 
   it('la vista previa muestra las ventanas del motor con los valores recomendados', async () => {
