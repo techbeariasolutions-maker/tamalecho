@@ -1,7 +1,9 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures.js';
 
 // Ajustes del horario (WP-S2-6). La hora se fija con page.clock: lunes 9/11/2026.
+// Estas pruebas parten de los ajustes recomendados, sin la pausa del fixture común.
+test.use({ noticesPaused: false });
 const at = (hours, minutes = 0) => new Date(2026, 10, 9, hours, minutes);
 
 const scheduleSection = (page) => page.getByRole('region', { name: 'Horario de los avisos' });

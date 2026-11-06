@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures.js';
 import { categoriesOf, tipsOf } from './catalog-data.js';
 
 for (const framework of ['scrum', 'pmbok']) {
@@ -8,7 +8,8 @@ for (const framework of ['scrum', 'pmbok']) {
     await expect(filter.getByRole('button')).toHaveText(['Todas', ...categoriesOf(framework)]);
 
     const total = tipsOf(framework).length;
-    await expect(page.getByRole('status')).toHaveText(`${total} consejos`);
+    // La región del aviso (NoticeHost) también es role="status": se busca la del conteo.
+    await expect(page.getByRole('status').filter({ hasText: /consejos?$/ })).toHaveText(`${total} consejos`);
     await expect(page.getByRole('list', { name: /^Consejos de / }).getByRole('article')).toHaveCount(total);
   });
 }

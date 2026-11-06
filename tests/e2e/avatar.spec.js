@@ -1,6 +1,6 @@
 import { mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures.js';
 import avatarCatalog from '../../src/data/avatarStates.json' with { type: 'json' };
 import { WRITE_EVIDENCE } from './routes.js';
 

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures.js';
 import { tipsOf } from './catalog-data.js';
 
 // Presiona Tab hasta que el foco llegue a `locator`. Falla si no llega en `max` pasos.

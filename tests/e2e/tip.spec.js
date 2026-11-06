@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures.js';
 import { catalog, categoriesOf, tipsOf } from './catalog-data.js';
 
 test('T-07: biblioteca filtrada → consejo → «Siguiente» → «Volver» conserva el filtro', async ({ page }) => {

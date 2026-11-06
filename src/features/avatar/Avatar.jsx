@@ -23,10 +23,13 @@ const MOUTHS = [
 //
 // El SVG es una imagen con nombre propio (role="img" + aria-label con el estado) y la frase va
 // como texto visible en el figcaption, fuera del SVG, para que se lea y se pueda ampliar.
-export default function Avatar({ dayPart, isStatic = false }) {
+// - `size`: 'normal' (portada) o 'small' (dentro del aviso, HU-06.1-A).
+export default function Avatar({ dayPart, isStatic = false, size = 'normal' }) {
   const key = Object.hasOwn(avatarCatalog.states, dayPart) ? dayPart : FALLBACK_DAY_PART;
   const state = avatarCatalog.states[key];
-  const className = isStatic ? 'avatar avatar--static' : 'avatar';
+  const className = ['avatar', isStatic && 'avatar--static', size === 'small' && 'avatar--small']
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <figure

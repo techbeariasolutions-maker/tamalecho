@@ -1,6 +1,6 @@
 import { mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures.js';
 import { EVIDENCE_DIR, ROUTES, WRITE_EVIDENCE, openRoute } from './routes.js';
 
 const SCREENSHOT_DIR = fileURLToPath(new URL('360/', EVIDENCE_DIR));

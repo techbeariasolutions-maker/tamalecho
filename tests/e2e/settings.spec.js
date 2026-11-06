@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures.js';
 
 // HT-04.2-A / HT-04.2-B (T2-03 en su parte de datos locales, T2-04).
 // Todavía no hay formulario de horario (llega en WP-S2-6): los datos «guardados» se siembran
