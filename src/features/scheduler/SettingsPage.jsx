@@ -1,16 +1,37 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Button from '../../components/Button.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { useSettings } from '../../hooks/useSettings.js';
+import { disablePush, getPushStatus } from '../../services/pushClient.js';
+import PushSection from './PushSection.jsx';
 
-// Ajustes (HT-04.2-B). Por ahora solo la sección de datos locales; el panel de horario,
-// el silencio y la pausa llegan en WP-S2-6.
+// Ajustes: avisos con la pestaña cerrada (HU-15.1-A) y datos locales (HT-04.2-B).
+// El panel de horario, el silencio y la pausa llegan en WP-S2-6.
 export default function SettingsPage() {
   useDocumentTitle('Ajustes');
+  const { settings, historyCount, resetAll } = useSettings();
+  // null mientras se consulta al navegador. Consultar no registra nada ni pide permiso.
+  const [pushStatus, setPushStatus] = useState(null);
+
+  const refreshPushStatus = useCallback(async () => {
+    setPushStatus(await getPushStatus());
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    getPushStatus().then((status) => {
+      if (active) setPushStatus(status);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <>
       <h1>Ajustes</h1>
-      <LocalDataSection />
+      <PushSection status={pushStatus} settings={settings} onStatusChange={setPushStatus} />
+      <LocalDataSection historyCount={historyCount} resetAll={resetAll} onReset={refreshPushStatus} />
     </>
   );
 }
@@ -23,11 +44,15 @@ function historyText(count) {
 
 const STATUS_TEXT = {
   done: 'Listo: tus datos se restablecieron. Los ajustes volvieron a los valores recomendados.',
+  doneServerPending:
+    'Listo: tus datos se restablecieron y los avisos con la pestaña cerrada quedaron desactivados en este ' +
+    'navegador. No pudimos avisarle al servidor; borrará la suscripción en su siguiente envío.',
   failed: 'No se pudieron restablecer tus datos porque este navegador no permite guardar información del sitio.',
+  pushFailed:
+    'No se pudieron desactivar los avisos con la pestaña cerrada, así que no se restableció nada. Intenta de nuevo.',
 };
 
-function LocalDataSection() {
-  const { historyCount, resetAll } = useSettings();
+function LocalDataSection({ historyCount, resetAll, onReset }) {
   const [confirming, setConfirming] = useState(false);
   const [status, setStatus] = useState('');
   const resetButtonRef = useRef(null);
@@ -35,6 +60,7 @@ function LocalDataSection() {
   // A dónde mover el foco después del siguiente render. Se fija en los manejadores de clic,
   // no al montar, para no robar el foco al cargar la página.
   const pendingFocus = useRef(null);
+  const busy = useRef(false);
 
   useEffect(() => {
     if (!pendingFocus.current) return;
@@ -54,16 +80,29 @@ function LocalDataSection() {
     pendingFocus.current = 'reset';
   };
 
-  const confirm = () => {
-    setStatus(resetAll() ? 'done' : 'failed');
-    setConfirming(false);
-    pendingFocus.current = 'reset';
+  // Primero se desactiva Web Push (navegador y servidor) y solo después se borran los datos locales.
+  // Si el navegador no puede cancelar la suscripción no se borra nada: el estado local diría
+  // «desactivado» mientras siguen llegando avisos (pedido de QA en el PR #48).
+  const confirm = async () => {
+    if (busy.current) return;
+    busy.current = true;
+    try {
+      const push = await disablePush();
+      if (!push.ok) setStatus('pushFailed');
+      else if (!resetAll()) setStatus('failed');
+      else setStatus(push.serverRemoved ? 'done' : 'doneServerPending');
+      setConfirming(false);
+      pendingFocus.current = 'reset';
+      await onReset();
+    } finally {
+      busy.current = false;
+    }
   };
 
   return (
     <section className="settings-section" aria-labelledby="datos-locales-titulo">
       <h2 id="datos-locales-titulo">Tus datos en este dispositivo</h2>
-      <p>TamalEcho Tips no tiene cuentas ni inicio de sesión. Esto se guarda solo en este navegador:</p>
+      <p>TamalEcho Tips no tiene cuentas ni inicio de sesión. En este navegador se guarda:</p>
       <ul>
         <li>Tus ajustes de los avisos: horario, silencio y pausa.</li>
         <li>
@@ -72,12 +111,17 @@ function LocalDataSection() {
         </li>
         <li>Los avisos que ya te mostramos, para no repetir el mismo aviso. Esto se conserva al restablecer.</li>
       </ul>
+      <p>
+        Si activas los avisos con la pestaña cerrada, nuestro servidor también guarda la suscripción de este
+        navegador, tu zona horaria y tu horario de avisos. Al desactivarlos o al restablecer tus datos, le pedimos
+        al servidor que los borre.
+      </p>
 
       {confirming ? (
         <div className="confirm-box" role="group" aria-labelledby="restablecer-pregunta">
           <p id="restablecer-pregunta">
-            ¿Restablecer tus datos? Tus ajustes vuelven a los valores recomendados y se borra tu historial de
-            lecturas en este dispositivo. No se puede deshacer.
+            ¿Restablecer tus datos? Tus ajustes vuelven a los valores recomendados, se borra tu historial de
+            lecturas en este dispositivo y se desactivan los avisos con la pestaña cerrada. No se puede deshacer.
           </p>
           <div className="button-row">
             <Button onClick={confirm}>Sí, restablecer</Button>

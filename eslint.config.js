@@ -30,6 +30,11 @@ export default defineConfig([
     languageOptions: { globals: globals.node },
   },
   {
+    // Service worker escrito a mano (HU-15.1-A): corre en el contexto del service worker.
+    files: ['public/sw.js'],
+    languageOptions: { globals: globals.serviceworker },
+  },
+  {
     // Las E2E corren en Node, pero el código dentro de page.evaluate corre en el navegador.
     files: ['tests/e2e/**/*.js'],
     languageOptions: { globals: { ...globals.node, ...globals.browser } },

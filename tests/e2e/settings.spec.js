@@ -151,3 +151,35 @@ test('a 360 px la confirmación no provoca desplazamiento horizontal', async ({ 
     expect(box.width).toBeGreaterThanOrEqual(44);
   }
 });
+
+test('restablecer da de baja la suscripción en el servidor antes de borrar (pedido de QA, PR #48)', async ({ page }) => {
+  const problems = trackProblems(page);
+  const endpoint = 'https://fcm.googleapis.com/fcm/send/e2e';
+  const requests = [];
+  // El servidor se simula: ninguna prueba del CI usa red ni claves reales.
+  await page.route('**/api/push/subscribe', async (route) => {
+    const request = route.request();
+    requests.push({
+      method: request.method(),
+      body: request.postDataJSON(),
+      historyAtRequest: await page.evaluate((key) => JSON.parse(window.localStorage.getItem(key)).history.length, STORAGE_KEY),
+    });
+    await route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' });
+  });
+  await page.goto('/ajustes');
+  await page.evaluate(
+    ([key, value]) => window.localStorage.setItem(key, value),
+    [STORAGE_KEY, JSON.stringify({ ...SEEDED, push: { status: 'on', endpoint } })],
+  );
+  await page.reload();
+
+  await page.getByRole('button', { name: 'Restablecer mis datos' }).click();
+  await page.getByRole('button', { name: 'Sí, restablecer' }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'Listo' })).toHaveText(/tus datos se restablecieron/);
+
+  expect(requests).toEqual([{ method: 'DELETE', body: { endpoint }, historyAtRequest: 2 }]);
+  const afterReset = await readStored(page);
+  expect(afterReset.push).toBeNull();
+  expect(afterReset.history).toEqual([]);
+  expect(problems).toEqual([]);
+});

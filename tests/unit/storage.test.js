@@ -333,3 +333,34 @@ describe('último aviso y restablecer (HT-04.2-B)', () => {
     });
   });
 });
+
+describe('estado de push en el repositorio (HU-15.1-A)', () => {
+  it('guarda y lee el estado; se conserva al «recargar»', () => {
+    const storage = createFakeStorage();
+    const repository = createRepository(storage);
+    expect(repository.getPushState()).toBeNull();
+    expect(repository.savePushState({ status: 'on', endpoint: 'https://fcm.googleapis.com/fcm/send/x' })).toBe(true);
+    expect(createRepository(storage).getPushState()).toEqual({
+      status: 'on',
+      endpoint: 'https://fcm.googleapis.com/fcm/send/x',
+    });
+    expect(repository.savePushState({ status: 'off' })).toBe(true);
+    expect(repository.getPushState()).toEqual({ status: 'off' });
+  });
+
+  it('rechaza estados inválidos y descarta un endpoint que no es https', () => {
+    const repository = createRepository(createFakeStorage());
+    expect(repository.savePushState({ status: 'activo' })).toBe(false);
+    expect(repository.savePushState(null)).toBe(false);
+    expect(repository.getPushState()).toBeNull();
+    repository.savePushState({ status: 'on', endpoint: 'http://inseguro.example' });
+    expect(repository.getPushState()).toEqual({ status: 'on' });
+  });
+
+  it('guardar el estado de push no cambia los ajustes', () => {
+    const repository = createRepository(createFakeStorage());
+    repository.saveSettings({ intervalMinutes: 120 });
+    repository.savePushState({ status: 'on' });
+    expect(repository.getSettings().intervalMinutes).toBe(120);
+  });
+});

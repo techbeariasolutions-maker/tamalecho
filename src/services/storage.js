@@ -59,6 +59,15 @@ function sanitizeServedWindows(value) {
   return unique.slice(-MAX_SERVED_WINDOWS);
 }
 
+// Estado local de Web Push (HU-15.1-A): { status: 'on' | 'off', endpoint? }. El endpoint se guarda
+// para poder dar de baja la suscripción en el servidor aunque el navegador ya la haya perdido.
+function sanitizePush(value) {
+  if (!isPlainObject(value) || !['on', 'off'].includes(value.status)) return null;
+  const state = { status: value.status };
+  if (typeof value.endpoint === 'string' && value.endpoint.startsWith('https://')) state.endpoint = value.endpoint;
+  return state;
+}
+
 // Datos iniciales: ajustes recomendados y todo lo demás vacío.
 export function createEmptyData() {
   return {
@@ -92,7 +101,7 @@ export function migrate(data) {
     favorites: sanitizeFavorites(source.favorites),
     progress: isPlainObject(source.progress) ? source.progress : {},
     servedWindows: sanitizeServedWindows(source.servedWindows),
-    push: isPlainObject(source.push) ? source.push : null,
+    push: sanitizePush(source.push),
   };
 }
 
@@ -145,6 +154,19 @@ export function createRepository(storage) {
       if (typeof id !== 'string' || !ID_PATTERN.test(id) || !iso) return false;
       const data = read();
       data.history = [...data.history, { id, at: iso }].slice(-MAX_HISTORY_ENTRIES);
+      return write(data);
+    },
+
+    getPushState() {
+      return read().push;
+    },
+
+    // Devuelve false si el estado no es válido o si el navegador no deja guardar.
+    savePushState(state) {
+      const push = sanitizePush(state);
+      if (!push) return false;
+      const data = read();
+      data.push = push;
       return write(data);
     },
 
