@@ -498,6 +498,17 @@ main dd {
   transition: none;
 }
 
+/* Movimiento reducido (HT-05.2-A): el personaje es estático y cambia de expresión sin
+   transición. El texto (frase y texto alternativo) no cambia. Además de la regla global
+   de abajo, se quita la transición aquí para no depender de que alguien la conserve. */
+@media (prefers-reduced-motion: reduce) {
+  .avatar,
+  .avatar * {
+    animation: none;
+    transition: none;
+  }
+}
+
 /* ── Biblioteca ──────────────────────────────────────────── */
 .framework-switch__list {
   display: inline-flex;
