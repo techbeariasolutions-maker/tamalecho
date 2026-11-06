@@ -153,12 +153,48 @@ describe('pushClient (HU-15.1-A)', () => {
       expect(fake.Notification.requestPermission).not.toHaveBeenCalled();
     });
 
-    it('si el servidor falla cancela la suscripción nueva para no quedar a medias', async () => {
-      const fake = createPushEnv({ serverOk: false });
-      const result = await enablePush(SETTINGS, TIME_ZONE, fake.env);
-      expect(result).toEqual({ ok: false, status: 'off', error: 'failed' });
-      expect(fake.state.subscription).toBeNull();
-      expect(fake.env.repository.getPushState()).toBeNull();
+    describe('si el servidor no registra la suscripción (POST falla)', () => {
+      it('con suscripción previa: la cancela y el estado queda off, igual que el mensaje', async () => {
+        const fake = createPushEnv({ subscribed: true, permission: 'granted', serverOk: false });
+        const previous = fake.state.subscription;
+
+        const result = await enablePush(SETTINGS, TIME_ZONE, fake.env);
+        expect(result).toEqual({ ok: false, status: 'off', error: 'failed' });
+        expect(previous.unsubscribe).toHaveBeenCalledTimes(1);
+        expect(await getPushStatus(fake.env)).toBe('off');
+        expect(fake.env.repository.getPushState()).toEqual({ status: 'off' });
+      });
+
+      it('sin suscripción previa: cancela la nueva y el estado queda off (regresión)', async () => {
+        const fake = createPushEnv({ serverOk: false });
+        const result = await enablePush(SETTINGS, TIME_ZONE, fake.env);
+        expect(result).toEqual({ ok: false, status: 'off', error: 'failed' });
+        expect(fake.pushManager.subscribe).toHaveBeenCalledTimes(1);
+        expect(fake.state.subscription).toBeNull();
+        expect(await getPushStatus(fake.env)).toBe('off');
+        expect(fake.env.repository.getPushState()).toEqual({ status: 'off' });
+      });
+
+      it('si unsubscribe lanza: no truena, responde failed y el estado es el del navegador', async () => {
+        const fake = createPushEnv({ subscribed: true, permission: 'granted', serverOk: false });
+        fake.env.repository.savePushState({ status: 'on', endpoint: FAKE_ENDPOINT });
+        fake.state.subscription.unsubscribe.mockRejectedValueOnce(new Error('falló'));
+
+        await expect(enablePush(SETTINGS, TIME_ZONE, fake.env)).resolves.toEqual({
+          ok: false,
+          status: 'on',
+          error: 'failed',
+        });
+        // No se guarda «off»: el navegador sigue suscrito.
+        expect(fake.env.repository.getPushState()).toEqual({ status: 'on', endpoint: FAKE_ENDPOINT });
+      });
+
+      it('si unsubscribe responde false: se trata como fallo y no guarda off', async () => {
+        const fake = createPushEnv({ subscribed: true, permission: 'granted', serverOk: false });
+        fake.state.subscription.unsubscribe.mockResolvedValueOnce(false);
+        expect(await enablePush(SETTINGS, TIME_ZONE, fake.env)).toEqual({ ok: false, status: 'on', error: 'failed' });
+        expect(fake.env.repository.getPushState()).toBeNull();
+      });
     });
 
     it('si falla el registro del service worker responde failed sin lanzar', async () => {

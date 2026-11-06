@@ -59,6 +59,15 @@ export async function getPushStatus(env) {
   }
 }
 
+// Cancela una suscripción sin lanzar errores. Devuelve true solo si el navegador confirmó la baja.
+async function cancelQuietly(subscription) {
+  try {
+    return (await subscription.unsubscribe()) === true;
+  } catch {
+    return false;
+  }
+}
+
 async function sendToServer(fetchFn, method, body) {
   const response = await fetchFn(SUBSCRIBE_URL, {
     method,
@@ -84,7 +93,6 @@ export async function enablePush(settings, timeZone, env) {
   }
 
   let subscription = null;
-  let created = false;
   try {
     await resolved.navigator.serviceWorker.register(SERVICE_WORKER_URL, { scope: '/' });
     const registration = await resolved.navigator.serviceWorker.ready;
@@ -94,13 +102,16 @@ export async function enablePush(settings, timeZone, env) {
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(resolved.vapidPublicKey),
       });
-      created = true;
     }
     await sendToServer(resolved.fetch, 'POST', { subscription: subscription.toJSON(), timeZone, settings });
   } catch {
-    // Si el servidor no la registró, una suscripción nueva se cancela para no quedar a medias:
-    // el navegador diría «activado» y nunca llegaría nada.
-    if (created && subscription) await subscription.unsubscribe().catch(() => {});
+    // Si el servidor no la registró, la suscripción del navegador se cancela siempre, nueva o de antes.
+    // Así el estado queda 'off' y coincide con el mensaje «No se pudieron activar»; si no, la página
+    // diría «no se activaron» y al mismo tiempo ofrecería «Desactivar avisos».
+    if (subscription && (await cancelQuietly(subscription))) {
+      resolved.repository.savePushState({ status: 'off' });
+    }
+    // Si no se pudo cancelar, el estado es el que reporte el navegador.
     return { ok: false, status: await getPushStatus(resolved), error: 'failed' };
   }
 
