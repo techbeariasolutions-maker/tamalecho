@@ -63,6 +63,34 @@ describe('sección «Notificaciones del navegador» (HU-06.2-A)', () => {
     expect(within(section()).getByRole('button', { name: 'Activar notificaciones' })).toBeInTheDocument();
   });
 
+  // HU-06.2-B: alternativa sin permiso o sin soporte.
+  it('con el permiso denegado lo explica, sin botón, y enlaza a Web Push', async () => {
+    stubNotification('denied');
+    await renderApp('/ajustes');
+    expect(within(section()).getByText(/Bloqueaste las notificaciones de este sitio/)).toBeInTheDocument();
+    expect(within(section()).getByText(/Los avisos dentro de la página siguen funcionando\./)).toBeInTheDocument();
+    const link = within(section()).getByRole('link', { name: 'ver «Avisos con la pestaña cerrada»' });
+    expect(link).toHaveAttribute('href', '#avisos-pestana-cerrada');
+    expect(document.getElementById('avisos-pestana-cerrada')).toHaveAccessibleName('Avisos con la pestaña cerrada');
+    expect(within(section()).queryByRole('button')).not.toBeInTheDocument();
+  });
+
+  it('sin soporte (jsdom no trae Notification) lo dice y no ofrece el botón', async () => {
+    await renderApp('/ajustes');
+    expect(within(section()).getByText('Tu navegador no permite notificaciones.')).toBeInTheDocument();
+    expect(within(section()).getByText(/se necesita Web\s+Push/)).toBeInTheDocument();
+    expect(within(section()).queryByRole('button')).not.toBeInTheDocument();
+  });
+
+  it('si el usuario rechaza el permiso, la sección pasa a la explicación', async () => {
+    stubNotification('default', 'denied');
+    const user = userEvent.setup();
+    await renderApp('/ajustes');
+    await user.click(within(section()).getByRole('button', { name: 'Activar notificaciones' }));
+    expect(within(section()).getByRole('status')).toHaveTextContent('No diste permiso');
+    expect(within(section()).getByText(/Bloqueaste las notificaciones de este sitio/)).toBeInTheDocument();
+  });
+
   it('con el permiso ya concedido no muestra el botón', async () => {
     stubNotification('granted');
     await renderApp('/ajustes');

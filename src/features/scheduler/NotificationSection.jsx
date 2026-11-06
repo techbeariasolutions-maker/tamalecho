@@ -13,6 +13,24 @@ const RESULT_TEXT = {
   dismissed: 'No elegiste ninguna opción. Puedes intentarlo de nuevo cuando quieras.',
 };
 
+// Sin permiso o sin soporte (HU-06.2-B): se explica por qué y que los avisos de la página siguen.
+const BLOCKED_TEXT = {
+  denied: 'Bloqueaste las notificaciones de este sitio. Puedes permitirlas en la configuración del navegador.',
+  unsupported: 'Tu navegador no permite notificaciones.',
+};
+
+function Alternative({ permission }) {
+  return (
+    <div className="message">
+      <p>{BLOCKED_TEXT[permission]}</p>
+      <p>
+        Los avisos dentro de la página siguen funcionando. Para recibirlos con la pestaña cerrada se necesita Web
+        Push: <a href="#avisos-pestana-cerrada">ver «Avisos con la pestaña cerrada»</a>.
+      </p>
+    </div>
+  );
+}
+
 // Notificaciones del navegador (HU-06.2-A). El permiso se pide SOLO al pulsar el botón, nunca al
 // cargar (CLAUDE.md §2). `onPermissionChange` avisa a Ajustes para refrescar el estado de Web Push,
 // que usa el mismo permiso.
@@ -36,7 +54,7 @@ export default function NotificationSection({ onPermissionChange }) {
         Si las permites, cuando la pestaña de TamalEcho esté abierta pero no la estés viendo, el aviso te llega como
         notificación del sistema. Si estás en la página, el aviso aparece dentro de ella.
       </p>
-      <p>{STATE_TEXT[permission] ?? 'Las notificaciones no están disponibles en este navegador.'}</p>
+      {BLOCKED_TEXT[permission] ? <Alternative permission={permission} /> : <p>{STATE_TEXT[permission]}</p>}
       {permission === 'default' && <Button onClick={activate}>Activar notificaciones</Button>}
       <p className="settings-status" role="status">
         {RESULT_TEXT[result] ?? ''}
