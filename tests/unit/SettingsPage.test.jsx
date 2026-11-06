@@ -8,6 +8,7 @@ import { createRepository } from '../../src/services/storage.js';
 // SettingsPage usa el repositorio del navegador (localStorage de jsdom). Se siembra y se lee
 // siempre a través de createRepository, nunca con la llave a mano.
 const browserRepository = () => createRepository(window.localStorage);
+const dataSection = () => screen.getByRole('region', { name: 'Tus datos en este dispositivo' });
 
 describe('SettingsPage (HT-04.2-B)', () => {
   beforeEach(() => {
@@ -70,7 +71,7 @@ describe('SettingsPage (HT-04.2-B)', () => {
     await user.click(screen.getByRole('button', { name: 'Restablecer mis datos' }));
     await user.click(screen.getByRole('button', { name: 'Sí, restablecer' }));
 
-    expect(screen.getByRole('status')).toHaveTextContent('Listo: tus datos se restablecieron.');
+    expect(await within(dataSection()).findByText(/Listo: tus datos se restablecieron\./)).toHaveAttribute('role', 'status');
     expect(screen.getByText(/Ahora no hay lecturas registradas\./)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Restablecer mis datos' })).toHaveFocus();
     expect(browserRepository().getSettings()).toEqual({
@@ -89,6 +90,6 @@ describe('SettingsPage (HT-04.2-B)', () => {
     await user.keyboard('{Shift>}{Tab}{/Shift}');
     expect(screen.getByRole('button', { name: 'Sí, restablecer' })).toHaveFocus();
     await user.keyboard('{Enter}');
-    expect(screen.getByRole('status')).toHaveTextContent('Listo');
+    expect(within(dataSection()).getByRole('status')).toHaveTextContent('Listo');
   });
 });

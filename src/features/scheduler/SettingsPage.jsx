@@ -1,16 +1,37 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Button from '../../components/Button.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { useSettings } from '../../hooks/useSettings.js';
+import { getPushStatus } from '../../services/pushClient.js';
+import PushSection from './PushSection.jsx';
 
-// Ajustes (HT-04.2-B). Por ahora solo la sección de datos locales; el panel de horario,
-// el silencio y la pausa llegan en WP-S2-6.
+// Ajustes: avisos con la pestaña cerrada (HU-15.1-A) y datos locales (HT-04.2-B).
+// El panel de horario, el silencio y la pausa llegan en WP-S2-6.
 export default function SettingsPage() {
   useDocumentTitle('Ajustes');
+  const { settings, historyCount, resetAll } = useSettings();
+  // null mientras se consulta al navegador. Consultar no registra nada ni pide permiso.
+  const [pushStatus, setPushStatus] = useState(null);
+
+  const refreshPushStatus = useCallback(async () => {
+    setPushStatus(await getPushStatus());
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    getPushStatus().then((status) => {
+      if (active) setPushStatus(status);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <>
       <h1>Ajustes</h1>
-      <LocalDataSection />
+      <PushSection status={pushStatus} settings={settings} onStatusChange={setPushStatus} />
+      <LocalDataSection historyCount={historyCount} resetAll={resetAll} onReset={refreshPushStatus} />
     </>
   );
 }
@@ -26,8 +47,7 @@ const STATUS_TEXT = {
   failed: 'No se pudieron restablecer tus datos porque este navegador no permite guardar información del sitio.',
 };
 
-function LocalDataSection() {
-  const { historyCount, resetAll } = useSettings();
+function LocalDataSection({ historyCount, resetAll, onReset }) {
   const [confirming, setConfirming] = useState(false);
   const [status, setStatus] = useState('');
   const resetButtonRef = useRef(null);
@@ -58,6 +78,7 @@ function LocalDataSection() {
     setStatus(resetAll() ? 'done' : 'failed');
     setConfirming(false);
     pendingFocus.current = 'reset';
+    onReset();
   };
 
   return (
