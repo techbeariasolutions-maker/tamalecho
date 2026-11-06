@@ -371,6 +371,64 @@ main dd {
   }
 }
 
+/* ── Personaje (HT-05.1-B) ───────────────────────────────── */
+.avatar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: var(--space-6) 0 0;
+}
+
+.avatar__image {
+  flex: none;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+}
+
+.avatar__bg {
+  fill: var(--avatar-bg);
+  stroke: var(--avatar-color-ink);
+  stroke-width: var(--avatar-stroke-width);
+}
+
+.avatar__husk {
+  fill: var(--avatar-color-hoja);
+  stroke: var(--avatar-color-ink);
+  stroke-width: var(--avatar-stroke-width);
+  stroke-linejoin: round;
+}
+
+.avatar__body {
+  fill: var(--avatar-color-masa);
+  stroke: var(--avatar-color-ink);
+  stroke-width: var(--avatar-stroke-width);
+  stroke-linejoin: round;
+}
+
+.avatar__line {
+  fill: none;
+  stroke: var(--avatar-color-ink);
+  stroke-width: var(--avatar-stroke-width);
+  stroke-linecap: round;
+}
+
+.avatar__fill {
+  fill: var(--avatar-color-ink);
+}
+
+.avatar__phrase {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+/* Versión estática de respaldo: ningún rasgo se mueve. */
+.avatar--static * {
+  animation: none;
+  transition: none;
+}
+
 /* ── Biblioteca ──────────────────────────────────────────── */
 .framework-switch__list {
   display: inline-flex;

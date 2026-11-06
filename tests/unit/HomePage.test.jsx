@@ -22,6 +22,13 @@ describe('HomePage', () => {
     expect(within(more).getAllByRole('link').map((link) => link.textContent)).toEqual(['Biblioteca', 'Ajustes', 'Ayuda']);
   });
 
+  it('muestra el personaje con su estado y una frase visible (HT-05.1-B)', async () => {
+    await renderApp('/');
+    const figure = screen.getByRole('figure');
+    expect(within(figure).getByRole('img', { name: /^Personaje / })).toBeInTheDocument();
+    expect(figure.querySelector('figcaption').textContent.trim()).not.toBe('');
+  });
+
   it('muestra la sugerencia inicial de por dónde empezar', async () => {
     await renderApp('/');
     expect(screen.getByText(/^¿Por dónde empezar\? Si tu equipo trabaja en iteraciones cortas/)).toBeInTheDocument();
