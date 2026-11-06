@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { flushSync } from 'react-dom';
+import { useNavigate } from 'react-router';
 import { useCatalog } from '../../hooks/useCatalog.js';
 import { useNoticeScheduler } from '../../hooks/useNoticeScheduler.js';
 import NoticeToast from './NoticeToast.jsx';
@@ -14,7 +15,10 @@ export default function NoticeHost() {
   const { getTips } = useCatalog();
   // La lista se calcula una vez: el hook recalcula si cambia su identidad.
   const tips = useMemo(() => getTips(), [getTips]);
-  const { notice, dismiss } = useNoticeScheduler({ tips });
+  const navigate = useNavigate();
+  // Al pulsar una notificación nativa se abre la ficha en esta misma pestaña.
+  const openTip = useCallback((id) => navigate(`/tip/${id}`), [navigate]);
+  const { notice, dismiss } = useNoticeScheduler({ tips, openTip });
   const hostRef = useRef(null);
 
   // Al cerrar:

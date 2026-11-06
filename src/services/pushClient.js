@@ -7,6 +7,7 @@
 // - Todas las funciones reciben sus dependencias en `env` para probarlas sin navegador;
 //   por defecto usan las del navegador.
 
+import { getPermission, requestPermission } from './notificationService.js';
 import { getBrowserRepository } from './storage.js';
 
 export const SERVICE_WORKER_URL = '/sw.js';
@@ -51,7 +52,7 @@ async function currentSubscription(nav) {
 export async function getPushStatus(env) {
   const resolved = resolveEnv(env);
   if (!isPushSupported(resolved)) return 'unsupported';
-  if (resolved.Notification.permission === 'denied') return 'denied';
+  if (getPermission({ Notification: resolved.Notification }) === 'denied') return 'denied';
   try {
     return (await currentSubscription(resolved.navigator)) ? 'on' : 'off';
   } catch {
@@ -86,8 +87,9 @@ export async function enablePush(settings, timeZone, env) {
   if (!resolved.vapidPublicKey) return { ok: false, status: await getPushStatus(resolved), error: 'config' };
 
   // El permiso se pide primero, mientras dura la acción del usuario: algunos navegadores lo
-  // rechazan si antes se espera a registrar el service worker.
-  const permission = await resolved.Notification.requestPermission();
+  // rechazan si antes se espera a registrar el service worker. Se pide a través de
+  // notificationService, el único lugar que lo hace (HT-06.1-A).
+  const permission = await requestPermission({ Notification: resolved.Notification });
   if (permission !== 'granted') {
     return { ok: false, status: permission === 'denied' ? 'denied' : 'off', error: 'permission' };
   }

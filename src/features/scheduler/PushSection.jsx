@@ -72,7 +72,8 @@ export default function PushSection({ status, settings, onStatusChange }) {
   const canToggle = status === 'on' || status === 'off';
 
   return (
-    <section className="settings-section" aria-labelledby="push-titulo">
+    // id: destino del enlace de «Notificaciones del navegador» (HU-06.2-B).
+    <section id="avisos-pestana-cerrada" className="settings-section" aria-labelledby="push-titulo">
       <h2 id="push-titulo">Avisos con la pestaña cerrada</h2>
       <p>
         Te enviamos el consejo aunque cierres la pestaña, mientras el navegador siga abierto. Para eso, nuestro

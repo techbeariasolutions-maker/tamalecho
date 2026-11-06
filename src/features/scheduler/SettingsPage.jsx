@@ -4,13 +4,14 @@ import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { useSettings } from '../../hooks/useSettings.js';
 import { disablePush, getPushStatus } from '../../services/pushClient.js';
 import NextTip from './NextTip.jsx';
+import NotificationSection from './NotificationSection.jsx';
 import PauseControl from './PauseControl.jsx';
 import PushSection from './PushSection.jsx';
 import ScheduleForm from './ScheduleForm.jsx';
 import SchedulePreview from './SchedulePreview.jsx';
 
-// Ajustes: horario de los avisos (HU-07.1), avisos con la pestaña cerrada (HU-15.1-A) y
-// datos locales (HT-04.2-B).
+// Ajustes: horario de los avisos (HU-07.1), notificaciones del navegador (HU-06.2), avisos con la
+// pestaña cerrada (HU-15.1-A) y datos locales (HT-04.2-B).
 export default function SettingsPage() {
   useDocumentTitle('Ajustes');
   const { settings, historyCount, saveSettings, resetAll } = useSettings();
@@ -19,10 +20,15 @@ export default function SettingsPage() {
   // Al restablecer los datos el formulario se vuelve a montar para mostrar los valores recomendados.
   const [formVersion, setFormVersion] = useState(0);
 
+  // Web Push usa el mismo permiso que las notificaciones: al cambiarlo se vuelve a consultar.
   const refreshPushStatus = useCallback(async () => {
-    setFormVersion((version) => version + 1);
     setPushStatus(await getPushStatus());
   }, []);
+
+  const afterReset = useCallback(async () => {
+    setFormVersion((version) => version + 1);
+    await refreshPushStatus();
+  }, [refreshPushStatus]);
 
   useEffect(() => {
     let active = true;
@@ -44,8 +50,9 @@ export default function SettingsPage() {
         <SchedulePreview settings={settings} now={new Date()} />
       </section>
       <PauseControl paused={settings.paused} onSave={saveSettings} />
+      <NotificationSection onPermissionChange={refreshPushStatus} />
       <PushSection status={pushStatus} settings={settings} onStatusChange={setPushStatus} />
-      <LocalDataSection historyCount={historyCount} resetAll={resetAll} onReset={refreshPushStatus} />
+      <LocalDataSection historyCount={historyCount} resetAll={resetAll} onReset={afterReset} />
     </>
   );
 }

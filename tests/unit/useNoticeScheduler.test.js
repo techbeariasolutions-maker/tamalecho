@@ -96,6 +96,22 @@ describe('useNoticeScheduler (HU-04.2-A)', () => {
     expect(result.current.notice).toMatchObject({ key: '2026-11-10@08:00' });
   });
 
+  it('emite a través de notify; si fue nativa no muestra el aviso de la página (HT-06.1-A)', () => {
+    vi.setSystemTime(at(9, 14, 5));
+    const repository = createRepository(createFakeStorage());
+    const openTip = vi.fn();
+    const emit = vi.fn((notice, channels) => {
+      channels.openTip(notice.tip.id);
+      return 'native';
+    });
+    const { result } = renderHook(() => useNoticeScheduler({ tips: TIPS, repository, emit, openTip }));
+    expect(emit).toHaveBeenCalledTimes(1);
+    expect(emit.mock.calls[0][0]).toMatchObject({ key: '2026-11-09@14:00' });
+    expect(openTip).toHaveBeenCalledWith(emit.mock.calls[0][0].tip.id);
+    expect(result.current.notice).toBeNull();
+    expect(repository.wasWindowServed('2026-11-09@14:00')).toBe(true);
+  });
+
   it('dismiss cierra el aviso y al desmontar no quedan temporizadores', () => {
     const { result, unmount } = setup({ now: at(9, 9) });
     act(() => result.current.dismiss());
