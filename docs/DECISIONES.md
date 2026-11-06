@@ -1,7 +1,7 @@
 # Registro de decisiones — TamalEcho Tips
 
 > Cada decisión tiene ID, fecha, motivo y estado. Si un agente o una persona encuentra una contradicción nueva, **no la resuelve en silencio**: la agrega aquí como `PENDIENTE` y pregunta.
-> Última actualización: 30/10/2026 (conexión del almacén).
+> Última actualización: 06/11/2026 (D-22 propuesta, PENDIENTE).
 
 ## D-01 · Jerarquía de fuentes de verdad — VIGENTE
 1. **Propuesta aprobada** (`TamalEcho_Propuesta_Sprints.pdf`). Manda sobre todo lo demás. Alcance cerrado.
@@ -195,6 +195,25 @@
   - **Almacén:** Upstash Redis Free (256 MB, 500 000 comandos al mes). El uso estimado es de ≈ 36 000 al mes. Se conectó al proyecto el 30/10; el backend usa `KV_REST_API_URL` y `KV_REST_API_TOKEN`.
   - **Prueba real:** llegó un aviso con la pestaña cerrada en Chrome de escritorio (Windows), con un retraso de 0 s. Edge, Firefox y Chrome Android se prueban en producción en T2-21 (hito del 6/11).
   - **Vistas previas:** la protección estándar de Vercel impide que Actions las llame, así que el disparador apunta solo a producción.
+
+## D-22 · Revisión cruzada después del cambio en la protección de `main` — PENDIENTE (06/11/2026)
+> Propuesta redactada por el agente de código a pedido de Diego. **No está decidida:** la deciden Diego y Alan, y se informa al PO. Mientras siga PENDIENTE, vale lo que dicen D-05, D-19 y PLAN §8.
+
+- **Hechos al 06/11/2026:**
+  - La regla de `main` (ruleset 25496977) se editó el 06/11 a las 00:36 (hora de Monterrey). Ahora pide **0 aprobaciones**; siguen obligatorios el PR y el check `CI`.
+  - Alan indicó por mensaje a Diego que abriera sus PR, esperara el CI en verde y los integrara él mismo.
+  - Desde entonces entraron sin ninguna revisión registrada en GitHub: #48, #49 y #50 (abiertos e integrados desde la cuenta de Alan) y #51 a #55 (abiertos e integrados desde la cuenta de Diego).
+  - Antes del cambio, #47 (abierto por Diego) se integró el 30/10 desde la cuenta de Alan, también sin revisión registrada.
+  - En #48 Alan dejó una revisión de QA como comentario, después del merge.
+- **Contradicción (no se resuelve en silencio, ver el encabezado de este archivo):**
+  - D-05 (S2) y D-19: «cada PR lo aprueba un integrante distinto del autor antes del merge».
+  - PLAN §8 (DoD): «el PR lo aprobó un integrante distinto del autor».
+  - Con la regla actual, ninguna actividad integrada desde el 30/10 cumple la DoD tal como está escrita.
+- **Opciones:**
+  - **A. Revisión posterior.** La DoD cambia a «un integrante distinto del autor la revisó y lo dejó registrado en el PR, antes o después del merge». Alan comenta en cada PR qué revisó y con qué resultado (como en #48). Si encuentra un defecto, se corrige en un PR nuevo. Las actividades cuentan como Terminadas cuando tengan ese registro y su caso de `PRUEBAS.md` en ✅.
+  - **B. Sin cambio en la DoD.** Las actividades integradas sin aprobación previa se reportan como **«integradas, sin revisión cruzada»**, no como Terminadas, y así quedan en el reporte del Sprint 2.
+- **Recomendación del agente:** A, solo si Alan deja su revisión en #47 a #55 antes del cierre del 12/11. Si no alcanza, B para las que falten. En ambos casos, el reporte lo dice tal como ocurrió (D-19).
+- **Pendiente de decidir:** opción elegida, quién la decide, fecha, y si se restaura la aprobación obligatoria para el release (WP-S2-12).
 
 ## D-12 · Versionado — VIGENTE
 - Catálogo: `0.9.0` mientras haya borradores; `1.0.0` solo cuando los 24 estén aprobados (HT-03.2-B).
