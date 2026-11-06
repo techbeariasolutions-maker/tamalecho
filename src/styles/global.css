@@ -551,6 +551,34 @@ main dd {
   font-weight: var(--font-weight-bold);
 }
 
+/* ── Ajustes ─────────────────────────────────────────────── */
+.settings-section {
+  margin-top: var(--space-8);
+}
+
+/* Confirmación dentro de la página (sin window.confirm), HT-04.2-B. */
+.confirm-box {
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.confirm-box p {
+  margin-top: 0;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* Región viva siempre presente para que el lector de pantalla anuncie el resultado. */
+.settings-status:empty {
+  margin: 0;
+}
+
 /* ── Movimiento reducido ─────────────────────────────────── */
 /* Regla global: con prefers-reduced-motion, --motion-duration vale 0ms (tokens.css) y
    ninguna animación ni transición se ejecuta, aunque un componente olvide usar el token. */

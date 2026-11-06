@@ -10,7 +10,7 @@ const CASES = [
   { path: '/tip/SCR-99', h1: 'Consejo no encontrado', title: 'Consejo no encontrado · TamalEcho Tips' },
   { path: '/historial', h1: 'Historial', title: 'Historial · TamalEcho Tips', sprint: 2 },
   { path: '/progreso', h1: 'Progreso', title: 'Progreso · TamalEcho Tips', sprint: 2 },
-  { path: '/ajustes', h1: 'Ajustes', title: 'Ajustes · TamalEcho Tips', sprint: 2 },
+  { path: '/ajustes', h1: 'Ajustes', title: 'Ajustes · TamalEcho Tips' },
   { path: '/ayuda', h1: 'Ayuda', title: 'Ayuda · TamalEcho Tips', sprint: 3 },
 ];
 
