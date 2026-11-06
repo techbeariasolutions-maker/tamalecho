@@ -1,3 +1,4 @@
+import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 // Ajustes del horario (WP-S2-6). La hora se fija con page.clock: lunes 9/11/2026.
@@ -50,4 +51,30 @@ test('la hora de inicio, los días y la comida se guardan y se conservan al reca
   await expect(section.getByRole('checkbox', { name: 'Domingo' })).not.toBeChecked();
   await expect(section.getByLabel('Empieza a las')).toHaveValue('13:00');
   await expect(section.getByLabel('Termina a las')).toHaveValue('15:00');
+});
+
+// HU-07.1-B: un valor inválido no se guarda, el error se lee junto al campo y axe no reporta nada.
+test('un horario inválido no se guarda y el error queda asociado al campo', async ({ page }) => {
+  await page.clock.setFixedTime(at(9));
+  await page.goto('/ajustes');
+  const section = scheduleSection(page);
+  await section.getByLabel('Empieza a las').fill('15:00');
+  await section.getByLabel('Termina a las').fill('13:00');
+  await section.getByRole('button', { name: 'Guardar horario' }).click();
+
+  const end = section.getByLabel('Termina a las');
+  await expect(end).toHaveAttribute('aria-invalid', 'true');
+  await expect(end).toHaveAccessibleDescription('La comida debe terminar después de empezar.');
+  await expect(end).toBeFocused();
+  await expect(section.getByRole('status')).toHaveText(/No guardamos ningún cambio/);
+
+  const { violations } = await new AxeBuilder({ page })
+    .include('form.schedule-form')
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+    .analyze();
+  expect(violations.map((violation) => violation.id)).toEqual([]);
+
+  await page.reload();
+  await expect(section.getByLabel('Empieza a las')).toHaveValue('12:00');
+  await expect(section.getByLabel('Termina a las')).toHaveValue('16:00');
 });

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { screen, within } from '@testing-library/react';
+import { fireEvent, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderApp } from './renderApp.jsx';
 import { createRepository } from '../../src/services/storage.js';
@@ -62,6 +62,15 @@ describe('panel de horario (HU-07.1-A)', () => {
 
     expect(browserRepository().getSettings().activeDays).toEqual([0, 2, 3, 4, 5, 6]);
     expect(screen.getByText(/Hoy no hay avisos/)).toBeInTheDocument();
+  });
+
+  it('la vista previa explica cuando el silencio cubre todo lo que queda del día', async () => {
+    const user = userEvent.setup();
+    await renderApp('/ajustes');
+    // Primer aviso a las 22:00 con el silencio por defecto (21:00–08:00): cruza la medianoche.
+    fireEvent.change(screen.getByLabelText('Hora del primer aviso'), { target: { value: '22:00' } });
+    await user.click(screen.getByRole('button', { name: 'Guardar horario' }));
+    expect(screen.getByText('Hoy no hay avisos: con este horario todos caen en el silencio.')).toBeInTheDocument();
   });
 
   it('la vista previa usa lo guardado, no lo que se está escribiendo', async () => {

@@ -761,6 +761,21 @@ main dd {
   border-radius: var(--radius-sm);
 }
 
+.field__input[aria-invalid='true'] {
+  border-color: var(--color-error);
+  border-width: calc(var(--border-width) * 2);
+}
+
+/* Mensaje de error junto al campo; el texto lo dice, no solo el color (WCAG 1.4.1). */
+.field__error {
+  margin: var(--space-1) 0 0;
+  padding: var(--space-1) var(--space-2);
+  color: var(--color-error);
+  background: var(--color-error-bg);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-bold);
+}
+
 .field__input:focus-visible,
 .choice input:focus-visible {
   outline: var(--focus-width) solid var(--focus-color);
