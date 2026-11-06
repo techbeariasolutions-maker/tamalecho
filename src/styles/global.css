@@ -717,6 +717,89 @@ main dd {
   margin: 0;
 }
 
+/* Formulario de horario (HU-07.1-A). Etiquetas visibles y objetivos de 44 px. */
+.schedule-form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.fieldset {
+  margin: 0;
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.fieldset__legend {
+  padding: 0 var(--space-1);
+  font-weight: var(--font-weight-bold);
+}
+
+.fieldset__hint {
+  margin: 0 0 var(--space-2);
+  color: var(--color-text-muted);
+}
+
+.field {
+  display: grid;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.field__label {
+  font-weight: var(--font-weight-bold);
+}
+
+.field__input {
+  justify-self: start;
+  min-height: var(--tap-target-min);
+  padding: var(--space-1) var(--space-2);
+  font: inherit;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.field__input:focus-visible,
+.choice input:focus-visible {
+  outline: var(--focus-width) solid var(--focus-color);
+  outline-offset: var(--focus-offset);
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap-target-min);
+}
+
+.choice input {
+  width: var(--space-6);
+  height: var(--space-6);
+  margin: 0;
+  accent-color: var(--color-primary);
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--choice-min-width), 1fr));
+  column-gap: var(--space-4);
+}
+
+.schedule-preview {
+  margin-top: var(--space-6);
+}
+
+.schedule-preview__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  padding: 0;
+  list-style: none;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ── Movimiento reducido ─────────────────────────────────── */
 /* Regla global: con prefers-reduced-motion, --motion-duration vale 0ms (tokens.css) y
    ninguna animación ni transición se ejecuta, aunque un componente olvide usar el token. */

@@ -53,7 +53,7 @@ describe('SettingsPage (HT-04.2-B)', () => {
     expect(screen.queryByRole('button', { name: 'Restablecer mis datos' })).not.toBeInTheDocument();
 
     await user.click(within(group).getByRole('button', { name: 'Cancelar' }));
-    expect(screen.queryByRole('group')).not.toBeInTheDocument();
+    expect(screen.queryByRole('group', { name: /¿Restablecer tus datos\?/ })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Restablecer mis datos' })).toHaveFocus();
     expect(browserRepository().getHistory()).toHaveLength(1);
     expect(confirmSpy).not.toHaveBeenCalled();
