@@ -1,25 +1,30 @@
 {
+  "phrasesApproved": false,
   "states": {
     "despierto": {
       "expression": "sonriente",
+      "phrase": "Buen día…",
       "colorToken": "--avatar-color-despierto",
       "animation": "transicion",
       "alt": "Personaje despierto: un tamal sonriente con los ojos bien abiertos"
     },
     "hambre": {
       "expression": "antojado",
+      "phrase": "Hora de comer…",
       "colorToken": "--avatar-color-hambre",
       "animation": "transicion",
       "alt": "Personaje con hambre: un tamal con la boca abierta y las cejas levantadas"
     },
     "atento": {
       "expression": "concentrado",
+      "phrase": "Una pausa…",
       "colorToken": "--avatar-color-atento",
       "animation": "transicion",
       "alt": "Personaje atento: un tamal concentrado con la boca recta"
     },
     "cansado": {
       "expression": "somnoliento",
+      "phrase": "Es hora de dormir…",
       "colorToken": "--avatar-color-cansado",
       "animation": "transicion",
       "alt": "Personaje cansado: un tamal con los ojos cerrados que bosteza"

@@ -3,6 +3,7 @@ import {
   DEFAULT_SETTINGS,
   getCurrentWindow,
   getDayPart,
+  getNextDayPartChange,
   getNextWindow,
   getWindowsForDay,
   idempotencyKey,
@@ -142,6 +143,41 @@ describe('motor de horario', () => {
       expect(getDayPart(at(29, 12, 30), lunch)).toBe('despierto');
       expect(getDayPart(at(29, 13, 30), lunch)).toBe('hambre');
       expect(getDayPart(at(29, 15, 0), lunch)).toBe('atento');
+    });
+  });
+
+  describe('getNextDayPartChange (HU-05.1-B)', () => {
+    it.each([
+      [[3, 0], [29, 5, 0]],
+      [[9, 0], [29, 12, 0]],
+      [[12, 0], [29, 16, 0]],
+      [[16, 30], [29, 20, 0]],
+    ])('desde las %j el siguiente cambio es %j', ([hours, minutes], [day, nextHours, nextMinutes]) => {
+      expect(getNextDayPartChange(at(29, hours, minutes))).toEqual(at(day, nextHours, nextMinutes));
+    });
+
+    it('después de las 20:00 el siguiente cambio es mañana a las 05:00', () => {
+      expect(getNextDayPartChange(at(29, 22, 15))).toEqual(at(30, 5));
+    });
+
+    it('a los segundos de un límite, el cambio sigue siendo ese límite', () => {
+      expect(getNextDayPartChange(new Date(2026, 9, 29, 11, 59, 59, 500))).toEqual(at(29, 12));
+    });
+
+    it('usa la franja de comida configurada', () => {
+      const lunch = settings({ lunchStart: '13:00', lunchEnd: '15:00' });
+      expect(getNextDayPartChange(at(29, 12, 30), lunch)).toEqual(at(29, 13));
+      expect(getNextDayPartChange(at(29, 13, 30), lunch)).toEqual(at(29, 15));
+    });
+
+    it('en cada cambio la franja es distinta a la de un minuto antes', () => {
+      let now = at(29, 0);
+      for (let step = 0; step < 4; step += 1) {
+        const change = getNextDayPartChange(now);
+        const before = new Date(change.getTime() - 60_000);
+        expect(getDayPart(change)).not.toBe(getDayPart(before));
+        now = change;
+      }
     });
   });
 

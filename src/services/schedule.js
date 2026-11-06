@@ -112,6 +112,16 @@ export function getDayPart(now, settings = DEFAULT_SETTINGS) {
   return 'atento';
 }
 
+// Momento en que cambia la franja del personaje después de `now` (HT-05.1-B): el siguiente de
+// 05:00, inicio de comida, fin de comida o 20:00. Si ya pasaron todos, mañana a las 05:00.
+// Sirve para programar un solo temporizador hasta el próximo cambio, sin consultar cada minuto.
+export function getNextDayPartChange(now, settings = DEFAULT_SETTINGS) {
+  const minute = minutesOfDay(now);
+  const boundaries = [AWAKE_FROM, toMinutes(settings.lunchStart), toMinutes(settings.lunchEnd), TIRED_FROM];
+  const next = boundaries.filter((boundary) => boundary > minute).sort((a, b) => a - b)[0];
+  return next === undefined ? atMinutes(addDays(now, 1), AWAKE_FROM) : atMinutes(now, next);
+}
+
 // ¿Es horario de silencio? El rango por defecto (21:00–08:00) cruza la medianoche.
 export function isQuietTime(now, settings = DEFAULT_SETTINGS) {
   return inRange(minutesOfDay(now), toMinutes(settings.quietStart), toMinutes(settings.quietEnd));

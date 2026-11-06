@@ -11,7 +11,7 @@ const tokens = readFileSync(resolve(process.cwd(), 'src/styles/tokens.css'), 'ut
 // Catálogo único del personaje (HT-05.1-A): franja del día → expresión, color, animación y texto alternativo.
 const STATES = avatarCatalog.states;
 const DAY_PARTS = ['despierto', 'hambre', 'atento', 'cansado'];
-const FIELDS = ['expression', 'colorToken', 'animation', 'alt'];
+const FIELDS = ['expression', 'phrase', 'colorToken', 'animation', 'alt'];
 
 describe('catálogo de estados del personaje', () => {
   it('tiene exactamente los 4 estados del motor de horario', () => {
@@ -44,6 +44,17 @@ describe('catálogo de estados del personaje', () => {
       expect(STATES[part].alt.toLowerCase()).toContain(label);
     });
   }
+
+  // HU-05.1-B: las frases son las del backlog mientras el Product Owner no entregue las suyas.
+  // La marca obliga a revisarlas antes del release (CLAUDE.md §8).
+  it('declara si el Product Owner ya aprobó las frases', () => {
+    expect(typeof avatarCatalog.phrasesApproved).toBe('boolean');
+  });
+
+  it('cada estado tiene una frase distinta', () => {
+    const phrases = DAY_PARTS.map((part) => STATES[part].phrase);
+    expect(new Set(phrases).size).toBe(DAY_PARTS.length);
+  });
 
   it('cada estado tiene una expresión distinta', () => {
     const expressions = DAY_PARTS.map((part) => STATES[part].expression);
