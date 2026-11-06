@@ -31,4 +31,21 @@ describe('useSettings', () => {
     expect(saveResult.errors.map((error) => error.field)).toEqual(['startTime']);
     expect(result.current.settings.startTime).toBe(DEFAULT_SETTINGS.startTime);
   });
+
+  it('resetAll restablece los ajustes y el conteo del historial', () => {
+    const storage = createFakeStorage();
+    const repository = createRepository(storage);
+    repository.saveSettings({ intervalMinutes: 120 });
+    repository.addHistoryEntry({ id: 'SCR-01', at: new Date(2026, 10, 4, 9) });
+    const { result } = renderHook(() => useSettings(repository));
+    expect(result.current.historyCount).toBe(1);
+
+    let done;
+    act(() => {
+      done = result.current.resetAll();
+    });
+    expect(done).toBe(true);
+    expect(result.current.historyCount).toBe(0);
+    expect(result.current.settings.intervalMinutes).toBe(DEFAULT_SETTINGS.intervalMinutes);
+  });
 });

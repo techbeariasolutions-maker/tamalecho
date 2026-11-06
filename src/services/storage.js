@@ -1,4 +1,4 @@
-// Repositorio local (HT-04.2-A). Única pieza que toca el almacenamiento del navegador
+// Repositorio local (HT-04.2-A; último aviso y restablecer: HT-04.2-B). Única pieza que toca el almacenamiento del navegador
 // (CLAUDE.md §6). Recibe el almacenamiento por parámetro para poder probarlo sin navegador.
 // Reglas:
 // - Todo vive en una sola llave, con número de versión del esquema.
@@ -15,6 +15,10 @@ import { validateSettings } from './schedule.js';
 export const STORAGE_KEY = 'tamalecho:v1';
 export const SCHEMA_VERSION = 1;
 export const MAX_HISTORY_ENTRIES = 50;
+export const MAX_SERVED_WINDOWS = 20;
+
+// Formato de idempotencyKey en schedule.js: '2026-11-04@14:00'.
+const WINDOW_KEY_PATTERN = /^\d{4}-\d{2}-\d{2}@\d{2}:\d{2}$/;
 
 function isPlainObject(value) {
   return value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -41,6 +45,18 @@ function sanitizeHistory(value) {
 function sanitizeFavorites(value) {
   if (!Array.isArray(value)) return [];
   return [...new Set(value.filter((id) => typeof id === 'string' && ID_PATTERN.test(id)))];
+}
+
+function isWindowKey(value) {
+  return typeof value === 'string' && WINDOW_KEY_PATTERN.test(value);
+}
+
+// Sin repetidos; si una clave aparece dos veces cuenta su última aparición. Solo las 20 más recientes.
+function sanitizeServedWindows(value) {
+  if (!Array.isArray(value)) return [];
+  const keys = value.filter(isWindowKey);
+  const unique = keys.filter((key, index) => keys.lastIndexOf(key) === index);
+  return unique.slice(-MAX_SERVED_WINDOWS);
 }
 
 // Datos iniciales: ajustes recomendados y todo lo demás vacío.
@@ -75,7 +91,7 @@ export function migrate(data) {
     history: sanitizeHistory(source.history),
     favorites: sanitizeFavorites(source.favorites),
     progress: isPlainObject(source.progress) ? source.progress : {},
-    servedWindows: [],
+    servedWindows: sanitizeServedWindows(source.servedWindows),
     push: isPlainObject(source.push) ? source.push : null,
   };
 }
@@ -130,6 +146,30 @@ export function createRepository(storage) {
       const data = read();
       data.history = [...data.history, { id, at: iso }].slice(-MAX_HISTORY_ENTRIES);
       return write(data);
+    },
+
+    // Último aviso (HT-04.2-B): recuerda qué ventanas ya se sirvieron para no repetirlas.
+    // Conserva solo las 20 claves más recientes; volver a marcar una clave la pasa al final.
+    markWindowServed(key) {
+      if (!isWindowKey(key)) return false;
+      const data = read();
+      data.servedWindows = [...data.servedWindows.filter((served) => served !== key), key].slice(
+        -MAX_SERVED_WINDOWS,
+      );
+      return write(data);
+    },
+
+    wasWindowServed(key) {
+      return read().servedWindows.includes(key);
+    },
+
+    // «Restablecer mis datos» (HT-04.2-B): ajustes recomendados y sin historial, favoritos,
+    // progreso ni estado de push. Las ventanas ya servidas se conservan a propósito: no son datos
+    // del usuario y borrarlas haría que el aviso de la ventana actual volviera a aparecer
+    // (regla «uno por ventana como máximo», CLAUDE.md §2).
+    resetAll() {
+      const { servedWindows } = read();
+      return write({ ...createEmptyData(), servedWindows });
     },
   };
 }

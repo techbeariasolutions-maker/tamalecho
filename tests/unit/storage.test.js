@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_SETTINGS } from '../../src/services/schedule.js';
+import { DEFAULT_SETTINGS, getCurrentWindow, idempotencyKey } from '../../src/services/schedule.js';
 import {
   MAX_HISTORY_ENTRIES,
+  MAX_SERVED_WINDOWS,
   SCHEMA_VERSION,
   STORAGE_KEY,
   createEmptyData,
@@ -215,6 +216,120 @@ describe('repositorio local (HT-04.2-A)', () => {
       expect(() => repository.getSettings()).not.toThrow();
       expect(repository.saveSettings({ paused: true }).saved).toBe(false);
       expect(repository.getHistory()).toEqual([]);
+    });
+  });
+});
+
+describe('último aviso y restablecer (HT-04.2-B)', () => {
+  // Claves reales del motor: ventanas de 3 h del 1 al 4 de noviembre.
+  const keyAt = (day, hours) => idempotencyKey(at(day, hours));
+
+  describe('ventanas servidas', () => {
+    it('una ventana servida no se vuelve a servir, ni después de «recargar»', () => {
+      const storage = createFakeStorage();
+      const repository = createRepository(storage);
+      const current = idempotencyKey(getCurrentWindow(at(4, 14, 30)));
+      expect(current).toBe('2026-11-04@14:00');
+      expect(repository.wasWindowServed(current)).toBe(false);
+
+      expect(repository.markWindowServed(current)).toBe(true);
+      expect(repository.wasWindowServed(current)).toBe(true);
+      expect(createRepository(storage).wasWindowServed(current)).toBe(true);
+      // Otra ventana del mismo día sigue disponible.
+      expect(repository.wasWindowServed(keyAt(4, 17))).toBe(false);
+    });
+
+    it('conserva solo las 20 claves más recientes', () => {
+      const storage = createFakeStorage();
+      const repository = createRepository(storage);
+      const keys = [];
+      for (const day of [1, 2, 3, 4, 5]) {
+        for (const hours of [8, 11, 14, 17, 20]) keys.push(keyAt(day, hours));
+      }
+      keys.forEach((key) => repository.markWindowServed(key));
+
+      expect(keys).toHaveLength(25);
+      expect(stored(storage).servedWindows).toEqual(keys.slice(-MAX_SERVED_WINDOWS));
+      expect(repository.wasWindowServed(keys[4])).toBe(false);
+      expect(repository.wasWindowServed(keys[5])).toBe(true);
+      expect(repository.wasWindowServed(keys[24])).toBe(true);
+    });
+
+    it('marcar dos veces la misma clave no la duplica y la vuelve la más reciente', () => {
+      const storage = createFakeStorage();
+      const repository = createRepository(storage);
+      repository.markWindowServed(keyAt(4, 8));
+      repository.markWindowServed(keyAt(4, 11));
+      repository.markWindowServed(keyAt(4, 8));
+      expect(stored(storage).servedWindows).toEqual([keyAt(4, 11), keyAt(4, 8)]);
+    });
+
+    it('rechaza claves que no tienen el formato de idempotencyKey', () => {
+      const repository = createRepository(createFakeStorage());
+      for (const key of ['', '2026-11-04', '04/11/2026@14:00', 14, null]) {
+        expect(repository.markWindowServed(key)).toBe(false);
+      }
+      expect(repository.wasWindowServed('2026-11-04')).toBe(false);
+    });
+
+    it('migrate limpia las claves guardadas: formato, repetidos y límite', () => {
+      const keys = Array.from({ length: 22 }, (_, index) => `2026-11-${String(index + 1).padStart(2, '0')}@08:00`);
+      const result = migrate({ schemaVersion: 1, servedWindows: ['basura', keys[0], ...keys, 7] });
+      expect(result.servedWindows).toEqual(keys.slice(-MAX_SERVED_WINDOWS));
+    });
+
+    it('sin almacenamiento no lanza errores', () => {
+      const repository = createRepository(createFailingStorage());
+      expect(repository.markWindowServed(keyAt(4, 8))).toBe(false);
+      expect(repository.wasWindowServed(keyAt(4, 8))).toBe(false);
+    });
+  });
+
+  describe('resetAll', () => {
+    function seeded() {
+      const storage = createFakeStorage();
+      const repository = createRepository(storage);
+      repository.saveSettings({ intervalMinutes: 120, startTime: '09:00', paused: true });
+      repository.addHistoryEntry({ id: 'SCR-01', at: at(4, 9) });
+      repository.addHistoryEntry({ id: 'PMI-02', at: at(4, 10) });
+      repository.markWindowServed(keyAt(4, 14));
+      storage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ ...stored(storage), favorites: ['SCR-03'], progress: { answered: 1 }, push: { status: 'on' } }),
+      );
+      return { storage, repository };
+    }
+
+    it('deja los ajustes recomendados y vacía historial, favoritos, progreso y push', () => {
+      const { storage, repository } = seeded();
+      expect(repository.resetAll()).toBe(true);
+
+      expect(repository.getSettings()).toEqual({ ...DEFAULT_SETTINGS, activeDays: [...DEFAULT_SETTINGS.activeDays] });
+      expect(repository.getHistory()).toEqual([]);
+      const data = stored(storage);
+      expect(data.favorites).toEqual([]);
+      expect(data.progress).toEqual({});
+      expect(data.push).toBeNull();
+      expect(data.schemaVersion).toBe(1);
+      // Persiste: un repositorio nuevo («recargar») ve lo mismo.
+      expect(createRepository(storage).getHistory()).toEqual([]);
+    });
+
+    it('conserva las ventanas ya servidas para no repetir el aviso actual (supuesto declarado en el PR)', () => {
+      const { repository } = seeded();
+      repository.resetAll();
+      expect(repository.wasWindowServed(keyAt(4, 14))).toBe(true);
+    });
+
+    it('con datos corruptos también deja valores seguros', () => {
+      const storage = createFakeStorage({ [STORAGE_KEY]: '{corrupto' });
+      expect(createRepository(storage).resetAll()).toBe(true);
+      expect(stored(storage)).toEqual(createEmptyData());
+    });
+
+    it('si el navegador no deja guardar devuelve false sin lanzar', () => {
+      expect(createRepository(createFailingStorage()).resetAll()).toBe(false);
+      expect(createRepository(null).resetAll()).toBe(false);
     });
   });
 });

@@ -58,6 +58,12 @@ test('T-12: axe sin violaciones serias ni críticas en cada ruta', async ({ page
   await page.getByText('Ver ejemplo: mismo problema, dos enfoques').click();
   await audit('/biblioteca/scrum (comparación abierta)');
 
+  // Ajustes con la confirmación de «Restablecer mis datos» abierta (HT-04.2-B).
+  await page.goto('/ajustes');
+  await page.getByRole('button', { name: 'Restablecer mis datos' }).click();
+  await audit('/ajustes (confirmación de restablecer abierta)');
+
+  await page.goto('/biblioteca/scrum');
   const toggle = page.getByRole('button', { name: 'Menú' });
   if (await toggle.isVisible()) {
     await toggle.click();

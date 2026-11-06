@@ -6,6 +6,7 @@ import Layout from './Layout.jsx';
 const HomePage = lazy(() => import('../features/home/HomePage.jsx'));
 const LibraryPage = lazy(() => import('../features/library/LibraryPage.jsx'));
 const TipDetailPage = lazy(() => import('../features/tips/TipDetailPage.jsx'));
+const SettingsPage = lazy(() => import('../features/scheduler/SettingsPage.jsx'));
 const PlaceholderPage = lazy(() => import('../features/placeholders/PlaceholderPage.jsx'));
 const NotFoundPage = lazy(() => import('../features/notfound/NotFoundPage.jsx'));
 
@@ -20,7 +21,7 @@ export const routes = [
       { path: '/tip/:id', element: <TipDetailPage /> },
       { path: '/historial', element: <PlaceholderPage title="Historial" sprint={2} /> },
       { path: '/progreso', element: <PlaceholderPage title="Progreso" sprint={2} /> },
-      { path: '/ajustes', element: <PlaceholderPage title="Ajustes" sprint={2} /> },
+      { path: '/ajustes', element: <SettingsPage /> },
       { path: '/ayuda', element: <PlaceholderPage title="Ayuda" sprint={3} /> },
       { path: '*', element: <NotFoundPage /> },
     ],
