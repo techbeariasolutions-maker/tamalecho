@@ -11,6 +11,8 @@ vi.mock('../../src/services/pushClient.js', () => ({
   getPushStatus: vi.fn(),
   enablePush: vi.fn(),
   disablePush: vi.fn(),
+  syncPushSettings: vi.fn(async () => ({ ok: true, synced: true })),
+  currentTimeZone: () => 'America/Monterrey',
 }));
 
 const repository = () => createRepository(window.localStorage);

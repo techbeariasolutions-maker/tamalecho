@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Button from '../../components/Button.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { useSettings } from '../../hooks/useSettings.js';
-import { disablePush, getPushStatus } from '../../services/pushClient.js';
+import { currentTimeZone, disablePush, getPushStatus, syncPushSettings } from '../../services/pushClient.js';
 import NextTip from './NextTip.jsx';
 import NotificationSection from './NotificationSection.jsx';
 import PauseControl from './PauseControl.jsx';
@@ -40,18 +40,32 @@ export default function SettingsPage() {
     };
   }, []);
 
+  // Silencio remoto (HU-07.2-B): con Web Push activo, cada cambio guardado de horario o pausa se
+  // envía también al servidor. El guardado local no espera a la red.
+  const [syncFailed, setSyncFailed] = useState(false);
+  const saveAndSync = useCallback(
+    (patch) => {
+      const result = saveSettings(patch);
+      if (result.saved && pushStatus === 'on') {
+        syncPushSettings(result.settings, currentTimeZone()).then(({ ok }) => setSyncFailed(!ok));
+      }
+      return result;
+    },
+    [saveSettings, pushStatus],
+  );
+
   return (
     <>
       <h1>Ajustes</h1>
       <NextTip settings={settings} />
       <section className="settings-section" aria-labelledby="horario-titulo">
         <h2 id="horario-titulo">Horario de los avisos</h2>
-        <ScheduleForm key={formVersion} settings={settings} onSave={saveSettings} />
+        <ScheduleForm key={formVersion} settings={settings} onSave={saveAndSync} />
         <SchedulePreview settings={settings} now={new Date()} />
       </section>
-      <PauseControl paused={settings.paused} onSave={saveSettings} />
+      <PauseControl paused={settings.paused} onSave={saveAndSync} />
       <NotificationSection onPermissionChange={refreshPushStatus} />
-      <PushSection status={pushStatus} settings={settings} onStatusChange={setPushStatus} />
+      <PushSection status={pushStatus} settings={settings} onStatusChange={setPushStatus} syncFailed={syncFailed} />
       <LocalDataSection historyCount={historyCount} resetAll={resetAll} onReset={afterReset} />
     </>
   );

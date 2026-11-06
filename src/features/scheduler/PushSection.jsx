@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Button from '../../components/Button.jsx';
-import { disablePush, enablePush } from '../../services/pushClient.js';
+import { currentTimeZone, disablePush, enablePush } from '../../services/pushClient.js';
 
 // Textos de cada estado (HU-15.1-A). `null` = todavía se está consultando al navegador.
 const STATE_TEXT = {
@@ -26,11 +26,8 @@ const RESULT_TEXT = {
   disableFailed: 'No se pudieron desactivar los avisos en este navegador. Intenta de nuevo.',
 };
 
-function currentTimeZone() {
-  return Intl.DateTimeFormat().resolvedOptions().timeZone;
-}
-
-export default function PushSection({ status, settings, onStatusChange }) {
+// `syncFailed`: el último cambio de horario o pausa no llegó al servidor (HU-07.2-B).
+export default function PushSection({ status, settings, onStatusChange, syncFailed = false }) {
   const [result, setResult] = useState('');
   const busy = useRef(false);
   const stateRef = useRef(null);
@@ -89,6 +86,10 @@ export default function PushSection({ status, settings, onStatusChange }) {
       )}
       <p className="settings-status" role="status">
         {RESULT_TEXT[result] ?? ''}
+        {status === 'on' && syncFailed && !result
+          ? 'Guardamos tu horario en este navegador, pero no pudimos avisarle al servidor. Los avisos con la ' +
+            'pestaña cerrada pueden seguir el horario anterior; vuelve a guardar para intentarlo de nuevo.'
+          : ''}
       </p>
     </section>
   );

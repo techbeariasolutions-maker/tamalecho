@@ -57,7 +57,9 @@ export function useNoticeScheduler({
     function recalculate() {
       const now = clock();
       const settings = repository.getSettings();
-      const next = computeNotice({ now, settings, repository, tips, shownKeys: shownKeys.current });
+      // HU-08.1-A: los consejos leídos (historial, máximo 50) se evitan mientras haya otros.
+      const recentIds = repository.getHistory().map((entry) => entry.id);
+      const next = computeNotice({ now, settings, repository, tips, recentIds, shownKeys: shownKeys.current });
       // Un solo aviso a la vez: uno nuevo reemplaza al anterior.
       if (next) {
         emit(next, { showInPage: () => setNotice(next), openTip: (id) => openTipRef.current?.(id) });

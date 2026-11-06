@@ -121,6 +121,33 @@ export async function enablePush(settings, timeZone, env) {
   return { ok: true, status: 'on' };
 }
 
+// Zona horaria del navegador (IANA), la que el servidor usa para respetar el silencio.
+export function currentTimeZone() {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
+
+// Silencio remoto (HU-07.2-B): cuando cambian el horario o la pausa con Web Push activo, se vuelve a
+// enviar la suscripción con los ajustes nuevos para que el servidor los respete.
+// No registra el service worker ni pide permiso: si no hay suscripción, no hace nada.
+// Devuelve { ok, synced }: ok = false solo si había suscripción y el servidor no la actualizó.
+export async function syncPushSettings(settings, timeZone, env) {
+  const resolved = resolveEnv(env);
+  if (!isPushSupported(resolved)) return { ok: true, synced: false };
+  let subscription;
+  try {
+    subscription = await currentSubscription(resolved.navigator);
+  } catch {
+    return { ok: true, synced: false };
+  }
+  if (!subscription) return { ok: true, synced: false };
+  try {
+    await sendToServer(resolved.fetch, 'POST', { subscription: subscription.toJSON(), timeZone, settings });
+    return { ok: true, synced: true };
+  } catch {
+    return { ok: false, synced: false };
+  }
+}
+
 // Desactiva los avisos con la pestaña cerrada: primero cancela la suscripción en el navegador
 // (así ya no puede llegar ningún aviso) y después pide al servidor que la borre.
 // Devuelve { ok, status, serverRemoved }. ok = false solo si el navegador no pudo cancelarla.
