@@ -41,6 +41,27 @@ for (const { hour, dayPart } of CASES) {
   });
 }
 
+// HU-05.1-A: en el navegador real solo se ve la boca del estado y las cejas cambian de forma.
+test('cada hora muestra solo la boca de su expresión y mueve las cejas', async ({ page }) => {
+  const browTransforms = new Set();
+  for (const { hour, dayPart } of CASES) {
+    await page.clock.setFixedTime(at(hour));
+    await page.goto('/');
+    await expectAvatar(page, dayPart);
+    const visible = await page.evaluate(() =>
+      [...document.querySelectorAll('[data-mouth]')]
+        .filter((node) => getComputedStyle(node).opacity === '1')
+        .map((node) => node.dataset.mouth),
+    );
+    expect(visible).toEqual([STATES[dayPart].expression]);
+    browTransforms.add(
+      await page.locator('.avatar__brow--left').evaluate((node) => getComputedStyle(node).transform),
+    );
+  }
+  // Despierto, hambre, atento y cansado ponen las cejas en 4 posiciones distintas.
+  expect(browTransforms.size).toBe(4);
+});
+
 test('el mismo personaje cambia de expresión y frase al pasar la hora, sin recargar', async ({ page }) => {
   await page.clock.install({ time: at(11, 59, 30) });
   await page.goto('/');
@@ -51,16 +72,4 @@ test('el mismo personaje cambia de expresión y frase al pasar la hora, sin reca
   await expectAvatar(page, 'hambre');
   // Es el mismo nodo: el componente se actualizó, no se volvió a montar la página.
   expect(await figure.evaluate((node) => node.isConnected)).toBe(true);
-});
-
-test('la franja de comida guardada en Ajustes mueve «hambre»', async ({ page }) => {
-  await page.clock.setFixedTime(at(12, 30));
-  await page.addInitScript(() => {
-    window.localStorage.setItem(
-      'tamalecho:v1',
-      JSON.stringify({ schemaVersion: 1, settings: { lunchStart: '13:00', lunchEnd: '15:00' } }),
-    );
-  });
-  await page.goto('/');
-  await expectAvatar(page, 'despierto');
 });

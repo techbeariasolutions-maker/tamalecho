@@ -12,7 +12,7 @@ describe('Avatar', () => {
       const { container } = render(<Avatar dayPart={dayPart} />);
       const image = screen.getByRole('img', { name: state.alt });
       expect(image.tagName.toLowerCase()).toBe('svg');
-      expect(container.querySelector('.avatar__face')).toHaveAttribute('data-expression', state.expression);
+      expect(container.querySelector('figure')).toHaveAttribute('data-expression', state.expression);
       expect(screen.getByRole('figure')).toHaveAttribute('data-day-part', dayPart);
       expect(screen.getByRole('figure').style.getPropertyValue('--avatar-bg')).toBe(`var(${state.colorToken})`);
 
@@ -28,7 +28,7 @@ describe('Avatar', () => {
     const figure = screen.getByRole('figure');
     rerender(<Avatar dayPart="cansado" />);
     expect(screen.getByRole('figure')).toBe(figure);
-    expect(container.querySelector('.avatar__face')).toHaveAttribute('data-expression', STATES.cansado.expression);
+    expect(container.querySelector('figure')).toHaveAttribute('data-expression', STATES.cansado.expression);
     expect(screen.getByText(STATES.cansado.phrase)).toBeInTheDocument();
     expect(screen.queryByText(STATES.despierto.phrase)).not.toBeInTheDocument();
   });
@@ -46,6 +46,29 @@ describe('Avatar', () => {
     expect(figure).toHaveAttribute('data-animation', 'ninguna');
     expect(screen.getByRole('img', { name: STATES.hambre.alt })).toBeInTheDocument();
     expect(screen.getByText(STATES.hambre.phrase)).toBeInTheDocument();
+  });
+
+  // HU-05.1-A: las 4 expresiones viven en el mismo SVG; cambiar de estado no cambia los nodos.
+  it('las 4 expresiones comparten el mismo SVG, las mismas cejas y los mismos ojos', () => {
+    const { container, rerender } = render(<Avatar dayPart="despierto" />);
+    const svg = container.querySelector('svg');
+    const brows = [...container.querySelectorAll('.avatar__brow')];
+    const eyes = [...container.querySelectorAll('.avatar__eye')];
+    expect(brows).toHaveLength(2);
+    expect(eyes).toHaveLength(4);
+
+    for (const dayPart of ['hambre', 'atento', 'cansado', 'despierto']) {
+      rerender(<Avatar dayPart={dayPart} />);
+      expect(container.querySelector('svg')).toBe(svg);
+      expect([...container.querySelectorAll('.avatar__brow')]).toEqual(brows);
+      expect([...container.querySelectorAll('.avatar__eye')]).toEqual(eyes);
+    }
+  });
+
+  it('tiene una boca por expresión y cada expresión del catálogo tiene la suya', () => {
+    const { container } = render(<Avatar dayPart="despierto" />);
+    const mouths = [...container.querySelectorAll('[data-mouth]')].map((node) => node.dataset.mouth);
+    expect(mouths.sort()).toEqual(Object.values(STATES).map((state) => state.expression).sort());
   });
 
   it('no usa imágenes externas', () => {

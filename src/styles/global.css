@@ -423,10 +423,90 @@ main dd {
   line-height: var(--line-height-tight);
 }
 
+/* ── Expresiones (HU-05.1-A) ─────────────────────────────── */
+/* Un solo SVG. data-expression de la figura decide qué hace cada rasgo:
+   - cejas y ojos son los mismos elementos y cambian con transform (giro, altura, escala);
+   - las 4 bocas existen y solo se ve la del estado (fundido de opacidad).
+   Los desplazamientos están en unidades del viewBox (0–120): son geometría del dibujo,
+   como las coordenadas de los trazos. Duración y curva salen de tokens.css. */
+.avatar__bg {
+  transition: fill var(--avatar-transition-duration) var(--avatar-transition-easing);
+}
+
+.avatar__brow,
+.avatar__eye,
+.avatar__mouth {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    transform var(--avatar-transition-duration) var(--avatar-transition-easing),
+    opacity var(--avatar-transition-duration) var(--avatar-transition-easing);
+}
+
+.avatar__eye--closed,
+.avatar__mouth {
+  opacity: 0;
+}
+
+.avatar[data-expression='sonriente'] [data-mouth='sonriente'],
+.avatar[data-expression='antojado'] [data-mouth='antojado'],
+.avatar[data-expression='concentrado'] [data-mouth='concentrado'],
+.avatar[data-expression='somnoliento'] [data-mouth='somnoliento'] {
+  opacity: 1;
+}
+
+/* Con hambre: cejas arriba, como quien ve la comida. */
+.avatar[data-expression='antojado'] .avatar__brow {
+  transform: translateY(-3px);
+}
+
+/* Atento: cejas inclinadas hacia el centro y ojos un poco más chicos. */
+.avatar[data-expression='concentrado'] .avatar__brow--left {
+  transform: translateY(1px) rotate(10deg);
+}
+
+.avatar[data-expression='concentrado'] .avatar__brow--right {
+  transform: translateY(1px) rotate(-10deg);
+}
+
+.avatar[data-expression='concentrado'] .avatar__eye--open {
+  transform: scale(0.85);
+}
+
+/* Cansado: cejas caídas y párpados cerrados (los ojos abiertos se aplanan y se ocultan). */
+.avatar[data-expression='somnoliento'] .avatar__brow--left {
+  transform: translateY(2px) rotate(-8deg);
+}
+
+.avatar[data-expression='somnoliento'] .avatar__brow--right {
+  transform: translateY(2px) rotate(8deg);
+}
+
+.avatar[data-expression='somnoliento'] .avatar__eye--open {
+  opacity: 0;
+  transform: scaleY(0.1);
+}
+
+.avatar[data-expression='somnoliento'] .avatar__eye--closed {
+  opacity: 1;
+}
+
 /* Versión estática de respaldo: ningún rasgo se mueve. */
+.avatar--static,
 .avatar--static * {
   animation: none;
   transition: none;
+}
+
+/* Movimiento reducido (HT-05.2-A): el personaje es estático y cambia de expresión sin
+   transición. El texto (frase y texto alternativo) no cambia. Además de la regla global
+   de abajo, se quita la transición aquí para no depender de que alguien la conserve. */
+@media (prefers-reduced-motion: reduce) {
+  .avatar,
+  .avatar * {
+    animation: none;
+    transition: none;
+  }
 }
 
 /* ── Biblioteca ──────────────────────────────────────────── */
