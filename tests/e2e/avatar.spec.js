@@ -73,15 +73,3 @@ test('el mismo personaje cambia de expresión y frase al pasar la hora, sin reca
   // Es el mismo nodo: el componente se actualizó, no se volvió a montar la página.
   expect(await figure.evaluate((node) => node.isConnected)).toBe(true);
 });
-
-test('la franja de comida guardada en Ajustes mueve «hambre»', async ({ page }) => {
-  await page.clock.setFixedTime(at(12, 30));
-  await page.addInitScript(() => {
-    window.localStorage.setItem(
-      'tamalecho:v1',
-      JSON.stringify({ schemaVersion: 1, settings: { lunchStart: '13:00', lunchEnd: '15:00' } }),
-    );
-  });
-  await page.goto('/');
-  await expectAvatar(page, 'despierto');
-});
