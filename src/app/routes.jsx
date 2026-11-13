@@ -8,6 +8,7 @@ const LibraryPage = lazy(() => import('../features/library/LibraryPage.jsx'));
 const TipDetailPage = lazy(() => import('../features/tips/TipDetailPage.jsx'));
 const SettingsPage = lazy(() => import('../features/scheduler/SettingsPage.jsx'));
 const HelpPage = lazy(() => import('../features/help/HelpPage.jsx'));
+const PrivacyPage = lazy(() => import('../features/help/PrivacyPage.jsx'));
 const PlaceholderPage = lazy(() => import('../features/placeholders/PlaceholderPage.jsx'));
 const NotFoundPage = lazy(() => import('../features/notfound/NotFoundPage.jsx'));
 
@@ -24,6 +25,7 @@ export const routes = [
       { path: '/progreso', element: <PlaceholderPage title="Progreso" /> },
       { path: '/ajustes', element: <SettingsPage /> },
       { path: '/ayuda', element: <HelpPage /> },
+      { path: '/privacidad', element: <PrivacyPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

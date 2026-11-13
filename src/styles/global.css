@@ -83,6 +83,14 @@ a:hover {
   margin: 0;
 }
 
+/* Enlace del pie (HU-13.2-A): objetivo táctil de 44 px sin cambiar el aspecto del pie. */
+.app-footer__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-target-min);
+  color: var(--color-primary);
+}
+
 /* ── Aviso dentro de la página (HU-06.1-A) ──────────────── */
 /* A 360 px el aviso va en el flujo, arriba del contenido: lo empuja hacia abajo y no lo tapa.
    Desde el breakpoint md flota abajo a la derecha. La región vacía no ocupa espacio. */
