@@ -33,8 +33,13 @@ test.describe('con un aviso visible', () => {
     // La ventana ya se sirvió; se vuelve a una nueva para abrir el aviso.
     await page.clock.setFixedTime(new Date(2026, 10, 9, 17, 5));
     await page.goto('/biblioteca/scrum');
-    await notice.getByRole('link', { name: /^Ver consejo sobre / }).click();
+    const link = notice.getByRole('link', { name: /^Ver consejo sobre / });
+    const title = (await link.getAttribute('aria-label')).replace(/^Ver consejo sobre /, '').trim();
+    await link.click();
     await expect(page).toHaveURL(/\/tip\//);
+    // La ficha se carga aparte (React.lazy) y registra la lectura al montarse: hay que esperar su
+    // título antes de salir. Con solo la URL, en CI la navegación a Ajustes llegaba antes del registro.
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(title);
     await page.goto('/ajustes');
     await expect(readings(page)).toContainText('Ahora hay 1 lectura registrada.');
   });
