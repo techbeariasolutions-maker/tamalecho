@@ -1,7 +1,7 @@
 # Registro de decisiones — TamalEcho Tips
 
 > Cada decisión tiene ID, fecha, motivo y estado. Si un agente o una persona encuentra una contradicción nueva, **no la resuelve en silencio**: la agrega aquí como `PENDIENTE` y pregunta.
-> Última actualización: 06/11/2026 (D-22 propuesta, PENDIENTE).
+> Última actualización: 13/11/2026 (D-23 propuesta, PENDIENTE de confirmar en el Sprint Planning 3).
 
 ## D-01 · Jerarquía de fuentes de verdad — VIGENTE
 1. **Propuesta aprobada** (`TamalEcho_Propuesta_Sprints.pdf`). Manda sobre todo lo demás. Alcance cerrado.
@@ -214,6 +214,20 @@
   - **B. Sin cambio en la DoD.** Las actividades integradas sin aprobación previa se reportan como **«integradas, sin revisión cruzada»**, no como Terminadas, y así quedan en el reporte del Sprint 2.
 - **Recomendación del agente:** A, solo si Alan deja su revisión en #47 a #55 antes del cierre del 12/11. Si no alcanza, B para las que falten. En ambos casos, el reporte lo dice tal como ocurrió (D-19).
 - **Pendiente de decidir:** opción elegida, quién la decide, fecha, y si se restaura la aprobación obligatoria para el release (WP-S2-12).
+
+## D-23 · Alcance del Sprint 3 y forma de HU-14 — PENDIENTE de confirmar (13/11/2026)
+> Propuesta que Diego eligió el 13/11 con el agente (opción A de tres). Se confirma con Alan en el Sprint Planning del 17/11 y se informa al PO. Mientras no se confirme, el plan del S3 es un borrador.
+
+- **Alcance:** las 12 actividades y 16 puntos de la propuesta para el S3 (HT-08, HU-13 y HU-14). No entra ningún recortable del S2 que no se hizo (envío programado de push, historial, favoritos, búsqueda, microquiz, PWA); se reportan como pendientes del proyecto (D-10).
+- **HU-14 por repositorio:** la propia actividad HU-14.1-A permite un «flujo editorial de acceso restringido o por repositorio». Se elige el repositorio:
+  - Se edita `tips.json` en un PR; el validador corre en el CI.
+  - La vista previa de Vercel del PR es la «vista previa antes de publicar».
+  - La aprobación del PO queda en el PR y en una bitácora del catálogo (`src/data/catalog-changelog.json`).
+  - Revertir es un `git revert` del PR.
+  - **Por qué:** no agrega cuentas, servidor ni datos personales (CLAUDE.md §2) y cabe en 4 días con 2 personas.
+- **«Sincronización del catálogo en usuarios de la PWA» (HU-14.2-B):** no aplica, porque no hay PWA ni caché sin conexión. El catálogo viaja dentro de cada despliegue. Se declara en el reporte.
+- **Canal de sugerencias (HU-13.2-B):** la propuesta dice «formulario simple o vínculo al canal acordado», pero el canal no se ha acordado. Se propone un formulario de *issue* de GitHub en el repositorio público, sin campos de datos personales. **Limitación:** pide una cuenta de GitHub. El PO puede pedir otro canal.
+- **Pendiente de decidir:** confirmación del alcance (Diego y Alan) y del canal de sugerencias (PO).
 
 ## D-12 · Versionado — VIGENTE
 - Catálogo: `0.9.0` mientras haya borradores; `1.0.0` solo cuando los 24 estén aprobados (HT-03.2-B).
