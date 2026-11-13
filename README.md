@@ -3,7 +3,29 @@
 Web que enseña conceptos de **Scrum** y **PMI/PMBOK** con consejos breves. Hecha con React + JavaScript (Vite).
 Acceso público, sin registro.
 
-> Reglas del proyecto para personas y agentes: [`CLAUDE.md`](CLAUDE.md). Decisiones vigentes: [`docs/DECISIONES.md`](docs/DECISIONES.md). Plan del sprint: [`docs/sprint-1/PLAN.md`](docs/sprint-1/PLAN.md).
+> Reglas del proyecto para personas y agentes: [`CLAUDE.md`](CLAUDE.md). Decisiones vigentes: [`docs/DECISIONES.md`](docs/DECISIONES.md).
+> Planes por sprint: [`docs/sprint-1/`](docs/sprint-1/PLAN.md), [`docs/sprint-2/`](docs/sprint-2/PLAN.md) y [`docs/sprint-3/`](docs/sprint-3/PLAN.md).
+
+**Versión entregada:** `v1.0.0` (13/11/2026, entrega final; adelantada respecto al 20/11 del plan por decisión de Diego). Versiones anteriores: `v0.1.0` (Sprint 1) y `v0.2.0` (Sprint 2).
+
+## Qué hace
+
+- **Bibliotecas** de Scrum y de PMI/PMBOK con categorías, ficha de cada consejo con su fuente verificable y un ejemplo que compara ambos enfoques sin presentarlos como equivalentes.
+- **Avisos** cada 2 o 3 horas dentro de la página, con horario, días, silencio (21:00–08:00 por defecto) y pausa. A lo sumo un aviso por ventana; nunca se acumulan.
+- **Notificaciones del navegador** y **Web Push** opcionales; el permiso solo se pide tras un clic.
+- **Personaje** que cambia según la hora del día.
+- **Ayuda**, **aviso de privacidad** y canal de **sugerencias**.
+
+Sin cuentas ni datos personales: las preferencias y el historial viven en el navegador; el servidor solo guarda la suscripción push si se activa (ver `/privacidad`).
+
+## Documentos de operación
+
+| Documento | Para qué |
+|---|---|
+| [`docs/OPERACION.md`](docs/OPERACION.md) | Revisión después de desplegar, rollback, respaldo y monitoreo |
+| [`docs/EDITORIAL.md`](docs/EDITORIAL.md) | Corregir, aprobar, publicar y revertir consejos |
+| [`docs/sprint-3/SEGURIDAD.md`](docs/sprint-3/SEGURIDAD.md) | Auditoría de seguridad y riesgos aceptados |
+| [`docs/sprint-3/COBERTURA.md`](docs/sprint-3/COBERTURA.md) | Qué cubre cada prueba y guion de prueba manual |
 
 ## Requisitos
 
@@ -48,7 +70,7 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 | `npm run test` | Pruebas unitarias y de renderizado (Vitest, en `tests/unit/`). |
 | `npm run test:watch` | Igual que `test`, pero se repite al guardar cambios. |
 | `npm run test:e2e` | Pruebas de extremo a extremo (Playwright, en `tests/e2e/`) en escritorio (1280 × 800) y móvil (360 × 740). |
-| `npm run evidence` | Corre las pruebas de 360 px y de accesibilidad (axe) y guarda las evidencias: capturas en `docs/evidencias/sprint-1/360/` y `docs/evidencias/sprint-1/axe-resumen.json`. Solo este script escribe esos archivos; `test:e2e` y el CI no los tocan. |
+| `npm run evidence` | Corre las pruebas de 360 px y de accesibilidad (axe) y guarda las evidencias del sprint actual: capturas en `docs/evidencias/sprint-3/360/` y `docs/evidencias/sprint-3/axe-resumen.json`. Solo este script escribe esos archivos; `test:e2e` y el CI no los tocan. |
 | `npm run validate:tips` | Valida `src/data/tips.json` con las reglas de `src/data/schema.js` y su bitácora `src/data/catalog-changelog.json` (versión publicada registrada, con la misma fecha). Sale con código 1 y dice qué tip y qué regla fallan. La falta de aprobación es solo advertencia. Para cambiar contenido, sigue [`docs/EDITORIAL.md`](docs/EDITORIAL.md). |
 | `npm run validate:tips:release` | Igual, pero exige al menos 12 consejos por enfoque, `reviewedBy` + `reviewedAt` en todos y `approvedBy` en la entrada de la versión publicada. |
 | `npm run check:links` | Revisa que cada URL de fuente responda. Usa la red: solo local, no va en CI. Si un sitio bloquea scripts, ábrelo a mano antes de darlo por roto. |
