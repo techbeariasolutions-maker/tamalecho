@@ -1,7 +1,7 @@
 # Registro de decisiones — TamalEcho Tips
 
 > Cada decisión tiene ID, fecha, motivo y estado. Si un agente o una persona encuentra una contradicción nueva, **no la resuelve en silencio**: la agrega aquí como `PENDIENTE` y pregunta.
-> Última actualización: 13/11/2026 (D-23 propuesta, PENDIENTE de confirmar en el Sprint Planning 3).
+> Última actualización: 13/11/2026 (D-23 PENDIENTE; D-25 release adelantado).
 
 ## D-01 · Jerarquía de fuentes de verdad — VIGENTE
 1. **Propuesta aprobada** (`TamalEcho_Propuesta_Sprints.pdf`). Manda sobre todo lo demás. Alcance cerrado.
@@ -228,6 +228,19 @@
 - **«Sincronización del catálogo en usuarios de la PWA» (HU-14.2-B):** no aplica, porque no hay PWA ni caché sin conexión. El catálogo viaja dentro de cada despliegue. Se declara en el reporte.
 - **Canal de sugerencias (HU-13.2-B):** la propuesta dice «formulario simple o vínculo al canal acordado», pero el canal no se ha acordado. Se propone un formulario de *issue* de GitHub en el repositorio público, sin campos de datos personales. **Limitación:** pide una cuenta de GitHub. El PO puede pedir otro canal.
 - **Pendiente de decidir:** confirmación del alcance (Diego y Alan) y del canal de sugerencias (PO).
+
+## D-25 · Release `v1.0.0` adelantado al 13/11/2026 — VIGENTE (13/11/2026)
+- **Decisión de Diego (13/11/2026):** publicar el release final `v1.0.0` el 13/11, en lugar del 20/11 que fija PLAN S3 §5 y §11. Diego indicó que Alan también lo autorizó.
+- **Qué cambia respecto al plan:** el tag `v1.0.0` y la GitHub Release se publican **antes** de:
+  - la regresión final (PRUEBAS S3 §2);
+  - la aprobación del PO de los textos de Ayuda, limitaciones, privacidad y frases del personaje;
+  - las pruebas manuales (T2-21, T3-12, T3-13 y T3-15);
+  - el acta de aceptación final.
+- **Consecuencias:**
+  - Ayuda y Privacidad salen con la marca «Borrador» (`approved: false`) y el personaje con `phrasesApproved: false`.
+  - Las historias del S3 quedan **integradas, pendientes de aceptación del PO** (PLAN S3 §8), no «Terminadas».
+  - Cualquier corrección posterior sale como `v1.0.1` o superior (D-12).
+- **No cambia:** el rediseño (D-24) sigue fuera de `v1.0.0`; los pendientes humanos se reportan tal como ocurran (D-19).
 
 ## D-12 · Versionado — VIGENTE
 - Catálogo: `0.9.0` mientras haya borradores; `1.0.0` solo cuando los 24 estén aprobados (HT-03.2-B).
