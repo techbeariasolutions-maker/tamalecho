@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Outlet } from 'react-router';
+import { Link, Outlet } from 'react-router';
 import SkipLink from '../components/SkipLink.jsx';
 import Header from '../components/Header.jsx';
 import Message from '../components/Message.jsx';
@@ -24,6 +24,12 @@ export default function Layout() {
       </main>
       <footer className="app-footer">
         <p>TamalEcho Tips · Equipo TamalEcho · Consejos de Scrum y PMI/PMBOK</p>
+        {/* HU-13.2-A: el aviso de privacidad se alcanza desde cualquier página. */}
+        <p>
+          <Link to="/privacidad" className="app-footer__link">
+            Aviso de privacidad
+          </Link>
+        </p>
       </footer>
     </div>
   );

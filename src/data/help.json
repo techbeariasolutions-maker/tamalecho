@@ -9,7 +9,10 @@
           "En Ajustes, en «Cada cuánto quieres un consejo», elige cada 2 o cada 3 horas. Ahí mismo puedes cambiar la hora del primer aviso, los días con avisos y el silencio.",
           "Pulsa «Guardar horario» para aplicar los cambios. En «Avisos de hoy» ves a qué horas te llegarán."
         ],
-        "link": { "to": "/ajustes", "label": "Ir a Ajustes para cambiar tu horario" }
+        "link": {
+          "to": "/ajustes",
+          "label": "Ir a Ajustes para cambiar tu horario"
+        }
       },
       {
         "id": "permiso-rechazado",
@@ -18,7 +21,10 @@
           "Puedes seguir leyendo consejos, y los avisos siguen apareciendo dentro de la página mientras la tengas abierta. Lo único que no te llega son las notificaciones del sistema ni los avisos con la pestaña cerrada.",
           "Si cambias de opinión, abre la información del sitio con el ícono que está a la izquierda de la dirección, en la barra del navegador. Cambia «Notificaciones» a «Permitir» y recarga la página. En Ajustes verás las notificaciones como permitidas."
         ],
-        "link": { "to": "/ajustes", "label": "Ir a Ajustes para revisar las notificaciones" }
+        "link": {
+          "to": "/ajustes",
+          "label": "Ir a Ajustes para revisar las notificaciones"
+        }
       },
       {
         "id": "pausa-silencio",
@@ -28,7 +34,10 @@
           "El silencio es la franja del día en la que nunca te llegan avisos. Va de 21:00 a 08:00 si no la cambias, y puedes ajustarla en «Silencio».",
           "Aunque los avisos estén en pausa o en silencio, puedes leer consejos cuando quieras."
         ],
-        "link": { "to": "/ajustes", "label": "Ir a Ajustes para pausar o cambiar el silencio" }
+        "link": {
+          "to": "/ajustes",
+          "label": "Ir a Ajustes para pausar o cambiar el silencio"
+        }
       },
       {
         "id": "pestana-cerrada",
@@ -37,7 +46,10 @@
           "Los avisos dentro de la página solo aparecen mientras TamalEcho Tips está abierto. Si cierras la pestaña y vuelves más tarde, te mostramos a lo sumo un aviso, nunca todos los que se juntaron.",
           "Para recibir avisos con la pestaña cerrada, actívalos en Ajustes, en «Avisos con la pestaña cerrada», y da permiso de notificaciones. En computadora, el navegador tiene que seguir abierto, aunque no tengas la pestaña."
         ],
-        "link": { "to": "/ajustes", "label": "Ir a Ajustes para activar los avisos con la pestaña cerrada" }
+        "link": {
+          "to": "/ajustes",
+          "label": "Ir a Ajustes para activar los avisos con la pestaña cerrada"
+        }
       },
       {
         "id": "compatibilidad",
@@ -50,7 +62,9 @@
       {
         "id": "sin-conexion",
         "question": "¿Funciona sin conexión a internet?",
-        "answer": ["Todavía no. TamalEcho Tips necesita conexión para abrir la página y cada una de sus secciones."]
+        "answer": [
+          "Todavía no. TamalEcho Tips necesita conexión para abrir la página y cada una de sus secciones."
+        ]
       }
     ]
   },
@@ -61,5 +75,71 @@
       "Por ahora no está activo el envío automático cada 2 o 3 horas con la pestaña cerrada: solo llegan los envíos de prueba que hace el equipo. Con la página abierta, los avisos sí llegan en su horario.",
       "Si el navegador o el sistema operativo bloquean las notificaciones, por ejemplo con el modo «No molestar», no podemos mostrarlas."
     ]
+  },
+  "privacy": {
+    "approved": false,
+    "intro": "TamalEcho Tips no tiene cuentas ni inicio de sesión. No te pedimos nombre, correo ni ningún dato para identificarte, y no usamos analítica ni rastreo.",
+    "sections": [
+      {
+        "id": "en-tu-navegador",
+        "title": "Qué se guarda en tu navegador",
+        "paragraphs": [
+          "Esto se queda en tu dispositivo. Nosotros no lo vemos."
+        ],
+        "items": [
+          "Tus ajustes de los avisos: cada cuánto, hora del primer aviso, días, hora de la comida, silencio y pausa.",
+          "Tu historial de lecturas: qué consejos abriste y cuándo, hasta los 50 más recientes. Sirve para no repetirte en los avisos lo que ya leíste.",
+          "Los avisos que ya te mostramos, hasta los 20 más recientes, para no repetir el mismo aviso.",
+          "Si activaste los avisos con la pestaña cerrada: que están activos y la dirección de tu suscripción, para poder darla de baja."
+        ]
+      },
+      {
+        "id": "en-el-servidor",
+        "title": "Qué se guarda en nuestro servidor",
+        "paragraphs": [
+          "Solo si activas los avisos con la pestaña cerrada. Si no los activas, el servidor no guarda nada tuyo."
+        ],
+        "items": [
+          "La suscripción de tu navegador: una dirección que da el servicio de notificaciones de tu navegador y las claves para cifrar los avisos.",
+          "Tu zona horaria, para respetar tu horario y tu silencio.",
+          "Tu horario de avisos, incluida la pausa."
+        ]
+      },
+      {
+        "id": "terceros",
+        "title": "Quién más participa",
+        "items": [
+          "Los avisos con la pestaña cerrada pasan por el servicio de notificaciones de tu navegador; por ejemplo, el de Google si usas Chrome.",
+          "La suscripción se guarda en un servicio externo de almacenamiento de datos que usamos solo para enviar los avisos.",
+          "El servicio que hospeda la página puede registrar datos técnicos de las visitas, como en cualquier sitio web."
+        ]
+      },
+      {
+        "id": "cuanto-tiempo",
+        "title": "Cuánto tiempo se guarda",
+        "items": [
+          "En tu navegador: hasta que restablezcas tus datos o borres los datos del sitio en tu navegador.",
+          "En el servidor: hasta que desactives los avisos con la pestaña cerrada, restablezcas tus datos o el servicio de notificaciones nos avise que tu suscripción ya no es válida."
+        ]
+      },
+      {
+        "id": "como-borrar",
+        "title": "Cómo borrar tus datos o cancelar la suscripción",
+        "items": [
+          "En Ajustes, en «Avisos con la pestaña cerrada», pulsa «Desactivar avisos»: le pedimos al servidor que borre tu suscripción.",
+          "En Ajustes, pulsa «Restablecer mis datos»: tus ajustes vuelven a los valores recomendados, se borra tu historial de lecturas y se desactivan los avisos con la pestaña cerrada. Los avisos que ya te mostramos se conservan para no repetirlos.",
+          "Para borrar todo, primero desactiva los avisos con la pestaña cerrada y después borra los datos de este sitio en la configuración de tu navegador."
+        ],
+        "link": {
+          "to": "/ajustes",
+          "label": "Ir a Ajustes para borrar tus datos"
+        }
+      }
+    ]
+  },
+  "suggestions": {
+    "url": "https://github.com/techbeariasolutions-maker/tamalecho/issues/new?template=sugerencia.yml",
+    "text": "Si encontraste un error en un consejo o tienes una idea, cuéntanos en GitHub. Necesitas una cuenta de GitHub y lo que escribas será público: no incluyas datos personales.",
+    "label": "Enviar una sugerencia en GitHub"
   }
 }

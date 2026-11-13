@@ -1,0 +1,33 @@
+# Canal de sugerencias de TamalEcho Tips (HU-13.2-B, D-23). Lo enlaza la página de Ayuda.
+# No pide datos personales: solo el tipo de sugerencia, la descripción y, si aplica, la página.
+name: Sugerencia
+description: Reporta un error en un consejo o propón una mejora para TamalEcho Tips.
+title: "[Sugerencia] "
+labels: ["sugerencia"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por ayudarnos a mejorar. **Lo que escribas aquí es público:** no incluyas tu nombre completo, correo, teléfono ni ningún otro dato personal.
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: ¿Qué quieres compartir?
+      options:
+        - Un error en un consejo o en su fuente
+        - Una idea para mejorar la página
+        - Algo que no funciona
+    validations:
+      required: true
+  - type: input
+    id: pagina
+    attributes:
+      label: Página o consejo (opcional)
+      description: Por ejemplo, /tip/SCR-01 o «Ajustes».
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Cuéntanos
+      description: Qué viste o qué propones. Si es un error, qué esperabas que pasara.
+    validations:
+      required: true

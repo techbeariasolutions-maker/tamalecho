@@ -36,6 +36,7 @@ export const ROUTES = [
     },
   },
   { path: '/ayuda', file: 'ayuda' },
+  { path: '/privacidad', file: 'privacidad' },
   { path: '/ruta-que-no-existe', file: 'no-encontrada' },
 ];
 

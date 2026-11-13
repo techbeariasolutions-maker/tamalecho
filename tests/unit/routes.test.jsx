@@ -12,6 +12,7 @@ const CASES = [
   { path: '/progreso', h1: 'Progreso', title: 'Progreso · TamalEcho Tips', pending: true },
   { path: '/ajustes', h1: 'Ajustes', title: 'Ajustes · TamalEcho Tips' },
   { path: '/ayuda', h1: 'Ayuda', title: 'Ayuda · TamalEcho Tips' },
+  { path: '/privacidad', h1: 'Privacidad', title: 'Privacidad · TamalEcho Tips' },
 ];
 
 describe('rutas', () => {
