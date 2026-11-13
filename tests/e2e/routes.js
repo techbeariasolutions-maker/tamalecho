@@ -1,5 +1,5 @@
 // Rutas que recorren las pruebas de 360 px y de accesibilidad.
-// `file` es el nombre de la captura en docs/evidencias/sprint-2/360/.
+// `file` es el nombre de la captura en docs/evidencias/sprint-3/360/.
 // `seed` (opcional): datos locales con la forma del esquema v1 de storage.js. La prueba los guarda,
 // recarga, revisa la ruta y después borra el almacenamiento para no afectar a las demás rutas.
 export const ROUTES = [
@@ -88,5 +88,5 @@ export async function clearSeed(page, { seed }) {
 // Las evidencias solo se escriben con `npm run evidence` (npm define npm_lifecycle_event
 // en Windows, macOS y Linux). Así `npm run test:e2e` y el CI no modifican docs/.
 export const WRITE_EVIDENCE = process.env.npm_lifecycle_event === 'evidence';
-// Desde el Sprint 2 (WP-S2-6) las evidencias van a su propia carpeta; las del Sprint 1 no se tocan.
-export const EVIDENCE_DIR = new URL('../../docs/evidencias/sprint-2/', import.meta.url);
+// Cada sprint guarda sus evidencias en su carpeta (S2: WP-S2-6; S3: WP-S3-6); las anteriores no se tocan.
+export const EVIDENCE_DIR = new URL('../../docs/evidencias/sprint-3/', import.meta.url);
