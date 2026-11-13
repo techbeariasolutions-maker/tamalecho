@@ -58,14 +58,25 @@ export default function SettingsPage() {
     <>
       <h1>Ajustes</h1>
       <NextTip settings={settings} />
+      {/* Rediseño D-24 (DISEÑO_UI_UX §8): grupos por intención, cada uno con lo que provoca. */}
       <section className="settings-section" aria-labelledby="horario-titulo">
-        <h2 id="horario-titulo">Horario de los avisos</h2>
+        <h2 id="horario-titulo">Cuándo aprender</h2>
+        <p className="settings-intent">
+          Elige cada cuánto y en qué horario te llega un consejo. Leer consejos siempre funciona, aunque no haya
+          avisos.
+        </p>
         <ScheduleForm key={formVersion} settings={settings} onSave={saveAndSync} />
         <SchedulePreview settings={settings} now={new Date()} />
       </section>
       <PauseControl paused={settings.paused} onSave={saveAndSync} />
-      <NotificationSection onPermissionChange={refreshPushStatus} />
-      <PushSection status={pushStatus} settings={settings} onStatusChange={setPushStatus} syncFailed={syncFailed} />
+      <section className="settings-section" aria-labelledby="avisos-navegador-titulo">
+        <h2 id="avisos-navegador-titulo">Avisos del navegador</h2>
+        <p className="settings-intent">
+          Son opcionales. Si no los activas, los avisos aparecen dentro de la página mientras la tengas abierta.
+        </p>
+        <NotificationSection onPermissionChange={refreshPushStatus} />
+        <PushSection status={pushStatus} settings={settings} onStatusChange={setPushStatus} syncFailed={syncFailed} />
+      </section>
       <LocalDataSection historyCount={historyCount} resetAll={resetAll} onReset={afterReset} />
     </>
   );

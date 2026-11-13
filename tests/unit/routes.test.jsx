@@ -30,7 +30,7 @@ describe('rutas', () => {
   it('/biblioteca redirige a la biblioteca de Scrum', async () => {
     await renderApp('/biblioteca');
     expect(screen.getByRole('heading', { level: 1, name: 'Biblioteca de Scrum' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Biblioteca', exact: true })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('link', { name: 'Explorar', exact: true })).toHaveAttribute('aria-current', 'page');
   });
 
   it('un enfoque inválido muestra NotFound', async () => {

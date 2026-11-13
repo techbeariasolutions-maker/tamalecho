@@ -5,7 +5,15 @@ import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { useDayPart } from '../../hooks/useDayPart.js';
 import { useProgress } from '../../hooks/useProgress.js';
 import { useSettings } from '../../hooks/useSettings.js';
-import { getRoute, getStreak, getTipStatus, readingMinutes, STATUS_LABELS, summarizeProgress } from '../../services/progress.js';
+import {
+  getRoute,
+  getStreak,
+  getTipStatus,
+  missionsText,
+  readingMinutes,
+  STATUS_LABELS,
+  summarizeProgress,
+} from '../../services/progress.js';
 import Avatar from '../avatar/Avatar.jsx';
 import NextTip from '../scheduler/NextTip.jsx';
 
@@ -73,7 +81,7 @@ export default function HomePage() {
       <section className="home-section" aria-labelledby="ruta-semanal">
         <h2 id="ruta-semanal">Tu ruta de la semana</h2>
         <p className="progress-summary">
-          Llevas {progress.read} de {progress.total} conceptos leídos y {progress.completed} misiones completadas.
+          Llevas {progress.read} de {progress.total} conceptos leídos y {missionsText(progress.completed)}.
         </p>
         <div
           className="progress-bar"

@@ -23,7 +23,7 @@ export default function PauseControl({ paused, onSave }) {
 
   return (
     <section className="settings-section" aria-labelledby="pausa-titulo">
-      <h2 id="pausa-titulo">Pausa</h2>
+      <h2 id="pausa-titulo">Pausar temporalmente</h2>
       <p>
         {paused
           ? 'Los avisos están en pausa. Puedes seguir leyendo consejos cuando quieras.'

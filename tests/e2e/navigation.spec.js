@@ -2,9 +2,9 @@ import { expect, test } from './fixtures.js';
 
 const SECTIONS = [
   { label: 'Inicio', url: /\/$/, h1: 'Tu ruta diaria' },
-  { label: 'Biblioteca', url: /\/biblioteca\/scrum$/, h1: 'Biblioteca de Scrum' },
+  { label: 'Explorar', url: /\/biblioteca\/scrum$/, h1: 'Biblioteca de Scrum' },
+  { label: 'Mi progreso', url: /\/progreso$/, h1: 'Mi progreso' },
   { label: 'Historial', url: /\/historial$/, h1: 'Historial' },
-  { label: 'Progreso', url: /\/progreso$/, h1: 'Mi progreso' },
   { label: 'Ajustes', url: /\/ajustes$/, h1: 'Ajustes' },
   { label: 'Ayuda', url: /\/ayuda$/, h1: 'Ayuda' },
 ];
@@ -93,7 +93,7 @@ test.describe('menú móvil solo con teclado', () => {
     await page.keyboard.press('Enter');
     await page.keyboard.press('Tab');
     await page.keyboard.press('Tab');
-    await expect(nav.getByRole('link', { name: 'Biblioteca' })).toBeFocused();
+    await expect(nav.getByRole('link', { name: 'Explorar' })).toBeFocused();
     await page.keyboard.press('Enter');
 
     await expect(page).toHaveURL(/\/biblioteca\/scrum$/);

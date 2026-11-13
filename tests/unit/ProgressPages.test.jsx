@@ -92,7 +92,7 @@ describe('ProgressPage', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Mi progreso' })).toBeInTheDocument();
     const stats = screen.getByRole('list', { name: 'Resumen' });
     expect(stats).toHaveTextContent('1de 24 conceptos leídos');
-    expect(stats).toHaveTextContent('1misiones completadas');
+    expect(stats).toHaveTextContent('1misión completada');
     expect(stats).toHaveTextContent('1 díade racha');
     expect(screen.getByRole('progressbar', { name: 'Conceptos de Scrum leídos' })).toHaveAttribute('aria-valuenow', '1');
     expect(screen.getByRole('progressbar', { name: 'Conceptos de PMI/PMBOK leídos' })).toHaveAttribute('aria-valuenow', '0');

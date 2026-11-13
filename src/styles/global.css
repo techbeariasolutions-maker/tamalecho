@@ -240,6 +240,23 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Separación entre las secciones principales y las secundarias (D-24, DISEÑO_UI_UX §3). */
+.nav-menu__item--group {
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: var(--border-width) solid var(--color-border-soft);
+}
+
+/* md (48em): en la barra horizontal la separación es una línea vertical. */
+@media (min-width: 48em) {
+  .nav-menu__item--group {
+    margin: 0 0 0 var(--space-2);
+    padding: 0 0 0 var(--space-2);
+    border-top: 0;
+    border-left: var(--border-width) solid var(--color-border-soft);
+  }
+}
+
 .nav-menu__link[aria-current='page'] {
   color: var(--color-primary);
   font-weight: var(--font-weight-bold);
@@ -1020,6 +1037,50 @@ main dd {
   font-weight: var(--font-weight-bold);
 }
 
+/* Búsqueda de conceptos (D-24 etapa 3). El campo usa el borde de control (3.38:1). */
+.library-search {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.library-search__label {
+  font-weight: var(--font-weight-bold);
+}
+
+.library-search__input {
+  width: 100%;
+  min-height: var(--tap-target-min);
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.library-search__input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* Ruta recomendada del enfoque. */
+.recommended {
+  margin-bottom: var(--space-6);
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-lg);
+}
+
+.recommended h2 {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--space-2);
+}
+
+.recommended__list {
+  margin: 0;
+  padding-left: var(--space-6);
+}
+
 /* ── Ejemplo comparativo ────────────────────────────────── */
 .compare {
   margin-bottom: var(--space-6);
@@ -1333,6 +1394,23 @@ main dd {
 /* ── Ajustes ─────────────────────────────────────────────── */
 .settings-section {
   margin-top: var(--space-8);
+}
+
+/* Ajustes por intención (D-24): una línea que dice qué provoca cada grupo. */
+.settings-intent {
+  color: var(--color-text-muted);
+}
+
+.settings-subsection {
+  margin-top: var(--space-6);
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+}
+
+.settings-subsection h3 {
+  font-size: var(--font-size-lg);
 }
 
 /* Ayuda (HU-13.1-A): separación entre secciones y entre preguntas. */

@@ -7,6 +7,9 @@ export const ROUTES = [
   { path: '/biblioteca/scrum', file: 'biblioteca-scrum' },
   { path: '/biblioteca/pmbok', file: 'biblioteca-pmbok' },
   { path: '/biblioteca/scrum?categoria=Eventos', file: 'biblioteca-scrum-filtrada' },
+  // Rediseño D-24 etapa 3: búsqueda con resultados y sin resultados.
+  { path: '/biblioteca/pmbok?q=riesgo', file: 'biblioteca-busqueda' },
+  { path: '/biblioteca/scrum?q=zzz', file: 'biblioteca-sin-resultados' },
   { path: '/tip/SCR-01', file: 'tip-SCR-01' },
   { path: '/tip/PMI-01', file: 'tip-PMI-01' },
   { path: '/tip/SCR-99', file: 'tip-inexistente' },

@@ -60,6 +60,11 @@ export function getTipStatus(id, readIds, completed) {
   return 'nuevo';
 }
 
+// «1 misión completada» / «2 misiones completadas».
+export function missionsText(count) {
+  return count === 1 ? '1 misión completada' : `${count} misiones completadas`;
+}
+
 // Texto del estado, para que no dependa solo del color o del ícono (CLAUDE.md §10).
 export const STATUS_LABELS = { nuevo: 'Nuevo', leido: 'Leído', completado: 'Completado' };
 
@@ -102,9 +107,9 @@ export function getHistoryList(history, getTipById, framework) {
 
 // Insignias discretas por hitos (DISEÑO_UI_UX §7). Sin puntos ni competencia: solo se ganan o no.
 export const BADGES = [
-  { id: 'primera-mision', title: 'Primera misión', description: 'Completaste tu primera misión.' },
-  { id: 'cinco-conceptos', title: 'Cinco conceptos', description: 'Leíste cinco conceptos distintos.' },
-  { id: 'enfoque-completo', title: 'Enfoque completo', description: 'Completaste todas las misiones de un enfoque.' },
+  { id: 'primera-mision', title: 'Primera misión', description: 'Completa tu primera misión.' },
+  { id: 'cinco-conceptos', title: 'Cinco conceptos', description: 'Lee cinco conceptos distintos.' },
+  { id: 'enfoque-completo', title: 'Enfoque completo', description: 'Completa todas las misiones de un enfoque.' },
 ];
 
 export function getBadges(summary) {

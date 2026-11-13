@@ -2,13 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import { NavLink } from 'react-router';
 import Button from './Button.jsx';
 
+// Rediseño D-24 (DISEÑO_UI_UX §3): primero lo que se hace hoy (Inicio, Explorar, Mi progreso);
+// después lo secundario (Historial, Ajustes, Ayuda), separado visualmente.
 export const NAV_ITEMS = [
   { to: '/', label: 'Inicio', end: true },
-  { to: '/biblioteca', label: 'Biblioteca' },
-  { to: '/historial', label: 'Historial' },
-  { to: '/progreso', label: 'Progreso' },
-  { to: '/ajustes', label: 'Ajustes' },
-  { to: '/ayuda', label: 'Ayuda' },
+  { to: '/biblioteca', label: 'Explorar' },
+  { to: '/progreso', label: 'Mi progreso' },
+  { to: '/historial', label: 'Historial', secondary: true },
+  { to: '/ajustes', label: 'Ajustes', secondary: true },
+  { to: '/ayuda', label: 'Ayuda', secondary: true },
 ];
 
 const LIST_ID = 'menu-principal';
@@ -46,8 +48,11 @@ export default function NavMenu() {
         Menú
       </Button>
       <ul id={LIST_ID} className={open ? 'nav-menu__list nav-menu__list--open' : 'nav-menu__list'}>
-        {NAV_ITEMS.map((item) => (
-          <li key={item.to}>
+        {NAV_ITEMS.map((item, index) => (
+          <li
+            key={item.to}
+            className={item.secondary && !NAV_ITEMS[index - 1]?.secondary ? 'nav-menu__item--group' : undefined}
+          >
             <NavLink
               to={item.to}
               end={item.end}

@@ -53,8 +53,8 @@ export default function NotificationSection({ onPermissionChange }) {
   };
 
   return (
-    <section className="settings-section" aria-labelledby="notificaciones-titulo">
-      <h2 id="notificaciones-titulo">Notificaciones del navegador</h2>
+    <section className="settings-subsection" aria-labelledby="notificaciones-titulo">
+      <h3 id="notificaciones-titulo">Notificaciones del navegador</h3>
       <p>
         Si las permites, cuando la pestaña de TamalEcho esté abierta pero no la estés viendo, el aviso te llega como
         notificación del sistema. Si estás en la página, el aviso aparece dentro de ella.

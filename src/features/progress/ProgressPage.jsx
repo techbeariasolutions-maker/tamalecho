@@ -49,7 +49,7 @@ export default function ProgressPage() {
         </li>
         <li className="stat">
           <span className="stat__value">{summary.completed}</span>
-          <span className="stat__label">misiones completadas</span>
+          <span className="stat__label">{summary.completed === 1 ? 'misión completada' : 'misiones completadas'}</span>
         </li>
         <li className="stat">
           <span className="stat__value">{daysText(streak)}</span>

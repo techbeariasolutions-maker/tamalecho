@@ -3,7 +3,7 @@ import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderApp } from './renderApp.jsx';
 
-const LABELS = ['Inicio', 'Biblioteca', 'Historial', 'Progreso', 'Ajustes', 'Ayuda'];
+const LABELS = ['Inicio', 'Explorar', 'Mi progreso', 'Historial', 'Ajustes', 'Ayuda'];
 
 function getNav() {
   return screen.getByRole('navigation', { name: 'Principal' });
