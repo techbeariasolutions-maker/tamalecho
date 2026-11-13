@@ -24,14 +24,30 @@ function renderCard(props, path = '/biblioteca/scrum?categoria=Eventos') {
 describe('TipCard', () => {
   const tip = makeTip({ id: 'SCR-04', title: 'Daily Scrum', knowledgeArea: 'Eventos de Scrum', action: 'Haz algo hoy.' });
 
-  it('muestra título, resumen, área, acción y un enlace que dice a dónde lleva', () => {
+  // Tarjeta compacta (rediseño D-24): el área y la acción práctica pasan a la ficha.
+  it('muestra categoría, título, resumen y un enlace que dice a dónde lleva; sin área ni acción', () => {
     renderCard({ tip });
     expect(screen.getByRole('article', { name: 'Daily Scrum' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 2, name: 'Daily Scrum' })).toBeInTheDocument();
+    expect(screen.getByText(tip.category)).toBeInTheDocument();
     expect(screen.getByText(tip.summary)).toBeInTheDocument();
-    expect(screen.getByText('Eventos de Scrum')).toBeInTheDocument();
-    expect(screen.getByText('Haz algo hoy.')).toBeInTheDocument();
+    expect(screen.queryByText('Eventos de Scrum')).not.toBeInTheDocument();
+    expect(screen.queryByText('Haz algo hoy.')).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Ver más sobre Daily Scrum' })).toHaveAttribute('href', '/tip/SCR-04');
+  });
+
+  it.each([
+    ['nuevo', 'Nuevo'],
+    ['leido', '✓ Leído'],
+    ['completado', '✓ Completado'],
+  ])('con estado «%s» lo dice con texto', (status, text) => {
+    renderCard({ tip, status });
+    expect(screen.getByText(text)).toBeInTheDocument();
+  });
+
+  it('sin estado no muestra la etiqueta de estado', () => {
+    renderCard({ tip });
+    expect(screen.queryByText(/^(Nuevo|✓ Leído|✓ Completado)$/)).not.toBeInTheDocument();
   });
 
   it('usa el nivel de encabezado indicado', () => {

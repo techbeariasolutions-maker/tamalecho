@@ -17,6 +17,10 @@ test('T-14: con movimiento reducido no hay animaciones activas', async ({ page }
 test('sin movimiento reducido la transición sí existe (control de la prueba anterior)', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
+  // La portada se carga aparte (React.lazy): sin esperarla, la transición de 150 ms del enlace
+  // «Saltar al contenido» podía terminar antes de medir y el personaje aún no existía.
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await expect(page.getByRole('figure')).toBeVisible();
   await page.keyboard.press('Tab');
   expect(await page.evaluate(() => document.getAnimations().length)).toBeGreaterThan(0);
 });

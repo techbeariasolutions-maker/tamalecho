@@ -12,6 +12,33 @@ export const ROUTES = [
   { path: '/tip/SCR-99', file: 'tip-inexistente' },
   { path: '/historial', file: 'historial' },
   { path: '/progreso', file: 'progreso' },
+  {
+    // Rediseño D-24: Historial y Mi progreso con lecturas y una misión completada.
+    path: '/historial',
+    file: 'historial-con-datos',
+    seed: {
+      schemaVersion: 1,
+      settings: { paused: true },
+      history: [
+        { id: 'SCR-01', at: '2026-11-04T15:00:00.000Z' },
+        { id: 'PMI-02', at: '2026-11-05T16:00:00.000Z' },
+      ],
+      progress: { completed: { 'SCR-01': '2026-11-04T15:05:00.000Z' } },
+    },
+  },
+  {
+    path: '/progreso',
+    file: 'progreso-con-datos',
+    seed: {
+      schemaVersion: 1,
+      settings: { paused: true },
+      history: [
+        { id: 'SCR-01', at: '2026-11-04T15:00:00.000Z' },
+        { id: 'PMI-02', at: '2026-11-05T16:00:00.000Z' },
+      ],
+      progress: { completed: { 'SCR-01': '2026-11-04T15:05:00.000Z' } },
+    },
+  },
   { path: '/ajustes', file: 'ajustes' },
   {
     // WP-S2-6: Ajustes con un horario guardado, la pausa activa y lecturas registradas.

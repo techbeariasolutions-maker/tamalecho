@@ -7,6 +7,8 @@ import CategoryFilter from './CategoryFilter.jsx';
 import CompareExample from './CompareExample.jsx';
 import { useCatalog } from '../../hooks/useCatalog.js';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
+import { useProgress } from '../../hooks/useProgress.js';
+import { getTipStatus } from '../../services/progress.js';
 
 // Una línea por enfoque, sin compararlo con el otro.
 const DESCRIPTIONS = {
@@ -32,6 +34,10 @@ function FrameworkLibrary({ framework }) {
   const categories = getCategories(framework);
   const tips = getTips({ framework, category: selected || undefined });
 
+  // Estado de cada concepto para quien lee (D-24): nuevo, leído o completado, solo en este dispositivo.
+  const { history, completed } = useProgress();
+  const readIds = new Set(history.map((entry) => entry.id));
+
   const selectCategory = (category) => setSearchParams(category ? { categoria: category } : {});
 
   return (
@@ -48,7 +54,7 @@ function FrameworkLibrary({ framework }) {
         <ul className="tip-list" aria-label={`Consejos de ${label}`}>
           {tips.map((tip) => (
             <li key={tip.id}>
-              <TipCard tip={tip} headingLevel={2} />
+              <TipCard tip={tip} headingLevel={2} status={getTipStatus(tip.id, readIds, completed)} />
             </li>
           ))}
         </ul>

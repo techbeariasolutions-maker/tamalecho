@@ -419,9 +419,43 @@ main dd {
   box-shadow: var(--shadow-card);
 }
 
+.tip-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.tip-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
 .tip-card__title {
   font-size: var(--font-size-lg);
   margin-bottom: var(--space-2);
+}
+
+/* Resumen de una o dos líneas en la lista (el texto completo está en la ficha). */
+.tip-card__summary {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  color: var(--color-text-muted);
+}
+
+.tip-card__link {
+  margin-top: auto;
+}
+
+/* md (48em): dos columnas si no sacrifica la longitud del texto. */
+@media (min-width: 48em) {
+  .tip-list {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .tip-card__meta {
@@ -1051,11 +1085,100 @@ main dd {
   }
 }
 
-/* ── Ficha ───────────────────────────────────────────────── */
+/* ── Ficha como microlección (D-24, DISEÑO_UI_UX §6) ─────── */
+.tip-detail {
+  max-width: var(--reading-max-width);
+}
+
 .tip-detail h2 {
   font-size: var(--font-size-lg);
   margin-top: var(--space-6);
   margin-bottom: var(--space-2);
+}
+
+.tip-detail__time {
+  margin-bottom: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.lesson-block {
+  margin-top: var(--space-6);
+}
+
+.lesson-block h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: 0;
+}
+
+.lesson-block p:last-child {
+  margin-bottom: 0;
+}
+
+/* Error frecuente: aviso suave en coral claro, con borde lateral (no un color alarmante). */
+.lesson-block--mistake {
+  padding: var(--space-4);
+  background: var(--color-coral-soft);
+  border-left: var(--space-1) solid var(--color-coral-strong);
+  border-radius: var(--radius-md);
+}
+
+/* Ejemplo: recuadro de escenario. */
+.lesson-block--example {
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: var(--border-width) dashed var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+/* Acción para hoy: la tarjeta resaltada de la misión. */
+.lesson-block--action {
+  padding: var(--space-6);
+  background: var(--color-maiz-soft);
+  border: var(--focus-width) solid var(--color-maiz);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+
+.lesson-icon {
+  flex: none;
+  width: var(--space-6);
+  height: var(--space-6);
+  fill: none;
+  stroke: var(--color-coral-strong);
+  stroke-width: 2.5;
+}
+
+/* Final de la misión. */
+.mission-complete {
+  max-width: var(--reading-max-width);
+  margin-top: var(--space-8);
+  padding: var(--space-6);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-xl);
+}
+
+.mission-complete h2 {
+  font-size: var(--font-size-lg);
+}
+
+.mission-complete__done {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.mission-complete__done .avatar {
+  margin: 0;
+}
+
+.mission-complete__status {
+  margin: 0;
+  font-weight: var(--font-weight-bold);
 }
 
 .tip-detail__context {
@@ -1109,6 +1232,102 @@ main dd {
   align-items: center;
   min-height: var(--tap-target-min);
   font-weight: var(--font-weight-bold);
+}
+
+/* ── Historial y Mi progreso (D-24, DISEÑO_UI_UX §7) ───────── */
+.history-list,
+.stats,
+.badges {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.history-item,
+.stat,
+.badge,
+.framework-progress {
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: var(--border-width) solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.history-item p {
+  margin-bottom: var(--space-1);
+}
+
+.history-item__title {
+  margin-top: var(--space-2);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.history-item__date {
+  color: var(--color-text-muted);
+}
+
+.stat {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.stat__value {
+  color: var(--color-accent);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-black);
+  line-height: var(--line-height-tight);
+}
+
+.stat__label {
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-bold);
+}
+
+.framework-progress + .framework-progress {
+  margin-top: var(--space-3);
+}
+
+.framework-progress h3 {
+  margin-bottom: var(--space-1);
+}
+
+.framework-progress .progress-bar {
+  margin-bottom: 0;
+}
+
+/* Insignia: el estado se dice con texto; el color solo acompaña. */
+.badge {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.badge[data-earned='true'] {
+  background: var(--color-maiz-soft);
+  border-color: var(--color-maiz);
+}
+
+.badge__title {
+  font-weight: var(--font-weight-black);
+}
+
+.badge__state {
+  font-weight: var(--font-weight-bold);
+}
+
+.badge__description {
+  color: var(--color-text-muted);
+}
+
+/* md (48em): estadísticas e insignias en tres columnas. */
+@media (min-width: 48em) {
+  .stats,
+  .badges {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 /* ── Ajustes ─────────────────────────────────────────────── */

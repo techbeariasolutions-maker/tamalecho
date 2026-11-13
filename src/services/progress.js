@@ -84,3 +84,45 @@ export function summarizeProgress({ tips, history, completed }) {
     readIds,
   };
 }
+
+// Historial (DISEÑO_UI_UX §7): cada consejo una vez, en su apertura más reciente, del más reciente
+// al más antiguo. `framework` opcional filtra por enfoque. Ignora ids que ya no estén en el catálogo.
+export function getHistoryList(history, getTipById, framework) {
+  const seen = new Set();
+  const list = [];
+  for (let index = history.length - 1; index >= 0; index -= 1) {
+    const { id, at } = history[index];
+    if (seen.has(id)) continue;
+    seen.add(id);
+    const tip = getTipById(id);
+    if (tip && (!framework || tip.framework === framework)) list.push({ tip, at: new Date(at) });
+  }
+  return list;
+}
+
+// Insignias discretas por hitos (DISEÑO_UI_UX §7). Sin puntos ni competencia: solo se ganan o no.
+export const BADGES = [
+  { id: 'primera-mision', title: 'Primera misión', description: 'Completaste tu primera misión.' },
+  { id: 'cinco-conceptos', title: 'Cinco conceptos', description: 'Leíste cinco conceptos distintos.' },
+  { id: 'enfoque-completo', title: 'Enfoque completo', description: 'Completaste todas las misiones de un enfoque.' },
+];
+
+export function getBadges(summary) {
+  const earned = {
+    'primera-mision': summary.completed >= 1,
+    'cinco-conceptos': summary.read >= 5,
+    'enfoque-completo': Object.values(summary.byFramework).some(
+      (framework) => framework.total > 0 && framework.completed === framework.total,
+    ),
+  };
+  return BADGES.map((badge) => ({ ...badge, earned: earned[badge.id] }));
+}
+
+// Siguiente recomendación: el primer paso de la ruta (desde hoy) que no esté completado;
+// si toda la ruta está completa, el primer consejo del catálogo sin completar; si no queda ninguno, null.
+export function getRecommendation(route, tips, completed) {
+  const ahead = route.filter((step, index) => index >= route.findIndex((item) => item.isToday));
+  const next = ahead.find((step) => !completed[step.tip.id]);
+  if (next) return next.tip;
+  return tips.find((tip) => !completed[tip.id]) ?? null;
+}

@@ -4,7 +4,7 @@ const SECTIONS = [
   { label: 'Inicio', url: /\/$/, h1: 'Tu ruta diaria' },
   { label: 'Biblioteca', url: /\/biblioteca\/scrum$/, h1: 'Biblioteca de Scrum' },
   { label: 'Historial', url: /\/historial$/, h1: 'Historial' },
-  { label: 'Progreso', url: /\/progreso$/, h1: 'Progreso' },
+  { label: 'Progreso', url: /\/progreso$/, h1: 'Mi progreso' },
   { label: 'Ajustes', url: /\/ajustes$/, h1: 'Ajustes' },
   { label: 'Ayuda', url: /\/ayuda$/, h1: 'Ayuda' },
 ];
