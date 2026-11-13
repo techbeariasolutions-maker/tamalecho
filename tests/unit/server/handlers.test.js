@@ -62,6 +62,20 @@ describe('handleSubscribe (T2-17)', () => {
     expect(await store.list()).toEqual([]);
   });
 
+  it('un Content-Length mayor al límite responde 413 sin leer el cuerpo (HT-08.2-A)', async () => {
+    const store = createMemoryStore();
+    const request = new Request(SUBSCRIBE_URL, {
+      method: 'POST',
+      body: JSON.stringify(makeBody()),
+      headers: { 'content-length': String(MAX_BODY_BYTES + 1) },
+    });
+    const read = vi.spyOn(request, 'text');
+    const response = await handleSubscribe(request, { store });
+    expect(response.status).toBe(413);
+    expect(read).not.toHaveBeenCalled();
+    expect(await store.list()).toEqual([]);
+  });
+
   it.each(['GET', 'PUT'])('%s responde 405', async (method) => {
     const request = new Request(SUBSCRIBE_URL, { method, body: method === 'GET' ? undefined : '{}' });
     const response = await handleSubscribe(request, { store: createMemoryStore() });
