@@ -7,6 +7,7 @@ const HomePage = lazy(() => import('../features/home/HomePage.jsx'));
 const LibraryPage = lazy(() => import('../features/library/LibraryPage.jsx'));
 const TipDetailPage = lazy(() => import('../features/tips/TipDetailPage.jsx'));
 const SettingsPage = lazy(() => import('../features/scheduler/SettingsPage.jsx'));
+const HelpPage = lazy(() => import('../features/help/HelpPage.jsx'));
 const PlaceholderPage = lazy(() => import('../features/placeholders/PlaceholderPage.jsx'));
 const NotFoundPage = lazy(() => import('../features/notfound/NotFoundPage.jsx'));
 
@@ -22,7 +23,7 @@ export const routes = [
       { path: '/historial', element: <PlaceholderPage title="Historial" /> },
       { path: '/progreso', element: <PlaceholderPage title="Progreso" /> },
       { path: '/ajustes', element: <SettingsPage /> },
-      { path: '/ayuda', element: <PlaceholderPage title="Ayuda" sprint={3} /> },
+      { path: '/ayuda', element: <HelpPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

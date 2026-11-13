@@ -761,6 +761,15 @@ main dd {
   margin-top: var(--space-8);
 }
 
+/* Ayuda (HU-13.1-A): separación entre secciones y entre preguntas. */
+.help-section {
+  margin-top: var(--space-8);
+}
+
+.help-item + .help-item {
+  margin-top: var(--space-6);
+}
+
 /* Confirmación dentro de la página (sin window.confirm), HT-04.2-B. */
 .confirm-box {
   padding: var(--space-4);
