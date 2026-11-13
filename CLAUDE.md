@@ -1,20 +1,20 @@
 # TamalEcho Tips — Instrucciones para agentes de código
 
 > Va en la raíz del repositorio. Todo agente lo lee antes de trabajar.
-> Versión del Sprint 2 (29/10/2026). Si algo aquí contradice la propuesta aprobada, gana la propuesta (ver `docs/DECISIONES.md`, D-01).
+> Versión del Sprint 3 (13/11/2026, borrador hasta el Sprint Planning del 17/11; D-23). Si algo aquí contradice la propuesta aprobada, gana la propuesta (ver `docs/DECISIONES.md`, D-01).
 
 ## 1. Orden de lectura obligatorio
 1. Este archivo.
-2. `docs/DECISIONES.md`: decisiones vigentes y pendientes (en especial D-19, D-20 y D-21).
-3. `docs/sprint-2/PLAN.md`: alcance comprometido, calendario, puntos de control y Definition of Done del sprint actual.
-4. El paquete de trabajo (WP) que te pidieron, en `docs/sprint-2/PROMPTS.md`.
+2. `docs/DECISIONES.md`: decisiones vigentes y pendientes (en especial D-19, D-21, D-22 y D-23).
+3. `docs/sprint-3/PLAN.md`: alcance comprometido, calendario, puntos de control y Definition of Done del sprint actual.
+4. El paquete de trabajo (WP) que te pidieron, en `docs/sprint-3/PROMPTS.md`.
 
 ## 2. Producto
-TamalEcho Tips es una web en React + JavaScript (Vite) que enseña conceptos de Scrum y PMI/PMBOK con consejos breves. El Sprint 1 entregó las bibliotecas, las fichas y la accesibilidad (`v0.1.0`). El Sprint 2 agrega los avisos cada 2 o 3 horas, el personaje animado según la hora, los ajustes y Web Push.
+TamalEcho Tips es una web en React + JavaScript (Vite) que enseña conceptos de Scrum y PMI/PMBOK con consejos breves. El Sprint 1 entregó las bibliotecas, las fichas y la accesibilidad (`v0.1.0`). El Sprint 2 agregó los avisos cada 2 o 3 horas, el personaje animado según la hora, los ajustes y Web Push (`v0.2.0`). El Sprint 3 agrega la Ayuda, el aviso de privacidad, el canal de sugerencias, el flujo editorial del catálogo y el cierre de calidad (`v1.0.0`).
 
-**Sprint actual: Sprint 2 (24/10–13/11/2026; planeación efectiva 29/10, D-19).**
-Meta de la propuesta: *completar el ciclo educativo de alertas cada 2/3 horas con personaje animado, preferencias, historial, búsqueda, microevaluaciones, PWA offline y Web Push probado en un navegador compatible.*
-Compromiso real (D-20): 27 actividades y 47 puntos. Son motor horario, avisos en la página, ajustes con silencio y pausa, notificación nativa con permiso, personaje, registro de lecturas y **un aviso Web Push real con la pestaña cerrada**. Lo demás es recortable y solo se hace si el PLAN lo activa.
+**Sprint actual: Sprint 3 (14–20/11/2026; 4 días hábiles; congelación 18/11, entrega 20/11).**
+Meta de la propuesta: *cerrar ayuda y gestión del contenido, corregir defectos críticos, aceptación integral, producto estable y cierre formal.*
+Compromiso (D-23): las 12 actividades y 16 puntos de HT-08, HU-13 y HU-14. **HU-14 se hace por repositorio**: PR + validador en CI + vista previa de Vercel + `git revert`. No hay editor web ni cuentas.
 
 Reglas de producto (no negociables):
 - Acceso público, sin registro ni inicio de sesión.
@@ -31,13 +31,13 @@ Reglas de producto (no negociables):
   - Preferencias, historial y progreso viven solo en el dispositivo.
   - El servidor guarda únicamente la suscripción push y lo mínimo para respetar el horario y el silencio (zona horaria y ajustes de horario).
 
-## 3. Fuera de alcance en el Sprint 2 (NO implementar)
-- Ayuda real, aviso de privacidad, canal de sugerencias y editor de contenidos (Sprint 3: HU-13 y HU-14).
-- Cuentas, inicio de sesión, analítica, rastreo o cualquier dato personal.
-- **Cualquier actividad del backlog del S2 que no esté en un WP de `docs/sprint-2/PROMPTS.md`.** Las actividades recortables (PLAN §6) solo se implementan si el PLAN las activa por escrito.
-- Mientras no se active HT-06.2-A o HU-12: el caché sin conexión del service worker, el manifest y la instalación como PWA. El service worker del S2 solo atiende `push` y `notificationclick`.
+## 3. Fuera de alcance en el Sprint 3 (NO implementar)
+- Un editor web de consejos, cuentas, inicio de sesión, analítica, rastreo o cualquier dato personal.
+- **Cualquier actividad que no esté en un WP de `docs/sprint-3/PROMPTS.md`.** Eso incluye los recortables del S2 que no entraron (PLAN S2 §6.2): envío programado de push, historial, favoritos, búsqueda, microquiz y PWA.
+- El caché sin conexión del service worker, el manifest y la instalación como PWA. El service worker solo atiende `push` y `notificationclick`.
+- Ningún WP del S3 se integra a `main` antes de etiquetar `v0.2.0` (PLAN S3 §7).
 
-Rutas que siguen como marcadores con mensaje honesto: Historial (mientras no entre HU-08.1-B), Progreso (HU-10, recortable) y Ayuda (S3).
+Rutas que siguen como marcadores con mensaje honesto: Historial y Progreso (sin sprint comprometido).
 
 ## 4. Stack
 - Node.js 22.13 o superior, npm. Los integrantes usan Windows + PowerShell.
@@ -72,12 +72,12 @@ Rutas que siguen como marcadores con mensaje honesto: Historial (mientras no ent
 
 `npm run check` debe pasar antes de abrir cualquier PR. `npm run test:e2e` corre en CI y antes de cada *release*.
 
-## 6. Estructura (propuesta §14 + lo que agrega el S2)
+## 6. Estructura (propuesta §14 + lo que agregan el S2 y el S3)
 ```
 tamalecho/
 ├─ CLAUDE.md · README.md · vercel.json · .nvmrc · .env.example
-├─ .github/workflows/         ci.yml · push-dispatch.yml (S2)
-├─ docs/                      DECISIONES.md, sprint-1/, sprint-2/, evidencias/
+├─ .github/                   workflows/ (ci.yml · push-dispatch.yml); S3: ISSUE_TEMPLATE/sugerencia.yml
+├─ docs/                      DECISIONES.md, sprint-1/, sprint-2/, sprint-3/, evidencias/; S3: EDITORIAL.md, OPERACION.md
 ├─ scripts/                   validate-tips.mjs, check-links.mjs
 ├─ api/                       S2 · funciones de Vercel: SOLO adaptadores HTTP (D-21)
 │  └─ push/                   subscribe.js, dispatch.js
@@ -90,10 +90,11 @@ tamalecho/
 │  ├─ features/
 │  │  ├─ home/ · library/ · tips/ · placeholders/ · notfound/     (S1)
 │  │  ├─ scheduler/           S2 · SettingsPage (Ajustes), SchedulePreview, NoticeToast, NoticeHost
-│  │  └─ avatar/              S2 · Avatar.jsx
+│  │  ├─ avatar/              S2 · Avatar.jsx
+│  │  └─ help/                S3 · HelpPage (Ayuda), PrivacyPage (Privacidad)
 │  ├─ hooks/                  useCatalog, useDocumentTitle; S2: useSettings, useNoticeScheduler
-│  ├─ services/               catalog; S2: schedule, storage, tipPicker, notificationService, pushClient
-│  ├─ data/                   tips.json, schema.js, compare.json; S2: avatarStates.json
+│  ├─ services/               catalog; S2: schedule, storage, tipPicker, notificationService, pushClient; S3: help
+│  ├─ data/                   tips.json, schema.js, compare.json; S2: avatarStates.json; S3: help.json, catalog-changelog.json
 │  └─ styles/                 tokens.css, global.css
 └─ tests/
    ├─ unit/                   Vitest (S2: también unit/server/)
@@ -110,7 +111,8 @@ Reglas de arquitectura:
 - `src/data/schema.js` es la única definición de las reglas del tip. Lo usan el validador y las pruebas. No usa APIs de Node.
 - `api/` no contiene lógica: valida el método, lee el cuerpo, llama a `server/` y responde. La lógica y sus pruebas viven en `server/`.
 - Colores, espacios, tipografía, foco, radios, breakpoints y duraciones de animación salen de `tokens.css`, incluidos los del personaje. No escribas valores sueltos en los componentes.
-- No crees carpetas fuera de esta lista sin explicar por qué en el PR. No crees carpetas del Sprint 3.
+- No crees carpetas fuera de esta lista sin explicar por qué en el PR.
+- Los textos de Ayuda y Privacidad viven en `help.json` y se leen con `services/help.js`, con una marca `approved` que el PO cambia; mientras sea `false`, la página muestra «borrador».
 
 ## 7. Rutas
 | Ruta | Página | Historia |
@@ -120,7 +122,9 @@ Reglas de arquitectura:
 | `/biblioteca/:enfoque` | `scrum` o `pmbok`; categorías y filtro `?categoria=` | HU-02 |
 | `/tip/:id` | Ficha completa, fuente, siguiente consejo, volver con filtro; registra la lectura (S2) | HU-03, HU-08.1-A |
 | `/ajustes` | **S2:** horario, silencio, pausa, notificaciones, Web Push y restablecer datos | HU-07, HU-04.1-A, HU-06.2, HU-15.1-A, HT-04.2-B |
-| `/historial` · `/progreso` · `/ayuda` | Marcadores con mensaje honesto | HU-01.2 |
+| `/ayuda` | **S3:** cadencia, permisos, pausa, pestaña cerrada, compatibilidad y limitaciones; enlace de sugerencias | HU-13.1, HU-13.2-B |
+| `/privacidad` | **S3:** qué se guarda en el dispositivo y en el servidor, y cómo borrarlo | HU-13.2-A |
+| `/historial` · `/progreso` | Marcadores con mensaje honesto | HU-01.2 |
 | `/api/push/*` | Funciones del servidor (no son páginas) | HT-07 |
 | `*` | NotFoundPage con enlace al inicio | HU-01.2 |
 
@@ -129,8 +133,8 @@ Reglas de arquitectura:
 - `vercel.json` reescribe a `/index.html` todas las rutas **excepto `/api/`**.
 
 ## 8. Catálogo de consejos (`src/data/tips.json`)
-Sin cambios respecto al Sprint 1: catálogo `1.0.0` con 24 consejos aprobados. Su estructura y las reglas del validador están en `src/data/schema.js` y en `scripts/validate-tips.mjs`.
-- No modifiques el contenido de los consejos en el S2.
+Catálogo `1.0.0` con 24 consejos aprobados. Su estructura y las reglas del validador están en `src/data/schema.js` y en `scripts/validate-tips.mjs`.
+- No modifiques el contenido de los consejos por iniciativa propia. Desde el S3, todo cambio de contenido sigue `docs/EDITORIAL.md` (HU-14) y queda en la bitácora del catálogo.
 - Si una función nueva necesita datos de un consejo, los obtiene con `catalog.js`.
 - Cualquier texto educativo nuevo (por ejemplo, las frases del personaje) lo aprueba el Product Owner antes del *release*.
 

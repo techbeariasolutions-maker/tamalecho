@@ -29,4 +29,19 @@ describe('despliegue de las funciones', () => {
     expect(pattern.test('/api/push/subscribe')).toBe(false);
     expect(pattern.test('/api/push/dispatch')).toBe(false);
   });
+
+  // HT-08.2-A: encabezados de seguridad básicos en todas las respuestas. No se incluye CSP todavía:
+  // se propone en docs/sprint-3/SEGURIDAD.md y debe probarse en una vista previa antes de activarla.
+  it('vercel.json agrega los encabezados de seguridad a todas las rutas', () => {
+    const { headers } = JSON.parse(readFileSync('vercel.json', 'utf8'));
+    expect(headers).toHaveLength(1);
+    expect(headers[0].source).toBe('/(.*)');
+    const values = Object.fromEntries(headers[0].headers.map(({ key, value }) => [key, value]));
+    expect(values).toEqual({
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+      'X-Frame-Options': 'DENY',
+      'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+    });
+  });
 });
