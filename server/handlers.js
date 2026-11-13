@@ -8,7 +8,13 @@ import { MAX_BODY_BYTES, subscriptionId, validateSubscription } from './subscrip
 const json = (status, body, headers) => Response.json(body, { status, headers });
 
 // Lee el cuerpo JSON con un límite de tamaño. Devuelve { body } o { error } con la respuesta lista.
+// Si el cliente declara un Content-Length mayor al límite, se rechaza sin leer el cuerpo (HT-08.2-A);
+// si no lo declara o miente, el tamaño se vuelve a medir después de leerlo.
 async function readJson(request) {
+  const declared = Number(request.headers.get('content-length'));
+  if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) {
+    return { error: json(413, { error: 'La solicitud es demasiado grande.' }) };
+  }
   const text = await request.text();
   if (new TextEncoder().encode(text).length > MAX_BODY_BYTES) {
     return { error: json(413, { error: 'La solicitud es demasiado grande.' }) };
