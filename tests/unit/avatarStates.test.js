@@ -56,6 +56,15 @@ describe('catálogo de estados del personaje', () => {
     expect(new Set(phrases).size).toBe(DAY_PARTS.length);
   });
 
+  // Rediseño D-24: reacciones a acciones del usuario (no dependen de la hora).
+  it('la reacción «orgulloso» tiene sus campos, su token y una expresión que no usa ninguna franja', () => {
+    const reaction = avatarCatalog.reactions.orgulloso;
+    for (const field of FIELDS) expect(reaction[field].trim(), field).not.toBe('');
+    expect(tokens).toContain(`${reaction.colorToken}:`);
+    expect(reaction.alt.toLowerCase()).toContain('orgulloso');
+    expect(DAY_PARTS.map((part) => STATES[part].expression)).not.toContain(reaction.expression);
+  });
+
   it('cada estado tiene una expresión distinta', () => {
     const expressions = DAY_PARTS.map((part) => STATES[part].expression);
     expect(new Set(expressions).size).toBe(DAY_PARTS.length);

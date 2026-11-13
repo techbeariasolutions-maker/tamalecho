@@ -5,7 +5,7 @@ import { renderApp } from './renderApp.jsx';
 describe('App', () => {
   it('renderiza la portada con su encabezado principal', async () => {
     await renderApp('/');
-    expect(screen.getByRole('heading', { level: 1, name: 'TamalEcho Tips' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Tu ruta diaria' })).toBeInTheDocument();
   });
 
   it('tiene los landmarks del Layout', async () => {

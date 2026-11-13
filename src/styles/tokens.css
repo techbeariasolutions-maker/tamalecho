@@ -7,37 +7,53 @@
  * bordes y anillo de foco: mínimo 3:1).
  */
 :root {
-  /* ── Colores ─────────────────────────────────────────────── */
-  --color-bg: #fffaf3;             /* fondo general */
-  --color-surface: #ffffff;        /* tarjetas y menú desplegado */
-  --color-surface-muted: #f3ebe0;  /* bandas: encabezado, pie */
-  --color-text: #1f1a17;           /* sobre --color-bg: 16.60:1 · sobre --color-surface-muted: 14.59:1 */
-  --color-text-muted: #5c524b;     /* sobre --color-bg: 7.32:1 · sobre --color-surface: 7.60:1 */
-  --color-primary: #8a3b12;        /* enlaces sobre --color-bg: 7.45:1 · sobre --color-surface-muted: 6.55:1 */
-  --color-primary-strong: #6b2c0b; /* hover; sobre --color-bg: 10.16:1 */
-  --color-on-primary: #ffffff;     /* texto sobre --color-primary: 7.73:1 · sobre --color-primary-strong: 10.55:1 */
-  --color-border: #8c7f74;         /* bordes de controles sobre --color-bg: 3.74:1 */
+  /* ── Colores (rediseño «Ruta diaria», D-24) ──────────────── */
+  /* Verde oscuro como tinta, crema cálido de fondo, turquesa para progreso y selección,
+     coral para llamados secundarios y celebraciones, amarillo maíz para notas y el personaje. */
+  --color-bg: #fdf7ea;             /* crema cálido: fondo general */
+  --color-surface: #fffdf8;        /* blanco cálido: tarjetas y controles */
+  --color-surface-muted: #f3ead6;  /* bandas: encabezado, pie, bloques suaves */
+  --color-text: #17302a;           /* verde casi negro · sobre --color-bg: 13.18:1 · sobre --color-surface-muted: 11.76:1 */
+  --color-text-muted: #4a5a52;     /* sobre --color-bg: 6.84:1 · sobre --color-surface: 7.18:1 · sobre --color-surface-muted: 6.10:1 */
+  --color-primary: #1b4b3c;        /* verde oscuro: enlaces y botones · sobre --color-bg: 9.29:1 · sobre --color-surface-muted: 8.29:1 */
+  --color-primary-strong: #123629; /* hover · sobre --color-bg: 12.41:1 */
+  --color-on-primary: #ffffff;     /* sobre --color-primary: 9.91:1 · sobre --color-primary-strong: 13.25:1 */
+  --color-accent: #0e6f68;         /* turquesa: progreso y selección · sobre --color-bg: 5.63:1 · sobre --color-surface: 5.92:1 · blanco encima: 6.01:1 */
+  --color-accent-soft: #d3efeb;    /* fondo turquesa suave · --color-text encima: 11.60:1 · --color-accent encima: 4.96:1 */
+  --color-coral: #ef7b5a;          /* coral decorativo · --color-text encima: 5.13:1 */
+  --color-coral-strong: #a8401f;   /* coral para texto · sobre --color-bg: 5.75:1 · sobre --color-coral-soft: 5.02:1 */
+  --color-coral-soft: #fde3d8;     /* aviso suave (error frecuente) · --color-text encima: 11.49:1 */
+  --color-maiz: #f6cf55;           /* amarillo maíz · --color-text encima: 9.36:1 */
+  --color-maiz-soft: #fdf0c4;      /* notas y acción del día · --color-text encima: 12.35:1 */
+  --color-border: #7d8a80;         /* bordes de controles · sobre --color-bg: 3.38:1 · sobre --color-surface: 3.55:1 */
+  --color-border-soft: #e4dac3;    /* separadores decorativos de tarjetas (no son límite de control) */
   --color-error: #a1260d;          /* sobre --color-error-bg: 6.56:1 */
   --color-error-bg: #fdecea;       /* --color-text sobre este fondo: 15.07:1 */
 
   /* ── Foco ────────────────────────────────────────────────── */
-  /* Azul sobre --color-bg: 6.15:1. Sobre --color-primary solo da 1.21:1, por eso el
-     anillo se dibuja separado del elemento (offset) y queda sobre el fondo claro. */
+  /* Azul sobre --color-bg: 5.98:1 y sobre --color-surface: 6.28:1. El anillo se dibuja separado
+     del elemento (offset) para quedar siempre sobre el fondo claro, también en botones oscuros. */
   --focus-color: #0b57d0;
   --focus-width: 3px;
   --focus-offset: 3px;
 
   /* ── Tipografía (base 16 px; escala ×1.25) ──────────────── */
-  --font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* Sans serif geométrica del sistema: no se descargan fuentes de terceros (D-24, privacidad).
+     Si ninguna está instalada, se usa la fuente de interfaz del sistema. */
+  --font-family: 'Avenir Next', Avenir, 'Century Gothic', 'Segoe UI Variable Display', system-ui, -apple-system,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-size-sm: 0.875rem;  /* 14 px: solo metadatos, nunca texto de lectura */
   --font-size-base: 1rem;    /* 16 px */
   --font-size-lg: 1.25rem;   /* 20 px */
   --font-size-xl: 1.5625rem; /* 25 px */
   --font-size-2xl: 1.953rem; /* 31 px */
+  --font-size-3xl: 2.441rem; /* 39 px: título del héroe en escritorio */
   --line-height-base: 1.6;
-  --line-height-tight: 1.25;
+  --line-height-tight: 1.2;
   --font-weight-normal: 400;
   --font-weight-bold: 700;
+  --font-weight-black: 800;  /* títulos grandes y compactos */
+  --letter-spacing-tight: -0.01em;
 
   /* ── Espacios (múltiplos de 4 px) ───────────────────────── */
   --space-1: 0.25rem; /* 4 px */
@@ -53,15 +69,19 @@
   --content-max-width: 60rem;   /* 960 px */
   --choice-min-width: 8rem;     /* 128 px: columnas de casillas en Ajustes («Miércoles» cabe) */
   --notice-max-width: 26rem;    /* 416 px: ancho del aviso flotante en escritorio */
+  --reading-max-width: 42rem;   /* 672 px: largo cómodo de línea en la ficha */
 
   /* ── Elevación ───────────────────────────────────────────── */
-  --shadow-raised: 0 0.25rem 1rem rgb(31 26 23 / 0.2); /* aviso flotante sobre el contenido */
+  --shadow-raised: 0 0.25rem 1rem rgb(23 48 42 / 0.2);   /* aviso flotante sobre el contenido */
+  --shadow-card: 0 0.125rem 0.5rem rgb(23 48 42 / 0.08);  /* tarjetas: sombra discreta */
   --z-notice: 20;               /* por encima del menú (5) y de «Saltar al contenido» (10) */
   --border-width: 1px;
 
   /* ── Radios ──────────────────────────────────────────────── */
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
+  --radius-lg: 1rem;      /* tarjetas */
+  --radius-xl: 1.5rem;    /* héroe y misión del día */
   --radius-pill: 999px;
 
   /* ── Breakpoints ─────────────────────────────────────────── */
@@ -73,28 +93,39 @@
   /* ── Movimiento ──────────────────────────────────────────── */
   --motion-duration: 150ms;
 
-  /* ── Personaje (HT-05.1-A) ───────────────────────────────── */
-  /* Los rasgos de la cara se dibujan con --avatar-color-ink, así que su contraste se mide
-     contra el relleno que tienen detrás (WCAG 1.4.11, gráficos: mínimo 3:1).
-     El color de fondo de cada estado es decorativo: el círculo lleva un borde
-     --avatar-color-ink (16.60:1 sobre --color-bg) y el estado también se dice con texto. */
-  --avatar-color-ink: #1f1a17;       /* ojos, boca, cejas y bordes */
-  --avatar-color-masa: #f6dfa4;      /* cuerpo; --avatar-color-ink encima: 13.14:1 */
-  --avatar-color-hoja: #c98a3c;      /* hoja de maíz; --avatar-color-ink encima: 5.90:1 */
-  --avatar-color-despierto: #fde68a; /* fondo; --avatar-color-ink encima: 13.84:1 */
-  --avatar-color-hambre: #fdc79b;    /* fondo; --avatar-color-ink encima: 11.34:1 */
-  --avatar-color-atento: #bfe3c6;    /* fondo; --avatar-color-ink encima: 12.33:1 */
-  --avatar-color-cansado: #c9cdf2;   /* fondo; --avatar-color-ink encima: 11.08:1 */
-  --avatar-size: 6rem;               /* 96 px: deja espacio a la frase a 360 px */
-  --avatar-size-small: 3.5rem;       /* 56 px: dentro del aviso */
-  --avatar-stroke-width: 2.5;        /* grosor de trazo en unidades del viewBox (0–120) */
-  --avatar-transition-duration: 300ms; /* cambio de expresión (HU-05.1-A) */
+  /* ── Personaje (HT-05.1-A; rediseño D-24) ───────────────── */
+  /* Contorno y rasgos con --avatar-color-ink; su contraste se mide contra el relleno que tienen
+     detrás (WCAG 1.4.11, gráficos: mínimo 3:1). El fondo de cada estado es decorativo: el estado
+     también se dice con texto (alt y frase). */
+  --avatar-color-ink: #17302a;        /* contorno verde oscuro, ojos, boca y cejas */
+  --avatar-color-masa: #f6cf55;       /* cuerpo amarillo maíz · ink encima: 9.36:1 */
+  --avatar-color-dorado: #e3a83a;     /* pliegues dorados · ink encima: 6.65:1 */
+  --avatar-color-hoja: #a8d08d;       /* hoja de maíz verde suave · ink encima: 8.09:1 */
+  --avatar-color-mejilla: #f29c84;    /* chapitas · ink encima: 6.61:1 */
+  --avatar-color-estrella: #f6b81e;   /* estrella de «orgulloso» · ink encima: 7.90:1 */
+  --avatar-color-despierto: #fff1b8;  /* fondo «curioso» · ink encima: 12.41:1 */
+  --avatar-color-hambre: #ffd9c7;     /* fondo «antojado» · ink encima: 10.72:1 */
+  --avatar-color-atento: #cdeee9;     /* fondo «concentrado» · ink encima: 11.39:1 */
+  --avatar-color-cansado: #d9dcf5;    /* fondo «somnoliento» · ink encima: 10.39:1 */
+  --avatar-color-orgulloso: #ffe7a3;  /* fondo «orgulloso» · ink encima: 11.53:1 */
+  --avatar-size: 7.5rem;              /* 120 px en móvil */
+  --avatar-size-hero: 13rem;          /* 208 px en el héroe de escritorio */
+  --avatar-size-small: 3.5rem;        /* 56 px: dentro del aviso */
+  --avatar-stroke-width: 3;           /* contorno grueso, en unidades del viewBox (0–120) */
+  --avatar-transition-duration: 250ms; /* cambio de expresión (200–300 ms, DISEÑO §10) */
   --avatar-transition-easing: ease-in-out;
+  --avatar-enter-duration: 400ms;     /* entrada del personaje al cargar (300–500 ms) */
+  --avatar-blink-interval: 6s;        /* parpadeo ocasional */
+  --celebrate-duration: 500ms;        /* misión completada (400–600 ms), una vez por acción */
+  --progress-duration: 200ms;         /* barra o punto de ruta que cambia de estado */
 }
 
 @media (prefers-reduced-motion: reduce) {
   :root {
     --motion-duration: 0ms;
     --avatar-transition-duration: 0ms;
+    --avatar-enter-duration: 0ms;
+    --celebrate-duration: 0ms;
+    --progress-duration: 0ms;
   }
 }

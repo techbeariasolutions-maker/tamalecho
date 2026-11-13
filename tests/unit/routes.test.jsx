@@ -3,7 +3,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { renderApp } from './renderApp.jsx';
 
 const CASES = [
-  { path: '/', h1: 'TamalEcho Tips', title: 'TamalEcho Tips' },
+  { path: '/', h1: 'Tu ruta diaria', title: 'TamalEcho Tips' },
   { path: '/biblioteca/scrum', h1: 'Biblioteca de Scrum', title: 'Biblioteca de Scrum · TamalEcho Tips' },
   { path: '/biblioteca/pmbok', h1: 'Biblioteca de PMI/PMBOK', title: 'Biblioteca de PMI/PMBOK · TamalEcho Tips' },
   { path: '/tip/SCR-01', h1: 'Product Backlog', title: 'Product Backlog · TamalEcho Tips' },

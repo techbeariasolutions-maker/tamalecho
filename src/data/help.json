@@ -88,7 +88,8 @@
         ],
         "items": [
           "Tus ajustes de los avisos: cada cuánto, hora del primer aviso, días, hora de la comida, silencio y pausa.",
-          "Tu historial de lecturas: qué consejos abriste y cuándo, hasta los 50 más recientes. Sirve para no repetirte en los avisos lo que ya leíste.",
+          "Tu historial de lecturas: qué consejos abriste y cuándo, hasta los 50 más recientes. Sirve para no repetirte en los avisos lo que ya leíste y para calcular tu racha.",
+          "Las misiones que marcas como comprendidas y cuándo, para mostrar tu progreso.",
           "Los avisos que ya te mostramos, hasta los 20 más recientes, para no repetir el mismo aviso.",
           "Si activaste los avisos con la pestaña cerrada: que están activos y la dirección de tu suscripción, para poder darla de baja."
         ]
@@ -127,7 +128,7 @@
         "title": "Cómo borrar tus datos o cancelar la suscripción",
         "items": [
           "En Ajustes, en «Avisos con la pestaña cerrada», pulsa «Desactivar avisos»: le pedimos al servidor que borre tu suscripción.",
-          "En Ajustes, pulsa «Restablecer mis datos»: tus ajustes vuelven a los valores recomendados, se borra tu historial de lecturas y se desactivan los avisos con la pestaña cerrada. Los avisos que ya te mostramos se conservan para no repetirlos.",
+          "En Ajustes, pulsa «Restablecer mis datos»: tus ajustes vuelven a los valores recomendados, se borran tu historial de lecturas y tus misiones completadas, y se desactivan los avisos con la pestaña cerrada. Los avisos que ya te mostramos se conservan para no repetirlos.",
           "Para borrar todo, primero desactiva los avisos con la pestaña cerrada y después borra los datos de este sitio en la configuración de tu navegador."
         ],
         "link": {

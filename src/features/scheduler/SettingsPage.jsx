@@ -144,6 +144,7 @@ function LocalDataSection({ historyCount, resetAll, onReset }) {
           Tu historial de lecturas, para no repetirte en los avisos los consejos que ya abriste.{' '}
           {historyText(historyCount)}
         </li>
+        <li>Las misiones que marcas como comprendidas, para mostrar tu progreso.</li>
         <li>Los avisos que ya te mostramos, para no repetir el mismo aviso. Esto se conserva al restablecer.</li>
       </ul>
       <p>
@@ -155,8 +156,9 @@ function LocalDataSection({ historyCount, resetAll, onReset }) {
       {confirming ? (
         <div className="confirm-box" role="group" aria-labelledby="restablecer-pregunta">
           <p id="restablecer-pregunta">
-            ¿Restablecer tus datos? Tus ajustes vuelven a los valores recomendados, se borra tu historial de
-            lecturas en este dispositivo y se desactivan los avisos con la pestaña cerrada. No se puede deshacer.
+            ¿Restablecer tus datos? Tus ajustes vuelven a los valores recomendados, se borran tu historial de
+            lecturas y tus misiones completadas en este dispositivo, y se desactivan los avisos con la pestaña
+            cerrada. No se puede deshacer.
           </p>
           <div className="button-row">
             <Button onClick={confirm}>Sí, restablecer</Button>

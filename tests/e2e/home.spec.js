@@ -10,15 +10,15 @@ test('la portada carga sin errores en la consola', async ({ page }) => {
   await page.goto('/');
 
   await expect(page).toHaveTitle('TamalEcho Tips');
-  await expect(page.getByRole('heading', { level: 1, name: 'TamalEcho Tips' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1, name: 'Tu ruta diaria' })).toBeVisible();
   expect(errors).toEqual([]);
 });
 
 test('T-01: sin cuenta, la portada muestra un consejo y lleva a ambos enfoques', async ({ page }) => {
   await page.goto('/');
-  const featured = page.getByRole('region', { name: 'Consejo del día' });
-  await expect(featured.getByRole('article')).toBeVisible();
-  await expect(featured.getByRole('link', { name: /^Ver más sobre / })).toBeVisible();
+  const hero = page.getByRole('region', { name: 'Tu ruta diaria' });
+  await expect(hero.getByRole('article')).toBeVisible();
+  await expect(hero.getByRole('link', { name: /^Empezar misión: / })).toBeVisible();
   await expect(page.getByText(/^¿Por dónde empezar\?/)).toBeVisible();
 
   await page.getByRole('link', { name: 'Explorar Scrum' }).click();
@@ -31,10 +31,10 @@ test('T-01: sin cuenta, la portada muestra un consejo y lleva a ambos enfoques',
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Biblioteca de PMI/PMBOK');
 });
 
-test('el consejo destacado abre su ficha', async ({ page }) => {
+test('la misión de hoy abre su ficha', async ({ page }) => {
   await page.goto('/');
-  const link = page.getByRole('region', { name: 'Consejo del día' }).getByRole('link', { name: /^Ver más sobre / });
-  const title = (await link.textContent()).replace('Ver más sobre ', '');
+  const link = page.getByRole('link', { name: /^Empezar misión: / });
+  const title = (await link.getAttribute('aria-label')).replace(/^(Empezar|Repasar) misión: /, '');
   await link.click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(title);
 });

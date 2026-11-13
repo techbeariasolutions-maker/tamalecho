@@ -1,7 +1,7 @@
 import { expect, test } from './fixtures.js';
 
 const SECTIONS = [
-  { label: 'Inicio', url: /\/$/, h1: 'TamalEcho Tips' },
+  { label: 'Inicio', url: /\/$/, h1: 'Tu ruta diaria' },
   { label: 'Biblioteca', url: /\/biblioteca\/scrum$/, h1: 'Biblioteca de Scrum' },
   { label: 'Historial', url: /\/historial$/, h1: 'Historial' },
   { label: 'Progreso', url: /\/progreso$/, h1: 'Progreso' },
@@ -122,19 +122,21 @@ test('T-03: el botón «atrás» del navegador regresa por el mismo camino', asy
   await page.goBack();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Biblioteca de PMI/PMBOK');
   await page.goBack();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('TamalEcho Tips');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Tu ruta diaria');
 });
 
-test('los enlaces de la portada llevan a donde dicen', async ({ page }) => {
-  for (const [name, h1] of [
-    ['Biblioteca', 'Biblioteca de Scrum'],
-    ['Ajustes', 'Ajustes'],
-    ['Ayuda', 'Ayuda'],
-  ]) {
-    await page.goto('/');
-    await page.getByRole('navigation', { name: 'Más secciones' }).getByRole('link', { name }).click();
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText(h1);
-  }
+test('la misión de hoy y la ruta de la semana llevan a sus fichas', async ({ page }) => {
+  await page.goto('/');
+  const start = page.getByRole('link', { name: /^Empezar misión: / });
+  const title = (await start.getAttribute('aria-label')).replace(/^(Empezar|Repasar) misión: /, '');
+  await start.click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(title);
+
+  await page.goto('/');
+  const step = page.getByRole('region', { name: 'Tu ruta de la semana' }).getByRole('listitem').first();
+  const stepTitle = await step.locator('.route__title').textContent();
+  await step.getByRole('link').click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(stepTitle);
 });
 
 test('el menú móvil se abre y se cierra con el botón', async ({ page, isMobile }) => {

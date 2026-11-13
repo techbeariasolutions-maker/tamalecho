@@ -20,7 +20,7 @@ describe('SettingsPage (HT-04.2-B)', () => {
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
     const section = screen.getByRole('region', { name: 'Tus datos en este dispositivo' });
     expect(within(section).getByText(/no tiene cuentas ni inicio de sesión/)).toBeInTheDocument();
-    expect(within(section).getAllByRole('listitem')).toHaveLength(3);
+    expect(within(section).getAllByRole('listitem')).toHaveLength(4); // ajustes, lecturas, misiones completadas (D-24) y avisos mostrados
     expect(within(section).getByText(/Ahora no hay lecturas registradas\./)).toBeInTheDocument();
     expect(within(section).getByRole('button', { name: 'Restablecer mis datos' })).toBeInTheDocument();
     expect(within(section).getByRole('status')).toBeEmptyDOMElement();
