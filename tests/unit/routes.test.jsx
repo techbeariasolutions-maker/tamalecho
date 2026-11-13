@@ -8,14 +8,14 @@ const CASES = [
   { path: '/biblioteca/pmbok', h1: 'Biblioteca de PMI/PMBOK', title: 'Biblioteca de PMI/PMBOK · TamalEcho Tips' },
   { path: '/tip/SCR-01', h1: 'Product Backlog', title: 'Product Backlog · TamalEcho Tips' },
   { path: '/tip/SCR-99', h1: 'Consejo no encontrado', title: 'Consejo no encontrado · TamalEcho Tips' },
-  { path: '/historial', h1: 'Historial', title: 'Historial · TamalEcho Tips', sprint: 2 },
-  { path: '/progreso', h1: 'Progreso', title: 'Progreso · TamalEcho Tips', sprint: 2 },
+  { path: '/historial', h1: 'Historial', title: 'Historial · TamalEcho Tips', pending: true },
+  { path: '/progreso', h1: 'Progreso', title: 'Progreso · TamalEcho Tips', pending: true },
   { path: '/ajustes', h1: 'Ajustes', title: 'Ajustes · TamalEcho Tips' },
   { path: '/ayuda', h1: 'Ayuda', title: 'Ayuda · TamalEcho Tips', sprint: 3 },
 ];
 
 describe('rutas', () => {
-  it.each(CASES)('$path muestra un único h1 «$h1» y su título', async ({ path, h1, title, sprint }) => {
+  it.each(CASES)('$path muestra un único h1 «$h1» y su título', async ({ path, h1, title, sprint, pending }) => {
     await renderApp(path);
     const headings = screen.getAllByRole('heading', { level: 1 });
     expect(headings).toHaveLength(1);
@@ -24,6 +24,11 @@ describe('rutas', () => {
     await waitFor(() => expect(document.title).toBe(title));
     if (sprint) {
       expect(screen.getByText(`Esta sección estará disponible en el Sprint ${sprint}.`)).toBeInTheDocument();
+    }
+    if (pending) {
+      // Sin sprint comprometido no se promete fecha (D-11, WP-S2-12).
+      expect(screen.getByText('Esta sección todavía no está disponible.')).toBeInTheDocument();
+      expect(screen.queryByText(/disponible en el Sprint/)).not.toBeInTheDocument();
     }
   });
 
