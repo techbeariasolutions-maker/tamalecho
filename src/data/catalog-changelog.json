@@ -1,0 +1,21 @@
+{
+  "entries": [
+    {
+      "version": "0.9.0",
+      "date": "2026-10-20",
+      "author": "Claude (agente de código), commit 1d1e033",
+      "tips": ["SCR-01", "SCR-02", "SCR-03", "SCR-04", "SCR-05", "SCR-06", "SCR-07", "SCR-08", "SCR-09", "SCR-10", "SCR-11", "SCR-12", "PMI-01", "PMI-02", "PMI-03", "PMI-04", "PMI-05", "PMI-06", "PMI-07", "PMI-08", "PMI-09", "PMI-10", "PMI-11", "PMI-12"],
+      "summary": "Borrador de los 24 consejos de la propuesta §16, sin aprobación.",
+      "approvedBy": ""
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-10-22",
+      "author": "Cuenta de GitHub techbeariasolutions-maker (PR #35)",
+      "tips": ["SCR-01", "SCR-02", "SCR-03", "SCR-04", "SCR-05", "SCR-06", "SCR-07", "SCR-08", "SCR-09", "SCR-10", "SCR-11", "SCR-12", "PMI-01", "PMI-02", "PMI-03", "PMI-04", "PMI-05", "PMI-06", "PMI-07", "PMI-08", "PMI-09", "PMI-10", "PMI-11", "PMI-12"],
+      "summary": "Catálogo aprobado con páginas verificadas y guías en español (HT-03.2-B). La aprobación se registró en «reviewedBy» de cada consejo con el PR #37.",
+      "approvedBy": "Obdulio Rincón Flores",
+      "pr": 35
+    }
+  ]
+}

@@ -28,6 +28,37 @@ export const REQUIRED_SOURCE_TEXT_FIELDS = ['title', 'authors', 'edition', 'url'
 export const OPTIONAL_FIELDS = ['source.pages', 'reviewedBy', 'reviewedAt'];
 
 const isNonEmptyString = (value) => typeof value === 'string' && value.trim() !== '';
+const ISO_DATE_PATTERN = /^(\d{4})-(\d{2})-(\d{2})$/;
+
+// Fecha de calendario real con formato AAAA-MM-DD (rechaza 2026-02-30). La fecha se construye
+// con sus partes, no con la hora actual.
+export function isIsoDate(value) {
+  const match = typeof value === 'string' ? ISO_DATE_PATTERN.exec(value) : null;
+  if (!match) return false;
+  const [year, month, day] = match.slice(1).map(Number);
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+}
+
+export function isSemver(value) {
+  return isNonEmptyString(value) && SEMVER_PATTERN.test(value);
+}
+
+// Compara dos versiones semver: negativo si a < b, 0 si son iguales, positivo si a > b.
+// Una prerelease (1.0.0-rc.1) va antes que su versión final (1.0.0).
+export function compareSemver(a, b) {
+  const [coreA, preA = ''] = a.split('+')[0].split(/-(.*)/s);
+  const [coreB, preB = ''] = b.split('+')[0].split(/-(.*)/s);
+  const partsA = coreA.split('.').map(Number);
+  const partsB = coreB.split('.').map(Number);
+  for (let i = 0; i < 3; i += 1) {
+    if (partsA[i] !== partsB[i]) return partsA[i] - partsB[i];
+  }
+  if (preA === preB) return 0;
+  if (preA === '') return 1;
+  if (preB === '') return -1;
+  return preA < preB ? -1 : 1;
+}
 const isPositiveInteger = (value) => Number.isInteger(value) && value > 0;
 const normalize = (text) => text.trim().toLocaleLowerCase('es-MX');
 
@@ -138,8 +169,13 @@ export function validateCatalog(catalog, { release = false } = {}) {
     return report;
   }
 
-  if (!isNonEmptyString(catalog.catalogVersion) || !SEMVER_PATTERN.test(catalog.catalogVersion)) {
+  if (!isSemver(catalog.catalogVersion)) {
     catalogIssue('semver', `«catalogVersion» debe ser semver (por ejemplo 1.0.0); tiene «${catalog.catalogVersion ?? ''}».`);
+  }
+
+  // Esquema versionado (HU-14.1-B): cada publicación lleva su fecha.
+  if (!isIsoDate(catalog.updatedAt)) {
+    catalogIssue('fecha', `«updatedAt» debe ser una fecha AAAA-MM-DD válida; tiene «${catalog.updatedAt ?? ''}».`);
   }
 
   if (!Array.isArray(catalog.tips)) {
@@ -177,6 +213,80 @@ export function validateCatalog(catalog, { release = false } = {}) {
       });
     }
   });
+
+  return report;
+}
+
+/**
+ * Valida la bitácora de publicaciones del catálogo (HU-14.2-A) contra el catálogo publicado.
+ * Cada versión publicada tiene una entrada con fecha, autor, consejos tocados, motivo y quién la aprobó.
+ * @param {object} changelog contenido de catalog-changelog.json
+ * @param {object} catalog contenido de tips.json
+ * @param {{ release?: boolean }} options con release, la falta de aprobación de la versión actual es error
+ * @returns {{ errors: Array<{tipId: string, rule: string, message: string}>, warnings: Array<{tipId: string, rule: string, message: string}> }}
+ */
+export function validateChangelog(changelog, catalog, { release = false } = {}) {
+  const report = { errors: [], warnings: [] };
+  const issue = (label, rule, message) => report.errors.push({ tipId: label, rule, message });
+
+  if (changelog === null || typeof changelog !== 'object' || !Array.isArray(changelog.entries)) {
+    issue('bitácora', 'estructura', 'la bitácora debe ser un objeto con una lista «entries».');
+    return report;
+  }
+
+  const entries = changelog.entries;
+  const versions = [];
+  entries.forEach((entry, index) => {
+    const label = `bitácora ${isSemver(entry?.version) ? entry.version : `#${index + 1}`}`;
+    if (entry === null || typeof entry !== 'object') {
+      issue(label, 'estructura', 'la entrada no es un objeto.');
+      return;
+    }
+    if (!isSemver(entry.version)) issue(label, 'semver', '«version» debe ser semver.');
+    else versions.push(entry.version);
+    if (!isIsoDate(entry.date)) issue(label, 'fecha', '«date» debe ser una fecha AAAA-MM-DD válida.');
+    if (!isNonEmptyString(entry.author)) issue(label, 'obligatorio', '«author» falta o está vacío.');
+    if (!isNonEmptyString(entry.summary)) issue(label, 'obligatorio', '«summary» falta o está vacío.');
+    if (typeof entry.approvedBy !== 'string') issue(label, 'obligatorio', '«approvedBy» debe ser texto (vacío si aún no se aprueba).');
+    if (!Array.isArray(entry.tips) || entry.tips.length === 0 || !entry.tips.every((id) => ID_PATTERN.test(id))) {
+      issue(label, 'obligatorio', '«tips» debe listar al menos un id con formato SCR-00 o PMI-00.');
+    }
+    if (entry.pr !== undefined && !isPositiveInteger(entry.pr)) issue(label, 'obligatorio', '«pr» debe ser un número de PR.');
+  });
+
+  // Sin versiones repetidas y en orden de publicación.
+  versions.forEach((version, index) => {
+    if (versions.indexOf(version) !== index) issue(`bitácora ${version}`, 'version-duplicada', 'la versión aparece dos veces.');
+    if (index > 0 && compareSemver(versions[index - 1], version) >= 0) {
+      issue(`bitácora ${version}`, 'orden', `debe ir después de una versión menor; la anterior es ${versions[index - 1]}.`);
+    }
+  });
+
+  // La versión publicada es la última de la bitácora y tiene su misma fecha.
+  const current = entries.find((entry) => entry?.version === catalog?.catalogVersion);
+  if (!current) {
+    issue('bitácora', 'sin-registro', `falta la entrada de la versión publicada ${catalog?.catalogVersion ?? '(sin versión)'}.`);
+    return report;
+  }
+  if (entries.at(-1) !== current) {
+    issue('bitácora', 'orden', `la última entrada debe ser la versión publicada ${catalog.catalogVersion}.`);
+  }
+  if (current.date !== catalog.updatedAt) {
+    issue('bitácora', 'fecha', `la fecha de ${current.version} (${current.date}) no coincide con «updatedAt» (${catalog.updatedAt}).`);
+  }
+  const knownIds = new Set((catalog.tips ?? []).map((tip) => tip?.id));
+  for (const id of current.tips ?? []) {
+    if (!knownIds.has(id)) issue('bitácora', 'tip-desconocido', `la versión ${current.version} menciona ${id}, que no está en el catálogo.`);
+  }
+
+  // Publicación aprobada: en release es obligatoria; antes, solo advertencia.
+  if (!isNonEmptyString(current.approvedBy)) {
+    (release ? report.errors : report.warnings).push({
+      tipId: 'bitácora',
+      rule: 'aprobacion',
+      message: `la versión ${current.version} no tiene aprobación registrada («approvedBy»).`,
+    });
+  }
 
   return report;
 }
