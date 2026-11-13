@@ -19,3 +19,9 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# Reportes y guías de entrega con datos personales (matrículas): se entregan por el canal
+# del curso, no se publican en este repositorio público. El reporte del S1 ya versionado no cambia.
+docs/sprint-2/Reporte_Sprint2_TamalEcho.*
+docs/sprint-3/Reporte_Sprint3_TamalEcho.*
+docs/sprint-*/Guia_Sprint*_TamalEcho.pdf
