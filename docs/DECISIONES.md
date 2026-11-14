@@ -1,7 +1,7 @@
 # Registro de decisiones — TamalEcho Tips
 
 > Cada decisión tiene ID, fecha, motivo y estado. Si un agente o una persona encuentra una contradicción nueva, **no la resuelve en silencio**: la agrega aquí como `PENDIENTE` y pregunta.
-> Última actualización: 13/11/2026 (D-23 PENDIENTE; D-24 rediseño fuera de alcance; D-25 release adelantado).
+> Última actualización: 14/11/2026 (D-23 PENDIENTE; D-24 rediseño; D-25 release adelantado; D-26 backlog pendiente).
 
 ## D-01 · Jerarquía de fuentes de verdad — VIGENTE
 1. **Propuesta aprobada** (`TamalEcho_Propuesta_Sprints.pdf`). Manda sobre todo lo demás. Alcance cerrado.
@@ -254,6 +254,13 @@
   - Las historias del S3 quedan **integradas, pendientes de aceptación del PO** (PLAN S3 §8), no «Terminadas».
   - Cualquier corrección posterior sale como `v1.0.1` o superior (D-12).
 - **No cambia:** el rediseño (D-24) sigue fuera de `v1.0.0`; los pendientes humanos se reportan tal como ocurran (D-19).
+
+## D-26 · Terminar el backlog pendiente de la propuesta después de `v1.0.0` — VIGENTE (14/11/2026)
+- **Decisión de Diego (14/11/2026):** terminar con el agente de código las actividades de la propuesta que quedaron fuera del S2 por ser recortables (PLAN S2 §6.2), en los días que quedan.
+- **Plan:** `docs/sprint-3/PENDIENTES.md`. Son 7 WP en orden (P1 a P7) y el release objetivo es `v1.1.0`.
+- **Alcance:** solo actividades del backlog de la propuesta (D-01); nada nuevo. No cambia lo entregado en `v1.0.0` ni su reporte.
+- **Lo que no cubre:** aprobaciones del PO, pruebas manuales, acta, reportes, dailies y las decisiones D-22, D-23 y S-02. Las hacen personas (D-19).
+- **Revisión:** como en el S3, los PR se integran con la autorización de Diego mientras D-22 siga PENDIENTE, y así se registra en cada PR.
 
 ## D-12 · Versionado — VIGENTE
 - Catálogo: `0.9.0` mientras haya borradores; `1.0.0` solo cuando los 24 estén aprobados (HT-03.2-B).

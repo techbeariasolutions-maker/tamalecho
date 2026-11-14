@@ -1,13 +1,13 @@
 # TamalEcho Tips — Instrucciones para agentes de código
 
 > Va en la raíz del repositorio. Todo agente lo lee antes de trabajar.
-> Versión del Sprint 3 (13/11/2026, borrador hasta el Sprint Planning del 17/11; D-23). Si algo aquí contradice la propuesta aprobada, gana la propuesta (ver `docs/DECISIONES.md`, D-01).
+> Versión del Sprint 3, actualizada el 14/11/2026 para el backlog pendiente posterior a `v1.0.0` (D-26). Si algo aquí contradice la propuesta aprobada, gana la propuesta (ver `docs/DECISIONES.md`, D-01).
 
 ## 1. Orden de lectura obligatorio
 1. Este archivo.
-2. `docs/DECISIONES.md`: decisiones vigentes y pendientes (en especial D-19, D-21, D-22 y D-23).
+2. `docs/DECISIONES.md`: decisiones vigentes y pendientes (en especial D-19, D-21, D-22, D-23 y D-26).
 3. `docs/sprint-3/PLAN.md`: alcance comprometido, calendario, puntos de control y Definition of Done del sprint actual.
-4. El paquete de trabajo (WP) que te pidieron, en `docs/sprint-3/PROMPTS.md`.
+4. El paquete de trabajo (WP) que te pidieron, en `docs/sprint-3/PROMPTS.md` o, después de `v1.0.0`, en `docs/sprint-3/PENDIENTES.md` (D-26).
 
 ## 2. Producto
 TamalEcho Tips es una web en React + JavaScript (Vite) que enseña conceptos de Scrum y PMI/PMBOK con consejos breves. El Sprint 1 entregó las bibliotecas, las fichas y la accesibilidad (`v0.1.0`). El Sprint 2 agregó los avisos cada 2 o 3 horas, el personaje animado según la hora, los ajustes y Web Push (`v0.2.0`). El Sprint 3 agrega la Ayuda, el aviso de privacidad, el canal de sugerencias, el flujo editorial del catálogo y el cierre de calidad (`v1.0.0`).
@@ -33,8 +33,8 @@ Reglas de producto (no negociables):
 
 ## 3. Fuera de alcance en el Sprint 3 (NO implementar)
 - Un editor web de consejos, cuentas, inicio de sesión, analítica, rastreo o cualquier dato personal.
-- **Cualquier actividad que no esté en un WP de `docs/sprint-3/PROMPTS.md`.** Eso incluye los recortables del S2 que no entraron (PLAN S2 §6.2): envío programado de push, historial, favoritos, búsqueda, microquiz y PWA.
-- El caché sin conexión del service worker, el manifest y la instalación como PWA. El service worker solo atiende `push` y `notificationclick`.
+- **Cualquier actividad que no esté en un WP de `docs/sprint-3/PROMPTS.md` o de `docs/sprint-3/PENDIENTES.md`.** D-26 activa los recortables del S2 que no entraron (envío programado, favoritos, compartir, filtros, PWA y microquiz), uno por WP y en ese orden.
+- El caché sin conexión, el manifest y la instalación como PWA solo entran con el WP P5 de `PENDIENTES.md`. Antes, el service worker solo atiende `push` y `notificationclick`.
 - Ningún WP del S3 se integra a `main` antes de etiquetar `v0.2.0` (PLAN S3 §7).
 
 Ya no quedan rutas marcador: Historial y Mi progreso llegaron con el rediseño (D-24).
