@@ -3,10 +3,11 @@ import Button from '../../components/Button.jsx';
 import Avatar from '../avatar/Avatar.jsx';
 
 // Tarjeta del aviso (HU-06.1-A): personaje, título y resumen del consejo, «Ver consejo» y «Cerrar».
+// HU-06.1-B: «Pausar avisos» siempre visible en el aviso, sin impedir seguir navegando.
 // Va dentro de la región role="status" de NoticeHost, que es la que se anuncia; la tarjeta no
 // toma el foco. Los nombres accesibles amplían el texto visible sin contradecirlo (WCAG 2.5.3):
 // «Ver consejo sobre Product Backlog» y «Cerrar aviso».
-export default function NoticeToast({ notice, onClose }) {
+export default function NoticeToast({ notice, onClose, onPause }) {
   const { tip, dayPart } = notice;
 
   return (
@@ -30,6 +31,13 @@ export default function NoticeToast({ notice, onClose }) {
           <Button variant="secondary" aria-label="Cerrar aviso" onClick={onClose}>
             Cerrar
           </Button>
+          {onPause && (
+            // Nombre distinto del botón de Ajustes, que también dice «Pausar avisos» (WCAG 2.5.3: empieza
+            // con el texto visible).
+            <Button variant="secondary" aria-label="Pausar avisos desde este aviso" onClick={onPause}>
+              Pausar avisos
+            </Button>
+          )}
         </div>
       </div>
     </div>
