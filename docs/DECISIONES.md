@@ -1,7 +1,7 @@
 # Registro de decisiones — TamalEcho Tips
 
 > Cada decisión tiene ID, fecha, motivo y estado. Si un agente o una persona encuentra una contradicción nueva, **no la resuelve en silencio**: la agrega aquí como `PENDIENTE` y pregunta.
-> Última actualización: 13/11/2026 (D-23 PENDIENTE; D-25 release adelantado).
+> Última actualización: 13/11/2026 (D-23 PENDIENTE; D-24 rediseño fuera de alcance; D-25 release adelantado).
 
 ## D-01 · Jerarquía de fuentes de verdad — VIGENTE
 1. **Propuesta aprobada** (`TamalEcho_Propuesta_Sprints.pdf`). Manda sobre todo lo demás. Alcance cerrado.
@@ -229,6 +229,19 @@
 - **Canal de sugerencias (HU-13.2-B):** la propuesta dice «formulario simple o vínculo al canal acordado», pero el canal no se ha acordado. Se propone un formulario de *issue* de GitHub en el repositorio público, sin campos de datos personales. **Limitación:** pide una cuenta de GitHub. El PO puede pedir otro canal.
 - **Pendiente de decidir:** confirmación del alcance (Diego y Alan) y del canal de sugerencias (PO).
 
+## D-24 · Rediseño UI/UX fuera del alcance del Sprint 3 — VIGENTE (13/11/2026)
+- **Decisión de Diego (13/11/2026):** desarrollar completo el rediseño de `docs/DISEÑO_UI_UX.md` («Ruta diaria»), que Diego redactó con otro asistente de IA (Codex).
+- **Fuera de alcance:** no forma parte del compromiso del S3 (D-23) ni de la propuesta. No cuenta en puntos ni en la velocidad, y en el reporte se declara como trabajo adicional.
+- **Cómo se trabaja:**
+  - En la rama `feat/ui-redesign`, con un PR en borrador.
+  - **No se integra a `main` antes de etiquetar `v1.0.0`.** La entrega final quedó con la interfaz anterior: `v1.0.0` se etiquetó el 13/11 sin el rediseño (D-25).
+  - **Integración (13/11/2026, después de `v1.0.0`):** Diego decidió integrar el PR #65 a `main`. Producción muestra el rediseño desde ese merge. `v1.0.0` sigue apuntando a la interfaz anterior; si se quiere una versión etiquetada con el rediseño, sería `v1.1.0`. No hubo revisión de Alan registrada en GitHub (D-22).
+- **Lo que no cambia:** las reglas del producto (CLAUDE.md §2) y la accesibilidad (CLAUDE.md §10).
+  - El saludo de la portada no lleva el nombre de la persona: la app no guarda nombres.
+  - Cualquier dato nuevo que se guarde en el navegador (misiones completadas, racha) va en `storage.js` y se agrega al aviso de privacidad.
+  - Las frases nuevas del personaje las aprueba el PO.
+  - No se cargan fuentes ni recursos de terceros.
+- **Abarca HU que no entraron:** incluye historial (HU-08.1-B), progreso (parecido a HU-10, sin microquiz) y búsqueda (HU-09.1). Si se integra después de `v1.0.0`, se reporta como trabajo posterior a la entrega.
 ## D-25 · Release `v1.0.0` adelantado al 13/11/2026 — VIGENTE (13/11/2026)
 - **Decisión de Diego (13/11/2026):** publicar el release final `v1.0.0` el 13/11, en lugar del 20/11 que fija PLAN S3 §5 y §11. Diego indicó que Alan también lo autorizó.
 - **Qué cambia respecto al plan:** el tag `v1.0.0` y la GitHub Release se publican **antes** de:

@@ -9,7 +9,7 @@ import { createRepository } from '../../src/services/storage.js';
 // con aria-describedby y el foco va al primer campo con error.
 const browserRepository = () => createRepository(window.localStorage);
 const scheduleStatus = () =>
-  within(screen.getByRole('region', { name: 'Horario de los avisos' })).getAllByRole('status')[0];
+  within(screen.getByRole('region', { name: 'Cuándo aprender' })).getAllByRole('status')[0];
 const save = (user) => user.click(screen.getByRole('button', { name: 'Guardar horario' }));
 const setTime = (label, value) => fireEvent.change(screen.getByLabelText(label), { target: { value } });
 

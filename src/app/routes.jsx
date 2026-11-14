@@ -9,7 +9,8 @@ const TipDetailPage = lazy(() => import('../features/tips/TipDetailPage.jsx'));
 const SettingsPage = lazy(() => import('../features/scheduler/SettingsPage.jsx'));
 const HelpPage = lazy(() => import('../features/help/HelpPage.jsx'));
 const PrivacyPage = lazy(() => import('../features/help/PrivacyPage.jsx'));
-const PlaceholderPage = lazy(() => import('../features/placeholders/PlaceholderPage.jsx'));
+const HistoryPage = lazy(() => import('../features/progress/HistoryPage.jsx'));
+const ProgressPage = lazy(() => import('../features/progress/ProgressPage.jsx'));
 const NotFoundPage = lazy(() => import('../features/notfound/NotFoundPage.jsx'));
 
 // Rutas de CLAUDE.md §7.
@@ -21,8 +22,8 @@ export const routes = [
       { path: '/biblioteca', element: <Navigate to="/biblioteca/scrum" replace /> },
       { path: '/biblioteca/:enfoque', element: <LibraryPage /> },
       { path: '/tip/:id', element: <TipDetailPage /> },
-      { path: '/historial', element: <PlaceholderPage title="Historial" /> },
-      { path: '/progreso', element: <PlaceholderPage title="Progreso" /> },
+      { path: '/historial', element: <HistoryPage /> },
+      { path: '/progreso', element: <ProgressPage /> },
       { path: '/ajustes', element: <SettingsPage /> },
       { path: '/ayuda', element: <HelpPage /> },
       { path: '/privacidad', element: <PrivacyPage /> },

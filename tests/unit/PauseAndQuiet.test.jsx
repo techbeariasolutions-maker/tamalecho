@@ -6,7 +6,7 @@ import { createRepository } from '../../src/services/storage.js';
 
 // Silencio y pausa (HU-07.2-A). Fecha fija: lunes 9/11/2026, 09:00.
 const browserRepository = () => createRepository(window.localStorage);
-const pauseSection = () => screen.getByRole('region', { name: 'Pausa' });
+const pauseSection = () => screen.getByRole('region', { name: 'Pausar temporalmente' });
 const previewTimes = () =>
   within(screen.getByRole('region', { name: 'Avisos de hoy' }))
     .queryAllByRole('listitem')

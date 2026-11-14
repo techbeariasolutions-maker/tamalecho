@@ -59,6 +59,18 @@ function sanitizeServedWindows(value) {
   return unique.slice(-MAX_SERVED_WINDOWS);
 }
 
+// Progreso local (rediseño D-24): { completed: { 'SCR-01': '2026-11-13T15:00:00.000Z', ... } }.
+// Solo ids con formato y fechas válidas; cualquier otro campo se descarta.
+function sanitizeProgress(value) {
+  const completed = {};
+  const source = isPlainObject(value) && isPlainObject(value.completed) ? value.completed : {};
+  for (const [id, at] of Object.entries(source)) {
+    const iso = toIsoDate(at);
+    if (ID_PATTERN.test(id) && iso) completed[id] = iso;
+  }
+  return { completed };
+}
+
 // Estado local de Web Push (HU-15.1-A): { status: 'on' | 'off', endpoint? }. El endpoint se guarda
 // para poder dar de baja la suscripción en el servidor aunque el navegador ya la haya perdido.
 function sanitizePush(value) {
@@ -75,7 +87,7 @@ export function createEmptyData() {
     settings: validateSettings().settings,
     history: [],
     favorites: [],
-    progress: {},
+    progress: { completed: {} },
     servedWindows: [],
     push: null,
   };
@@ -99,7 +111,7 @@ export function migrate(data) {
     settings: validateSettings(isPlainObject(source.settings) ? source.settings : undefined).settings,
     history: sanitizeHistory(source.history),
     favorites: sanitizeFavorites(source.favorites),
-    progress: isPlainObject(source.progress) ? source.progress : {},
+    progress: sanitizeProgress(source.progress),
     servedWindows: sanitizeServedWindows(source.servedWindows),
     push: sanitizePush(source.push),
   };
@@ -167,6 +179,22 @@ export function createRepository(storage) {
       const last = data.history[data.history.length - 1];
       if (last?.id === id) return false;
       data.history = [...data.history, { id, at: iso }].slice(-MAX_HISTORY_ENTRIES);
+      return write(data);
+    },
+
+    // Misiones marcadas como comprendidas (rediseño D-24). Devuelve { id: fechaISO }.
+    getCompleted() {
+      return read().progress.completed;
+    },
+
+    // Marca una misión como comprendida. Si ya estaba, conserva la primera fecha.
+    // Devuelve true si se guardó (o ya estaba guardada).
+    markCompleted({ id, at } = {}) {
+      const iso = toIsoDate(at);
+      if (typeof id !== 'string' || !ID_PATTERN.test(id) || !iso) return false;
+      const data = read();
+      if (data.progress.completed[id]) return true;
+      data.progress = { completed: { ...data.progress.completed, [id]: iso } };
       return write(data);
     },
 

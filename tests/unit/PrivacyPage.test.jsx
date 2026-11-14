@@ -26,7 +26,7 @@ describe('aviso de privacidad contra el código (HU-13.2-A)', () => {
   it('menciona cada dato que se guarda en el navegador, con los mismos límites', () => {
     const text = sectionText('en-tu-navegador');
     const stored = Object.keys(createEmptyData());
-    // favorites y progress existen en el esquema, pero ninguna función los llena todavía.
+    // favorites existe en el esquema, pero ninguna función lo llena todavía.
     expect(stored).toEqual(
       expect.arrayContaining(['settings', 'history', 'servedWindows', 'push', 'favorites', 'progress']),
     );
@@ -36,6 +36,9 @@ describe('aviso de privacidad contra el código (HU-13.2-A)', () => {
     expect(text).toMatch(/avisos que ya te mostramos/);
     expect(text).toContain(`${MAX_SERVED_WINDOWS} más recientes`);
     expect(text).toMatch(/dirección de tu suscripción/);
+    // Rediseño D-24: progress.completed guarda las misiones comprendidas.
+    expect(Object.keys(createEmptyData().progress)).toEqual(['completed']);
+    expect(text).toMatch(/misiones que marcas como comprendidas/);
   });
 
   it('menciona cada campo que guarda el servidor y nada más', () => {

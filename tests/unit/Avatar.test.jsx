@@ -5,6 +5,8 @@ import Avatar from '../../src/features/avatar/Avatar.jsx';
 
 // HT-05.1-B: un solo componente que cambia de expresión y frase según la franja.
 const STATES = avatarCatalog.states;
+const REACTIONS = avatarCatalog.reactions;
+const ALL_EXPRESSIONS = [...Object.values(STATES), ...Object.values(REACTIONS)].map((state) => state.expression);
 
 describe('Avatar', () => {
   for (const [dayPart, state] of Object.entries(STATES)) {
@@ -65,10 +67,39 @@ describe('Avatar', () => {
     }
   });
 
-  it('tiene una boca por expresión y cada expresión del catálogo tiene la suya', () => {
+  it('tiene una boca y una pose por expresión, incluidas las reacciones (D-24)', () => {
     const { container } = render(<Avatar dayPart="despierto" />);
     const mouths = [...container.querySelectorAll('[data-mouth]')].map((node) => node.dataset.mouth);
-    expect(mouths.sort()).toEqual(Object.values(STATES).map((state) => state.expression).sort());
+    const poses = [...container.querySelectorAll('[data-pose]')].map((node) => node.dataset.pose);
+    expect(mouths.sort()).toEqual([...ALL_EXPRESSIONS].sort());
+    expect(poses.sort()).toEqual([...ALL_EXPRESSIONS].sort());
+  });
+
+  // Rediseño D-24: al completar una misión el personaje reacciona «orgulloso».
+  it('la reacción «orgulloso» tiene prioridad sobre la franja y conserva la franja en data-day-part', () => {
+    const { rerender } = render(<Avatar dayPart="atento" reaction="orgulloso" />);
+    const figure = screen.getByRole('figure');
+    expect(figure).toHaveAttribute('data-expression', 'orgulloso');
+    expect(figure).toHaveAttribute('data-reaction', 'orgulloso');
+    expect(figure).toHaveAttribute('data-day-part', 'atento');
+    expect(screen.getByRole('img', { name: REACTIONS.orgulloso.alt })).toBeInTheDocument();
+    expect(screen.getByText(REACTIONS.orgulloso.phrase)).toBeInTheDocument();
+
+    // Sin reacción vuelve a la franja, con el mismo nodo.
+    rerender(<Avatar dayPart="atento" />);
+    expect(screen.getByRole('figure')).toBe(figure);
+    expect(figure).not.toHaveAttribute('data-reaction');
+    expect(figure).toHaveAttribute('data-expression', STATES.atento.expression);
+  });
+
+  it('una reacción desconocida se ignora', () => {
+    render(<Avatar dayPart="hambre" reaction="inventada" />);
+    expect(screen.getByRole('figure')).toHaveAttribute('data-expression', STATES.hambre.expression);
+  });
+
+  it('el tamaño «hero» agrega su clase', () => {
+    render(<Avatar dayPart="despierto" size="hero" />);
+    expect(screen.getByRole('figure')).toHaveClass('avatar--hero');
   });
 
   it('no usa imágenes externas', () => {

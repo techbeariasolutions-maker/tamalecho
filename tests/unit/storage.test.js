@@ -47,7 +47,7 @@ describe('repositorio local (HT-04.2-A)', () => {
         settings: { ...DEFAULT_SETTINGS, activeDays: [...DEFAULT_SETTINGS.activeDays] },
         history: [],
         favorites: [],
-        progress: {},
+        progress: { completed: {} },
         servedWindows: [],
         push: null,
       });
@@ -59,7 +59,7 @@ describe('repositorio local (HT-04.2-A)', () => {
         settings: { ...DEFAULT_SETTINGS, intervalMinutes: 120, paused: true },
         history: [{ id: 'SCR-01', at: '2026-11-04T15:00:00.000Z' }],
         favorites: ['PMI-03'],
-        progress: { answered: 2 },
+        progress: { completed: { 'SCR-01': '2026-11-04T15:05:00.000Z' } },
         push: { status: 'off' },
       };
       const result = migrate(JSON.stringify(data));
@@ -67,7 +67,7 @@ describe('repositorio local (HT-04.2-A)', () => {
       expect(result.settings.paused).toBe(true);
       expect(result.history).toEqual(data.history);
       expect(result.favorites).toEqual(['PMI-03']);
-      expect(result.progress).toEqual({ answered: 2 });
+      expect(result.progress).toEqual({ completed: { 'SCR-01': '2026-11-04T15:05:00.000Z' } });
       expect(result.push).toEqual({ status: 'off' });
     });
 
@@ -85,7 +85,7 @@ describe('repositorio local (HT-04.2-A)', () => {
       expect(result.settings.startTime).toBe('07:00');
       expect(result.history).toEqual([]);
       expect(result.favorites).toEqual(['SCR-01']);
-      expect(result.progress).toEqual({});
+      expect(result.progress).toEqual({ completed: {} });
       expect(result.push).toBeNull();
     });
 
@@ -295,7 +295,7 @@ describe('último aviso y restablecer (HT-04.2-B)', () => {
       repository.markWindowServed(keyAt(4, 14));
       storage.setItem(
         STORAGE_KEY,
-        JSON.stringify({ ...stored(storage), favorites: ['SCR-03'], progress: { answered: 1 }, push: { status: 'on' } }),
+        JSON.stringify({ ...stored(storage), favorites: ['SCR-03'], progress: { completed: { 'SCR-03': at(4, 11).toISOString() } }, push: { status: 'on' } }),
       );
       return { storage, repository };
     }
@@ -308,7 +308,7 @@ describe('último aviso y restablecer (HT-04.2-B)', () => {
       expect(repository.getHistory()).toEqual([]);
       const data = stored(storage);
       expect(data.favorites).toEqual([]);
-      expect(data.progress).toEqual({});
+      expect(data.progress).toEqual({ completed: {} });
       expect(data.push).toBeNull();
       expect(data.schemaVersion).toBe(1);
       // Persiste: un repositorio nuevo («recargar») ve lo mismo.
@@ -362,5 +362,36 @@ describe('estado de push en el repositorio (HU-15.1-A)', () => {
     repository.saveSettings({ intervalMinutes: 120 });
     repository.savePushState({ status: 'on' });
     expect(repository.getSettings().intervalMinutes).toBe(120);
+  });
+
+  // Rediseño D-24: misiones marcadas como comprendidas.
+  describe('misiones completadas', () => {
+    it('sanea el progreso: solo ids válidos con fecha válida', () => {
+      const result = migrate({
+        schemaVersion: 1,
+        progress: {
+          completed: { 'SCR-01': '2026-11-04T15:00:00.000Z', 'XYZ-1': '2026-11-04T15:00:00.000Z', 'PMI-02': 'ayer' },
+          otro: 1,
+        },
+      });
+      expect(result.progress).toEqual({ completed: { 'SCR-01': '2026-11-04T15:00:00.000Z' } });
+    });
+
+    it('markCompleted guarda la primera fecha y no la cambia al repetir', () => {
+      const storage = createFakeStorage();
+      const repository = createRepository(storage);
+      expect(repository.markCompleted({ id: 'SCR-02', at: at(4, 9) })).toBe(true);
+      expect(repository.markCompleted({ id: 'SCR-02', at: at(5, 9) })).toBe(true);
+      expect(repository.getCompleted()).toEqual({ 'SCR-02': at(4, 9).toISOString() });
+      // Persiste al «recargar».
+      expect(createRepository(storage).getCompleted()).toEqual({ 'SCR-02': at(4, 9).toISOString() });
+    });
+
+    it('markCompleted rechaza ids o fechas inválidas', () => {
+      const repository = createRepository(createFakeStorage());
+      expect(repository.markCompleted({ id: 'nada', at: at(4, 9) })).toBe(false);
+      expect(repository.markCompleted({ id: 'SCR-01', at: 'ayer' })).toBe(false);
+      expect(repository.getCompleted()).toEqual({});
+    });
   });
 });

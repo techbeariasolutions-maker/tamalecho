@@ -7,7 +7,7 @@ import { createRepository } from '../../src/services/storage.js';
 // Panel de horario en /ajustes (HU-07.1-A). Solo se simula la fecha (lunes 9/11/2026, 09:00) para
 // que la vista previa sea fija; los temporizadores siguen siendo reales para user-event.
 const browserRepository = () => createRepository(window.localStorage);
-const scheduleSection = () => screen.getByRole('region', { name: 'Horario de los avisos' });
+const scheduleSection = () => screen.getByRole('region', { name: 'Cuándo aprender' });
 const previewTimes = () =>
   within(screen.getByRole('region', { name: 'Avisos de hoy' }))
     .queryAllByRole('listitem')

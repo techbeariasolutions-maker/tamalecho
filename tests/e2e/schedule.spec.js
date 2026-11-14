@@ -6,7 +6,7 @@ import { expect, test } from './fixtures.js';
 test.use({ noticesPaused: false });
 const at = (hours, minutes = 0) => new Date(2026, 10, 9, hours, minutes);
 
-const scheduleSection = (page) => page.getByRole('region', { name: 'Horario de los avisos' });
+const scheduleSection = (page) => page.getByRole('region', { name: 'Cuándo aprender' });
 const previewTimes = (page) => page.getByRole('region', { name: 'Avisos de hoy' }).getByRole('listitem');
 
 function trackErrors(page) {
@@ -85,7 +85,7 @@ test('un horario inválido no se guarda y el error queda asociado al campo', asy
 test('la pausa persiste al recargar y la biblioteca y las fichas siguen disponibles', async ({ page }) => {
   await page.clock.setFixedTime(at(22));
   await page.goto('/ajustes');
-  const pause = page.getByRole('region', { name: 'Pausa' }).getByRole('button', { name: 'Pausar avisos' });
+  const pause = page.getByRole('region', { name: 'Pausar temporalmente' }).getByRole('button', { name: 'Pausar avisos' });
   await expect(pause).toHaveAttribute('aria-pressed', 'false');
   await pause.click();
   await expect(pause).toHaveAttribute('aria-pressed', 'true');

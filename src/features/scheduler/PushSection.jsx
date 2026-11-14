@@ -70,8 +70,8 @@ export default function PushSection({ status, settings, onStatusChange, syncFail
 
   return (
     // id: destino del enlace de «Notificaciones del navegador» (HU-06.2-B).
-    <section id="avisos-pestana-cerrada" className="settings-section" aria-labelledby="push-titulo">
-      <h2 id="push-titulo">Avisos con la pestaña cerrada</h2>
+    <section id="avisos-pestana-cerrada" className="settings-subsection" aria-labelledby="push-titulo">
+      <h3 id="push-titulo">Avisos con la pestaña cerrada</h3>
       <p>
         Te enviamos el consejo aunque cierres la pestaña, mientras el navegador siga abierto. Para eso, nuestro
         servidor guarda solo la suscripción de este navegador, tu zona horaria y tu horario de avisos.

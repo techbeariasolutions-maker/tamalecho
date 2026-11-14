@@ -58,14 +58,25 @@ export default function SettingsPage() {
     <>
       <h1>Ajustes</h1>
       <NextTip settings={settings} />
+      {/* Rediseño D-24 (DISEÑO_UI_UX §8): grupos por intención, cada uno con lo que provoca. */}
       <section className="settings-section" aria-labelledby="horario-titulo">
-        <h2 id="horario-titulo">Horario de los avisos</h2>
+        <h2 id="horario-titulo">Cuándo aprender</h2>
+        <p className="settings-intent">
+          Elige cada cuánto y en qué horario te llega un consejo. Leer consejos siempre funciona, aunque no haya
+          avisos.
+        </p>
         <ScheduleForm key={formVersion} settings={settings} onSave={saveAndSync} />
         <SchedulePreview settings={settings} now={new Date()} />
       </section>
       <PauseControl paused={settings.paused} onSave={saveAndSync} />
-      <NotificationSection onPermissionChange={refreshPushStatus} />
-      <PushSection status={pushStatus} settings={settings} onStatusChange={setPushStatus} syncFailed={syncFailed} />
+      <section className="settings-section" aria-labelledby="avisos-navegador-titulo">
+        <h2 id="avisos-navegador-titulo">Avisos del navegador</h2>
+        <p className="settings-intent">
+          Son opcionales. Si no los activas, los avisos aparecen dentro de la página mientras la tengas abierta.
+        </p>
+        <NotificationSection onPermissionChange={refreshPushStatus} />
+        <PushSection status={pushStatus} settings={settings} onStatusChange={setPushStatus} syncFailed={syncFailed} />
+      </section>
       <LocalDataSection historyCount={historyCount} resetAll={resetAll} onReset={afterReset} />
     </>
   );
@@ -144,6 +155,7 @@ function LocalDataSection({ historyCount, resetAll, onReset }) {
           Tu historial de lecturas, para no repetirte en los avisos los consejos que ya abriste.{' '}
           {historyText(historyCount)}
         </li>
+        <li>Las misiones que marcas como comprendidas, para mostrar tu progreso.</li>
         <li>Los avisos que ya te mostramos, para no repetir el mismo aviso. Esto se conserva al restablecer.</li>
       </ul>
       <p>
@@ -155,8 +167,9 @@ function LocalDataSection({ historyCount, resetAll, onReset }) {
       {confirming ? (
         <div className="confirm-box" role="group" aria-labelledby="restablecer-pregunta">
           <p id="restablecer-pregunta">
-            ¿Restablecer tus datos? Tus ajustes vuelven a los valores recomendados, se borra tu historial de
-            lecturas en este dispositivo y se desactivan los avisos con la pestaña cerrada. No se puede deshacer.
+            ¿Restablecer tus datos? Tus ajustes vuelven a los valores recomendados, se borran tu historial de
+            lecturas y tus misiones completadas en este dispositivo, y se desactivan los avisos con la pestaña
+            cerrada. No se puede deshacer.
           </p>
           <div className="button-row">
             <Button onClick={confirm}>Sí, restablecer</Button>
