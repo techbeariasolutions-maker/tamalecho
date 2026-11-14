@@ -4,13 +4,13 @@ import TipCard from '../../components/TipCard.jsx';
 import Message from '../../components/Message.jsx';
 import NotFoundPage from '../notfound/NotFoundPage.jsx';
 import FrameworkSwitch from './FrameworkSwitch.jsx';
-import CategoryFilter from './CategoryFilter.jsx';
+import ConceptFilter from './ConceptFilter.jsx';
 import CompareExample from './CompareExample.jsx';
 import { useCatalog } from '../../hooks/useCatalog.js';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { useProgress } from '../../hooks/useProgress.js';
 import { getTipStatus } from '../../services/progress.js';
-import { searchTips } from '../../services/search.js';
+import { filterTips } from '../../services/search.js';
 
 // Cuántos conceptos muestra la ruta recomendada de cada enfoque.
 const RECOMMENDED_COUNT = 3;
@@ -38,7 +38,7 @@ function FrameworkLibrary({ framework }) {
   const selected = searchParams.get('categoria') ?? '';
   const query = searchParams.get('q') ?? '';
   const categories = getCategories(framework);
-  const tips = searchTips(getTips({ framework, category: selected || undefined }), query);
+  const tips = filterTips(getTips(), { framework, category: selected, query });
 
   // Estado de cada concepto para quien lee (D-24): nuevo, leído o completado, solo en este dispositivo.
   const { history, completed } = useProgress();
@@ -87,21 +87,14 @@ function FrameworkLibrary({ framework }) {
 
       <CompareExample />
 
-      <div className="library-search" role="search">
-        <label htmlFor="buscar-conceptos" className="library-search__label">
-          Buscar en {label}
-        </label>
-        <input
-          id="buscar-conceptos"
-          type="search"
-          className="library-search__input"
-          value={query}
-          onChange={(event) => search(event.target.value)}
-          placeholder="Por ejemplo: riesgo, backlog, alcance"
-          autoComplete="off"
-        />
-      </div>
-      <CategoryFilter categories={categories} selected={selected} onChange={selectCategory} />
+      <ConceptFilter
+        label={label}
+        query={query}
+        categories={categories}
+        selected={selected}
+        onQueryChange={search}
+        onCategoryChange={selectCategory}
+      />
       <p className="library__count" role="status">
         {tips.length} {tips.length === 1 ? 'consejo' : 'consejos'}
         {query && ` para «${query.trim()}»`}
