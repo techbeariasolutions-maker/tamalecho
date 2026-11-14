@@ -143,6 +143,35 @@ describe('sendScheduled: un aviso por ventana y suscripción', () => {
     vi.restoreAllMocks();
   });
 
+  // Revisión de seguridad del PR #69: guardar la ventana no debe resucitar una suscripción borrada.
+  it('si la persona se da de baja mientras se envía, el registro no vuelve a aparecer', async () => {
+    const { store } = await setup([makeRecord('a')]);
+    const webpush = {
+      sendNotification: vi.fn(async () => {
+        await store.remove('a'); // la baja llega justo durante el envío
+        return {};
+      }),
+    };
+    const result = await sendScheduled({ webpush, store, vapid: VAPID, now: monterrey(11, 7), tips: TIPS });
+    expect(result.sent).toBe(1);
+    expect(await store.get('a')).toBeNull();
+    expect(await store.list()).toEqual([]);
+  });
+
+  it('si cambian los ajustes mientras se envía, se conservan los nuevos', async () => {
+    const { store } = await setup([makeRecord('a')]);
+    const webpush = {
+      sendNotification: vi.fn(async () => {
+        await store.save({ ...(await store.get('a')), settings: { paused: true } });
+        return {};
+      }),
+    };
+    await sendScheduled({ webpush, store, vapid: VAPID, now: monterrey(11, 7), tips: TIPS });
+    const record = await store.get('a');
+    expect(record.settings).toEqual({ paused: true });
+    expect(record.lastWindowKey).toBe('2026-11-09@11:00');
+  });
+
   it('en silencio no envía nada', async () => {
     const { store, webpush } = await setup([makeRecord('a'), makeRecord('b')]);
     const result = await sendScheduled({ webpush, store, vapid: VAPID, now: monterrey(22, 7), tips: TIPS });

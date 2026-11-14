@@ -73,6 +73,18 @@ export async function sendToAll(payload, { webpush, store, vapid, shouldSend = (
   return { sent: count('sent'), removed: count('removed'), failed: count('failed'), skipped: count('skipped') };
 }
 
+// Guarda la ventana enviada sobre la versión ACTUAL del registro, no sobre la que se leyó al empezar:
+// - si la persona se dio de baja mientras se enviaba, el registro ya no existe y no se escribe nada
+//   (no se «resucita» una suscripción borrada ni se guardan sus datos);
+// - si cambió sus ajustes durante el envío, se conservan los nuevos.
+// Queda una ventana de milisegundos entre leer y escribir; si coincide con una baja, el registro
+// huérfano no tiene endpoint válido y se borra en el siguiente envío, cuando el servicio responda 404 o 410.
+async function markDelivered(store, id, windowKey, now) {
+  const current = await store.get(id);
+  if (!current) return;
+  await store.save({ ...current, lastWindowKey: windowKey, lastSentAt: now.toISOString() });
+}
+
 // Envío programado (HT-07.2-A, HU-15.2-A). Lo dispara el job de GitHub Actions cada 30 min.
 // A cada suscripción le toca a lo sumo la ventana vigente de su hora local (getDueWindow). Después
 // de un envío exitoso se guarda la clave de la ventana y la hora, para no repetirla aunque el job
@@ -87,9 +99,7 @@ export async function sendScheduled({ webpush, store, vapid, now, tips, sleep })
       const tip = tipForWindow(tips, due.window);
       if (!tip) return 'skipped';
       const outcome = await sendToSubscription(record, buildTipPayload(tip), { webpush, store, vapid, sleep });
-      if (outcome === 'sent') {
-        await store.save({ ...record, lastWindowKey: due.key, lastSentAt: now.toISOString() });
-      }
+      if (outcome === 'sent') await markDelivered(store, record.id, due.key, now);
       return outcome;
     }),
   );
