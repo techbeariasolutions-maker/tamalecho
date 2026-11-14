@@ -134,7 +134,8 @@ test('T2-05: a las 13:00 con cadencia de 2 h el próximo consejo es hoy a las 14
 test('en pausa, la portada y Ajustes dicen «Avisos en pausa»', async ({ page }) => {
   await page.clock.setFixedTime(at(13));
   await page.goto('/ajustes');
-  await page.getByRole('button', { name: 'Pausar avisos' }).click();
+  // Acotado a Ajustes: el aviso de la página también tiene «Pausar avisos desde este aviso».
+  await page.getByRole('region', { name: 'Pausar temporalmente' }).getByRole('button', { name: 'Pausar avisos' }).click();
   await expect(page.getByText('Avisos en pausa.')).toBeVisible();
   await page.goto('/');
   await expect(page.getByText('Avisos en pausa.')).toBeVisible();

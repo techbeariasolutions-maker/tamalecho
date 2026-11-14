@@ -1,5 +1,13 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getBrowserRepository } from '../services/storage.js';
+
+// Aviso entre componentes de la misma pestaña: alguien guardó ajustes fuera de este hook (por
+// ejemplo, «Pausar avisos» desde el aviso, HU-06.1-B). Quien escucha vuelve a leer el repositorio.
+export const SETTINGS_CHANGED_EVENT = 'tamalecho:settings-changed';
+
+export function announceSettingsChanged() {
+  if (typeof window !== 'undefined') window.dispatchEvent(new Event(SETTINGS_CHANGED_EVENT));
+}
 
 function snapshot(repository) {
   return { settings: repository.getSettings(), historyCount: repository.getHistory().length };
@@ -10,6 +18,12 @@ function snapshot(repository) {
 // `historyCount` es lo que muestra la sección «Tus datos en este dispositivo».
 export function useSettings(repository = getBrowserRepository()) {
   const [state, setState] = useState(() => snapshot(repository));
+
+  useEffect(() => {
+    const refresh = () => setState(snapshot(repository));
+    window.addEventListener(SETTINGS_CHANGED_EVENT, refresh);
+    return () => window.removeEventListener(SETTINGS_CHANGED_EVENT, refresh);
+  }, [repository]);
 
   const saveSettings = useCallback(
     (input) => {

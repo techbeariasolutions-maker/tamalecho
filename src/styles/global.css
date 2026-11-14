@@ -894,9 +894,28 @@ main dd {
   animation: avatar-blink calc(var(--avatar-blink-interval) / 3) ease-in-out 1s 2;
 }
 
-/* Misión completada: salto breve, una sola vez por acción (data-reaction cambia el nodo). */
-.avatar[data-reaction='orgulloso'] .avatar__figure {
-  animation: avatar-celebrate var(--celebrate-duration) ease-out 1;
+/* Gestos por estado (HU-05.2-A) y celebración: una sola vez, solo CSS, sin JavaScript de animación.
+   Se declaran SOLO sin movimiento reducido: sus selectores son más específicos que la regla general
+   de prefers-reduced-motion y la ganarían. No salen del círculo del personaje: no tapan la frase. */
+@media (prefers-reduced-motion: no-preference) {
+  .avatar[data-expression='sonriente'] .avatar__figure {
+    animation:
+      avatar-enter var(--avatar-enter-duration) ease-out both,
+      avatar-stretch var(--avatar-gesture-duration) ease-in-out var(--avatar-gesture-delay) 1;
+  }
+
+  .avatar[data-expression='antojado'] [data-pose='antojado'] {
+    animation: avatar-rub var(--avatar-rub-duration) ease-in-out var(--avatar-gesture-delay) 4 alternate;
+  }
+
+  .avatar[data-expression='somnoliento'] [data-mouth='somnoliento'] {
+    animation: avatar-yawn var(--avatar-gesture-duration) ease-in-out var(--avatar-gesture-delay) 1;
+  }
+
+  /* Misión completada: salto breve, una sola vez por acción (data-reaction cambia el nodo). */
+  .avatar[data-reaction='orgulloso'] .avatar__figure {
+    animation: avatar-celebrate var(--celebrate-duration) ease-out 1;
+  }
 }
 
 @keyframes avatar-enter {
@@ -920,6 +939,42 @@ main dd {
 
   95% {
     transform: scaleY(0.1);
+  }
+}
+
+/* Estiramiento: el tamal se alarga un poco y vuelve. */
+@keyframes avatar-stretch {
+  0%,
+  100% {
+    transform: none;
+  }
+
+  50% {
+    transform: scaleY(1.06) scaleX(0.97);
+  }
+}
+
+/* Frotarse las manos: los brazos van y vienen 1.5 unidades del dibujo. */
+@keyframes avatar-rub {
+  from {
+    transform: translateX(-1.5px);
+  }
+
+  to {
+    transform: translateX(1.5px);
+  }
+}
+
+/* Bostezo: la boca se abre y se vuelve a cerrar. */
+@keyframes avatar-yawn {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  45%,
+  60% {
+    transform: scale(1.7, 2);
   }
 }
 

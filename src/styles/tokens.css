@@ -118,6 +118,9 @@
   --avatar-blink-interval: 6s;        /* parpadeo ocasional */
   --celebrate-duration: 500ms;        /* misión completada (400–600 ms), una vez por acción */
   --progress-duration: 200ms;         /* barra o punto de ruta que cambia de estado */
+  --avatar-gesture-delay: 600ms;      /* el gesto empieza después de la entrada (HU-05.2-A) */
+  --avatar-gesture-duration: 900ms;   /* estiramiento y bostezo; una sola vez */
+  --avatar-rub-duration: 250ms;       /* cada vaivén de «frotarse las manos»; 4 vaivenes */
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -127,5 +130,7 @@
     --avatar-enter-duration: 0ms;
     --celebrate-duration: 0ms;
     --progress-duration: 0ms;
+    --avatar-gesture-duration: 0ms;
+    --avatar-rub-duration: 0ms;
   }
 }
