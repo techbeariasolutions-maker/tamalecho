@@ -26,8 +26,18 @@ const RESULT_TEXT = {
   disableFailed: 'No se pudieron desactivar los avisos en este navegador. Intenta de nuevo.',
 };
 
+// Si Web Push se desactivó solo al cargar (HU-15.1-B), `lost` dice por qué.
+const LOST_TEXT = {
+  denied:
+    'Desactivamos los avisos con la pestaña cerrada porque este navegador ya no tiene permiso de notificaciones. ' +
+    'Si quieres recibirlos, permite las notificaciones en la configuración del navegador y vuelve a activarlos.',
+  expired:
+    'Los avisos con la pestaña cerrada se desactivaron porque la suscripción de este navegador ya no es válida ' +
+    '(por ejemplo, porque se borraron los datos del sitio). Puedes volver a activarlos.',
+};
+
 // `syncFailed`: el último cambio de horario o pausa no llegó al servidor (HU-07.2-B).
-export default function PushSection({ status, settings, onStatusChange, syncFailed = false }) {
+export default function PushSection({ status, settings, onStatusChange, syncFailed = false, lost = null }) {
   const [result, setResult] = useState('');
   const busy = useRef(false);
   const stateRef = useRef(null);
@@ -73,9 +83,11 @@ export default function PushSection({ status, settings, onStatusChange, syncFail
     <section id="avisos-pestana-cerrada" className="settings-subsection" aria-labelledby="push-titulo">
       <h3 id="push-titulo">Avisos con la pestaña cerrada</h3>
       <p>
-        Te enviamos el consejo aunque cierres la pestaña, mientras el navegador siga abierto. Para eso, nuestro
-        servidor guarda solo la suscripción de este navegador, tu zona horaria y tu horario de avisos.
+        Te enviamos el consejo de cada horario aunque cierres la pestaña, mientras el navegador siga abierto. Para
+        eso, nuestro servidor guarda solo la suscripción de este navegador, tu zona horaria, tu horario de avisos y
+        cuándo te enviamos el último, para no repetirlo.
       </p>
+      {LOST_TEXT[lost] && <p className="message">{LOST_TEXT[lost]}</p>}
       <p className="push-state" ref={stateRef} tabIndex={-1}>
         {status ? STATE_TEXT[status] : 'Comprobando si tu navegador permite estos avisos…'}
       </p>

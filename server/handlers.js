@@ -2,7 +2,7 @@
 // sin desplegar. Los archivos de api/ solo les pasan sus dependencias reales (CLAUDE.md §6).
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { shouldDeliver } from './delivery.js';
-import { buildTipPayload, readVapidConfig, sendToAll } from './push.js';
+import { buildTipPayload, readVapidConfig, sendScheduled, sendToAll } from './push.js';
 import { MAX_BODY_BYTES, subscriptionId, validateSubscription } from './subscriptions.js';
 
 const json = (status, body, headers) => Response.json(body, { status, headers });
@@ -45,7 +45,14 @@ export async function handleSubscribe(request, { store }) {
 
   const { value, errors } = validateSubscription(body);
   if (errors.length > 0) return json(400, { error: 'La suscripción no es válida.', errors });
-  await store.save(value);
+  // Al volver a sincronizar los ajustes se conserva lo que maneja el servidor (última ventana enviada
+  // y hora del último envío). Si se perdiera, el job podría repetir el aviso de la ventana actual
+  // (HU-15.2-A). Ningún campo del cuerpo puede escribir estos valores.
+  const existing = await store.get(value.id);
+  const record = { ...value };
+  if (existing?.lastWindowKey) record.lastWindowKey = existing.lastWindowKey;
+  if (existing?.lastSentAt) record.lastSentAt = existing.lastSentAt;
+  await store.save(record);
   return json(201, { ok: true });
 }
 
@@ -56,8 +63,10 @@ function isAuthorized(header, secret) {
   return timingSafeEqual(digest(header), digest(`Bearer ${secret}`));
 }
 
-// Envía el consejo destacado a las suscripciones que no están en silencio. Lo dispara GitHub Actions (D-21).
-export async function handleDispatch(request, { store, webpush, env, now, getFeaturedTip }) {
+// Dos modos, los dos los dispara GitHub Actions (D-21):
+// - prueba (por defecto): envía el consejo destacado a las suscripciones que no están en silencio;
+// - programado (?mode=scheduled, HT-07.2-A): a cada suscripción, a lo sumo su ventana vigente, una vez.
+export async function handleDispatch(request, { store, webpush, env, now, getFeaturedTip, getTips }) {
   if (!isAuthorized(request.headers.get('authorization'), env.DISPATCH_SECRET)) {
     return json(401, { error: 'No autorizado.' });
   }
@@ -67,6 +76,10 @@ export async function handleDispatch(request, { store, webpush, env, now, getFea
 
   const vapid = readVapidConfig(env);
   if (!vapid) return json(503, { error: 'Faltan las claves VAPID en el servidor.' });
+
+  if (new URL(request.url).searchParams.get('mode') === 'scheduled') {
+    return json(200, { mode: 'scheduled', ...(await sendScheduled({ webpush, store, vapid, now, tips: getTips() })) });
+  }
 
   const payload = buildTipPayload(getFeaturedTip(now));
   // Silencio remoto (HU-07.2-B): se omiten las suscripciones en silencio, en pausa o en un día

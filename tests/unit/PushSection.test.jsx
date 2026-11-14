@@ -32,7 +32,7 @@ describe('PushSection (HU-15.1-A)', () => {
     render(<Harness initial="off" />);
     expect(section()).toHaveTextContent('aunque cierres la pestaña');
     expect(section()).toHaveTextContent(
-      'nuestro servidor guarda solo la suscripción de este navegador, tu zona horaria y tu horario de avisos',
+      'nuestro servidor guarda solo la suscripción de este navegador, tu zona horaria, tu horario de avisos y cuándo te enviamos el último',
     );
   });
 

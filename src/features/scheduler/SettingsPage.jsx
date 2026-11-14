@@ -2,7 +2,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Button from '../../components/Button.jsx';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { useSettings } from '../../hooks/useSettings.js';
-import { currentTimeZone, disablePush, getPushStatus, syncPushSettings } from '../../services/pushClient.js';
+import {
+  currentTimeZone,
+  disablePush,
+  getPushStatus,
+  reconcilePush,
+  syncPushSettings,
+} from '../../services/pushClient.js';
 import NextTip from './NextTip.jsx';
 import NotificationSection from './NotificationSection.jsx';
 import PauseControl from './PauseControl.jsx';
@@ -17,6 +23,8 @@ export default function SettingsPage() {
   const { settings, historyCount, saveSettings, resetAll } = useSettings();
   // null mientras se consulta al navegador. Consultar no registra nada ni pide permiso.
   const [pushStatus, setPushStatus] = useState(null);
+  // HU-15.1-B: por qué se desactivó Web Push al cargar ('denied' | 'expired'), si pasó.
+  const [pushLost, setPushLost] = useState(null);
   // Al restablecer los datos el formulario se vuelve a montar para mostrar los valores recomendados.
   const [formVersion, setFormVersion] = useState(0);
 
@@ -32,8 +40,11 @@ export default function SettingsPage() {
 
   useEffect(() => {
     let active = true;
-    getPushStatus().then((status) => {
-      if (active) setPushStatus(status);
+    // Consultar no pide permiso. Si este navegador perdió la suscripción, se da de baja en el servidor.
+    reconcilePush().then(({ status, lost }) => {
+      if (!active) return;
+      setPushStatus(status);
+      setPushLost(lost);
     });
     return () => {
       active = false;
@@ -75,7 +86,13 @@ export default function SettingsPage() {
           Son opcionales. Si no los activas, los avisos aparecen dentro de la página mientras la tengas abierta.
         </p>
         <NotificationSection onPermissionChange={refreshPushStatus} />
-        <PushSection status={pushStatus} settings={settings} onStatusChange={setPushStatus} syncFailed={syncFailed} />
+        <PushSection
+          status={pushStatus}
+          settings={settings}
+          onStatusChange={setPushStatus}
+          syncFailed={syncFailed}
+          lost={pushLost}
+        />
       </section>
       <LocalDataSection historyCount={historyCount} resetAll={resetAll} onReset={afterReset} />
     </>

@@ -7,13 +7,18 @@ import { disablePush, getPushStatus } from '../../src/services/pushClient.js';
 
 // Pedidos de QA en el PR #48: «Restablecer mis datos» desactiva antes Web Push, y el texto
 // de datos dice lo que guarda el servidor.
-vi.mock('../../src/services/pushClient.js', () => ({
-  getPushStatus: vi.fn(),
-  enablePush: vi.fn(),
+// reconcilePush (HU-15.1-B) delega en el getPushStatus simulado: no hay suscripciones perdidas.
+vi.mock('../../src/services/pushClient.js', () => {
+  const getPushStatus = vi.fn();
+  return {
+    getPushStatus,
+    reconcilePush: async () => ({ status: await getPushStatus(), lost: null }),
+    enablePush: vi.fn(),
   disablePush: vi.fn(),
-  syncPushSettings: vi.fn(async () => ({ ok: true, synced: true })),
-  currentTimeZone: () => 'America/Monterrey',
-}));
+    syncPushSettings: vi.fn(async () => ({ ok: true, synced: true })),
+    currentTimeZone: () => 'America/Monterrey',
+  };
+});
 
 const repository = () => createRepository(window.localStorage);
 const dataSection = () => screen.getByRole('region', { name: 'Tus datos en este dispositivo' });

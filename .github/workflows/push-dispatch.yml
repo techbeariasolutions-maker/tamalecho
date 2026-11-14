@@ -1,12 +1,31 @@
 name: push-dispatch
 
-# Envío de prueba de Web Push (HT-07.1-B, HU-15.2-B). Se corre a mano: GitHub → Actions → push-dispatch → Run workflow.
-# El envío programado (`schedule`) entra con HT-07.2-A, que es recortable (D-21).
+# Web Push desde GitHub Actions (D-21).
+# - Programado (HT-07.2-A): cada 30 min, a los minutos 07 y 37 (fuera de la hora en punto, cuando
+#   GitHub Actions tiene más demora). Cada corrida envía a cada suscripción, a lo sumo, la ventana
+#   vigente de su hora local, una sola vez (clave idempotente en el servidor).
+# - Manual: GitHub → Actions → push-dispatch → Run workflow. Modo «test» (por defecto) envía el consejo
+#   destacado a todas las suscripciones fuera de silencio; modo «scheduled» hace lo mismo que el job.
 on:
+  schedule:
+    - cron: '7,37 * * * *'
   workflow_dispatch:
+    inputs:
+      mode:
+        description: 'test = envío de prueba a todos (fuera de silencio) · scheduled = igual que el job programado'
+        type: choice
+        options:
+          - test
+          - scheduled
+        default: test
 
 permissions:
   contents: read
+
+# Nunca dos corridas a la vez: la segunda espera a que termine la primera.
+concurrency:
+  group: push-dispatch
+  cancel-in-progress: false
 
 jobs:
   dispatch:
@@ -18,8 +37,9 @@ jobs:
       - name: Call the production dispatch endpoint
         env:
           DISPATCH_SECRET: ${{ secrets.DISPATCH_SECRET }}
+          MODE: ${{ github.event_name == 'schedule' && 'scheduled' || inputs.mode }}
         run: |
           curl --fail-with-body --silent --show-error --max-time 120 \
             --request POST \
             --header "Authorization: Bearer $DISPATCH_SECRET" \
-            https://tamalecho.vercel.app/api/push/dispatch
+            "https://tamalecho.vercel.app/api/push/dispatch?mode=${MODE}"
