@@ -26,6 +26,7 @@ export const ROUTES = [
         { id: 'SCR-01', at: '2026-11-04T15:00:00.000Z' },
         { id: 'PMI-02', at: '2026-11-05T16:00:00.000Z' },
       ],
+      favorites: ['PMI-02'],
       progress: { completed: { 'SCR-01': '2026-11-04T15:05:00.000Z' } },
     },
   },

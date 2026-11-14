@@ -10,6 +10,8 @@ import { useDayPart } from '../../hooks/useDayPart.js';
 import { useProgress } from '../../hooks/useProgress.js';
 import { useSettings } from '../../hooks/useSettings.js';
 import { readingMinutes } from '../../services/progress.js';
+import { shareTip } from '../../services/shareService.js';
+import { useFavorites } from '../../hooks/useFavorites.js';
 import Button from '../../components/Button.jsx';
 import Avatar from '../avatar/Avatar.jsx';
 
@@ -51,6 +53,7 @@ function TipDetail({ tip }) {
         <h1>{tip.title}</h1>
         <p className="tip-detail__time">{readingMinutes(tip)} min de lectura</p>
         <p className="lead">{tip.summary}</p>
+        <TipActions tip={tip} />
 
         <section className="lesson-block" aria-labelledby="explicacion">
           <h2 id="explicacion">Explicación</h2>
@@ -92,6 +95,48 @@ function TipDetail({ tip }) {
         )}
       </nav>
     </>
+  );
+}
+
+const SHARE_TEXT = {
+  shared: '',
+  cancelled: '',
+  copied: 'Copiamos el enlace del consejo. Ya puedes pegarlo donde quieras.',
+};
+
+// Favoritos (HU-08.2-A) y compartir (HU-08.2-B). El botón de favorito es un interruptor con
+// aria-pressed y un nombre que no cambia; el resultado de compartir se anuncia en role="status".
+function TipActions({ tip }) {
+  const { isFavorite, toggle } = useFavorites();
+  const [shareResult, setShareResult] = useState('');
+  const favorite = isFavorite(tip.id);
+
+  const share = async () => {
+    setShareResult('');
+    setShareResult(await shareTip(tip));
+  };
+
+  return (
+    <div className="tip-actions">
+      <div className="button-row">
+        <Button variant="secondary" aria-pressed={favorite} onClick={() => toggle(tip.id)}>
+          <span aria-hidden="true">{favorite ? '★' : '☆'}</span> Guardar en favoritos
+        </Button>
+        <Button variant="secondary" onClick={share}>
+          Compartir consejo
+        </Button>
+      </div>
+      <p className="settings-status" role="status">
+        {shareResult === 'unavailable' ? (
+          <>
+            Tu navegador no permite compartir ni copiar automáticamente. Copia esta dirección:{' '}
+            <span className="tip-actions__url">{`${window.location.origin}/tip/${tip.id}`}</span>
+          </>
+        ) : (
+          (SHARE_TEXT[shareResult] ?? '')
+        )}
+      </p>
+    </div>
   );
 }
 

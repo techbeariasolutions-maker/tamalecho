@@ -1350,6 +1350,21 @@ main dd {
   font-weight: var(--font-weight-bold);
 }
 
+/* Favoritos y compartir en la ficha (HU-08.2-A, HU-08.2-B). */
+.tip-actions {
+  margin-bottom: var(--space-4);
+}
+
+.tip-actions .button-row {
+  margin-bottom: 0;
+}
+
+/* La URL para copiar a mano se parte para no desbordar a 360 px. */
+.tip-actions__url {
+  overflow-wrap: anywhere;
+  font-weight: var(--font-weight-bold);
+}
+
 /* ── Historial y Mi progreso (D-24, DISEÑO_UI_UX §7) ───────── */
 .history-list,
 .stats,
