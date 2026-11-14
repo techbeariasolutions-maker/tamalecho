@@ -182,6 +182,27 @@ export function createRepository(storage) {
       return write(data);
     },
 
+    // Borrar el historial (HU-08.1-B): solo las lecturas. Ajustes, favoritos y misiones no cambian.
+    clearHistory() {
+      const data = read();
+      data.history = [];
+      return write(data);
+    },
+
+    // Favoritos (HU-08.2-A): ids de consejos, sin repetidos, en el orden en que se guardaron.
+    getFavorites() {
+      return read().favorites;
+    },
+
+    // Guarda o quita un favorito. Devuelve { saved, favorite } con el estado nuevo.
+    toggleFavorite(id) {
+      if (typeof id !== 'string' || !ID_PATTERN.test(id)) return { saved: false, favorite: false };
+      const data = read();
+      const favorite = !data.favorites.includes(id);
+      data.favorites = favorite ? [...data.favorites, id] : data.favorites.filter((item) => item !== id);
+      return { saved: write(data), favorite };
+    },
+
     // Misiones marcadas como comprendidas (rediseño D-24). Devuelve { id: fechaISO }.
     getCompleted() {
       return read().progress.completed;
