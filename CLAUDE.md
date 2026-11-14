@@ -37,7 +37,7 @@ Reglas de producto (no negociables):
 - El caché sin conexión del service worker, el manifest y la instalación como PWA. El service worker solo atiende `push` y `notificationclick`.
 - Ningún WP del S3 se integra a `main` antes de etiquetar `v0.2.0` (PLAN S3 §7).
 
-Rutas que siguen como marcadores con mensaje honesto: Historial y Progreso (sin sprint comprometido).
+Ya no quedan rutas marcador: Historial y Mi progreso llegaron con el rediseño (D-24).
 
 ## 4. Stack
 - Node.js 22.13 o superior, npm. Los integrantes usan Windows + PowerShell.
@@ -88,12 +88,13 @@ tamalecho/
 │  ├─ app/                    App.jsx, routes.jsx, Layout.jsx
 │  ├─ components/             Header, NavMenu, SkipLink, Button, Message, TipCard, SourceCitation
 │  ├─ features/
-│  │  ├─ home/ · library/ · tips/ · placeholders/ · notfound/     (S1)
+│  │  ├─ home/ · library/ · tips/ · notfound/     (S1)
 │  │  ├─ scheduler/           S2 · SettingsPage (Ajustes), SchedulePreview, NoticeToast, NoticeHost
 │  │  ├─ avatar/              S2 · Avatar.jsx
-│  │  └─ help/                S3 · HelpPage (Ayuda), PrivacyPage (Privacidad)
-│  ├─ hooks/                  useCatalog, useDocumentTitle; S2: useSettings, useNoticeScheduler
-│  ├─ services/               catalog; S2: schedule, storage, tipPicker, notificationService, pushClient; S3: help
+│  │  ├─ help/                S3 · HelpPage (Ayuda), PrivacyPage (Privacidad)
+│  │  └─ progress/            D-24 · HistoryPage (Historial), ProgressPage (Mi progreso)
+│  ├─ hooks/                  useCatalog, useDocumentTitle; S2: useSettings, useNoticeScheduler; D-24: useProgress
+│  ├─ services/               catalog; S2: schedule, storage, tipPicker, notificationService, pushClient; S3: help; D-24: progress, search
 │  ├─ data/                   tips.json, schema.js, compare.json; S2: avatarStates.json; S3: help.json, catalog-changelog.json
 │  └─ styles/                 tokens.css, global.css
 └─ tests/
@@ -117,14 +118,15 @@ Reglas de arquitectura:
 ## 7. Rutas
 | Ruta | Página | Historia |
 |---|---|---|
-| `/` | HomePage: consejo destacado, personaje (S2), «Próximo consejo» (S2) y accesos a Scrum y PMI/PMBOK | HU-01.1, HU-04.1, HU-05 |
+| `/` | HomePage «Ruta diaria» (D-24): misión del día, personaje, «Próximo consejo», ruta de 5 días, racha y accesos a Scrum y PMI/PMBOK | HU-01.1, HU-04.1, HU-05 |
 | `/biblioteca` | Redirige a `/biblioteca/scrum` | HU-02.1 |
-| `/biblioteca/:enfoque` | `scrum` o `pmbok`; categorías y filtro `?categoria=` | HU-02 |
-| `/tip/:id` | Ficha completa, fuente, siguiente consejo, volver con filtro; registra la lectura (S2) | HU-03, HU-08.1-A |
+| `/biblioteca/:enfoque` | `scrum` o `pmbok`; categorías, filtro `?categoria=`, búsqueda `?q=` y ruta recomendada (D-24) | HU-02, HU-09.1 |
+| `/tip/:id` | Ficha como microlección, fuente, siguiente consejo, volver con filtro; registra la lectura (S2) y «Marcar como comprendida» (D-24) | HU-03, HU-08.1-A |
 | `/ajustes` | **S2:** horario, silencio, pausa, notificaciones, Web Push y restablecer datos | HU-07, HU-04.1-A, HU-06.2, HU-15.1-A, HT-04.2-B |
 | `/ayuda` | **S3:** cadencia, permisos, pausa, pestaña cerrada, compatibilidad y limitaciones; enlace de sugerencias | HU-13.1, HU-13.2-B |
 | `/privacidad` | **S3:** qué se guarda en el dispositivo y en el servidor, y cómo borrarlo | HU-13.2-A |
-| `/historial` · `/progreso` | Marcadores con mensaje honesto | HU-01.2 |
+| `/historial` | **D-24:** consejos abiertos en el dispositivo, filtro `?enfoque=` | HU-08.1-B |
+| `/progreso` | **D-24:** «Mi progreso»: leídos, completados, racha, recomendación e insignias | HU-10 (sin microquiz) |
 | `/api/push/*` | Funciones del servidor (no son páginas) | HT-07 |
 | `*` | NotFoundPage con enlace al inicio | HU-01.2 |
 

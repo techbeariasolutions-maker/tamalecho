@@ -234,7 +234,8 @@
 - **Fuera de alcance:** no forma parte del compromiso del S3 (D-23) ni de la propuesta. No cuenta en puntos ni en la velocidad, y en el reporte se declara como trabajo adicional.
 - **Cómo se trabaja:**
   - En la rama `feat/ui-redesign`, con un PR en borrador.
-  - **No se integra a `main` antes de etiquetar `v1.0.0`.** La entrega final quedó con la interfaz anterior: `v1.0.0` se etiquetó el 13/11 sin el rediseño (D-25). Integrarlo después es decisión del equipo, tras revisar el PR #65, y saldría como una versión posterior (`v1.1.0`).
+  - **No se integra a `main` antes de etiquetar `v1.0.0`.** La entrega final quedó con la interfaz anterior: `v1.0.0` se etiquetó el 13/11 sin el rediseño (D-25).
+  - **Integración (13/11/2026, después de `v1.0.0`):** Diego decidió integrar el PR #65 a `main`. Producción muestra el rediseño desde ese merge. `v1.0.0` sigue apuntando a la interfaz anterior; si se quiere una versión etiquetada con el rediseño, sería `v1.1.0`. No hubo revisión de Alan registrada en GitHub (D-22).
 - **Lo que no cambia:** las reglas del producto (CLAUDE.md §2) y la accesibilidad (CLAUDE.md §10).
   - El saludo de la portada no lleva el nombre de la persona: la app no guarda nombres.
   - Cualquier dato nuevo que se guarde en el navegador (misiones completadas, racha) va en `storage.js` y se agrega al aviso de privacidad.
