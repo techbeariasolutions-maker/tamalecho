@@ -56,14 +56,23 @@
         "question": "¿En qué navegadores funcionan los avisos con la pestaña cerrada?",
         "answer": [
           "Los probamos en Chrome de escritorio en Windows. En Edge, Firefox y Chrome para Android pueden funcionar, pero todavía no lo comprobamos.",
-          "En iPhone y iPad no están disponibles: ahí se necesita la app instalada, y TamalEcho Tips todavía no se puede instalar."
+          "En iPhone y iPad, Apple solo permite estos avisos en apps web agregadas a la pantalla de inicio. Puedes instalar TamalEcho Tips (ver «¿Cómo la instalo?») y activarlos desde la app instalada. Todavía no lo probamos en iPhone."
         ]
       },
       {
         "id": "sin-conexion",
         "question": "¿Funciona sin conexión a internet?",
         "answer": [
-          "Todavía no. TamalEcho Tips necesita conexión para abrir la página y cada una de sus secciones."
+          "Sí, después de abrirla una vez con conexión. TamalEcho Tips guarda en tu dispositivo la página y el catálogo de consejos, y puedes leerlos sin red. Cuando no hay conexión, la página te lo indica.",
+          "Lo que sí necesita red: activar o desactivar los avisos con la pestaña cerrada y recibirlos. Cada vez que vuelves a abrirla con conexión, se actualiza sola a la última versión publicada."
+        ]
+      },
+      {
+        "id": "instalar",
+        "question": "¿Cómo la instalo?",
+        "answer": [
+          "En Chrome o Edge de computadora, usa el botón de instalar que aparece en la barra de direcciones. En Chrome para Android, abre el menú y elige «Instalar aplicación» o «Agregar a la pantalla principal». En iPhone, desde Safari pulsa «Compartir» y luego «Agregar a inicio».",
+          "Si tu navegador no permite instalarla, la página funciona igual en el navegador."
         ]
       }
     ]
@@ -92,7 +101,8 @@
           "Las misiones que marcas como comprendidas y cuándo, para mostrar tu progreso.",
           "Los consejos que guardas en favoritos.",
           "Los avisos que ya te mostramos, hasta los 20 más recientes, para no repetir el mismo aviso.",
-          "Si activaste los avisos con la pestaña cerrada: que están activos y la dirección de tu suscripción, para poder darla de baja."
+          "Si activaste los avisos con la pestaña cerrada: que están activos y la dirección de tu suscripción, para poder darla de baja.",
+          "Una copia de la página y del catálogo de consejos para leer sin conexión. Es la misma para todas las personas y no contiene datos tuyos."
         ]
       },
       {

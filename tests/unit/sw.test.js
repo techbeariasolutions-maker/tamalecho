@@ -50,9 +50,9 @@ describe('public/sw.js (HU-15.1-A)', () => {
     sw = loadServiceWorker();
   });
 
-  it('solo atiende push y notificationclick: sin fetch ni caché (D-20)', () => {
-    expect(Object.keys(sw.handlers).sort()).toEqual(['notificationclick', 'push']);
-    expect(SOURCE).not.toMatch(/caches\b|addEventListener\(\s*['"]fetch/);
+  // Desde el WP-P5 (D-26) también atiende la caché sin conexión; sus pruebas están en sw-cache.test.js.
+  it('atiende push, notificationclick y los eventos de la caché sin conexión', () => {
+    expect(Object.keys(sw.handlers).sort()).toEqual(['activate', 'fetch', 'install', 'notificationclick', 'push']);
   });
 
   describe('push', () => {

@@ -98,6 +98,20 @@ a:hover {
   color: var(--color-primary);
 }
 
+/* ── Sin conexión (HU-12.2-A) ────────────────────────────── */
+.offline-banner:empty {
+  display: none;
+}
+
+.offline-banner__text {
+  margin: 0 0 var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-maiz-soft);
+  border-left: var(--space-1) solid var(--color-maiz);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-bold);
+}
+
 /* ── Aviso dentro de la página (HU-06.1-A) ──────────────── */
 /* A 360 px el aviso va en el flujo, arriba del contenido: lo empuja hacia abajo y no lo tapa.
    Desde el breakpoint md flota abajo a la derecha. La región vacía no ocupa espacio. */
