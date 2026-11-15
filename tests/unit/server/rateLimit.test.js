@@ -91,24 +91,63 @@ describe('handleSubscribe con límite', () => {
 });
 
 describe('almacén Redis: hit', () => {
-  it('crea el contador con caducidad solo una vez y lo incrementa', async () => {
-    const calls = [];
+  // Imita MULTI de Upstash: los comandos se encolan y se ejecutan juntos al llamar exec().
+  function fakeRedis() {
     const values = new Map();
-    const redis = {
-      async set(key, value, options) {
-        calls.push({ key, value, options });
-        if (options?.nx && values.has(key)) return null;
-        values.set(key, value);
-        return 'OK';
-      },
-      async incr(key) {
-        values.set(key, (values.get(key) ?? 0) + 1);
-        return values.get(key);
+    const ttl = new Map();
+    const log = [];
+    return {
+      values,
+      ttl,
+      log,
+      multi() {
+        const queue = [];
+        const tx = {
+          incr(key) {
+            queue.push(() => {
+              values.set(key, (values.get(key) ?? 0) + 1);
+              log.push('incr');
+              return values.get(key);
+            });
+            return tx;
+          },
+          expire(key, seconds, option) {
+            queue.push(() => {
+              log.push(`expire ${option}`);
+              if (option === 'NX' && ttl.has(key)) return 0;
+              ttl.set(key, seconds);
+              return 1;
+            });
+            return tx;
+          },
+          async exec() {
+            return queue.map((run) => run());
+          },
+        };
+        return tx;
       },
     };
+  }
+
+  it('incrementa y pone la caducidad solo la primera vez (ventana fija)', async () => {
+    const redis = fakeRedis();
     const store = createRedisStore(redis);
     expect(await store.hit('k', 600)).toBe(1);
     expect(await store.hit('k', 600)).toBe(2);
-    expect(calls.every((call) => call.options.ex === 600 && call.options.nx === true)).toBe(true);
+    expect(await store.hit('k', 600)).toBe(3);
+    expect(redis.ttl.get('k')).toBe(600);
+    // Siempre en el mismo orden y en una sola transacción, con NX.
+    expect(redis.log).toEqual(['incr', 'expire NX', 'incr', 'expire NX', 'incr', 'expire NX']);
+  });
+
+  it('una llave nueva siempre queda con caducidad, aunque la anterior ya haya expirado', async () => {
+    const redis = fakeRedis();
+    const store = createRedisStore(redis);
+    await store.hit('k', 600);
+    // La llave expira: desaparecen el valor y la caducidad.
+    redis.values.delete('k');
+    redis.ttl.delete('k');
+    expect(await store.hit('k', 600)).toBe(1);
+    expect(redis.ttl.get('k')).toBe(600);
   });
 });

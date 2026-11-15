@@ -19,11 +19,12 @@ export function createRedisStore(redis) {
     async list() {
       return Object.values((await redis.hgetall(SUBSCRIPTIONS_KEY)) ?? {});
     },
-    // Contador con caducidad para el límite de frecuencia (S-02). `set ... nx` crea la llave con su
-    // caducidad solo si no existe y `incr` conserva esa caducidad: así nunca queda un contador sin caducar.
+    // Contador con caducidad para el límite de frecuencia (S-02). INCR y EXPIRE NX van en una sola
+    // transacción (MULTI): no hay un instante en que la llave exista sin caducidad, que bloquearía a
+    // esa IP para siempre. NX pone la caducidad solo si la llave no tiene una, así la ventana es fija.
     async hit(key, windowSeconds) {
-      await redis.set(key, 0, { ex: windowSeconds, nx: true });
-      return redis.incr(key);
+      const [count] = await redis.multi().incr(key).expire(key, windowSeconds, 'NX').exec();
+      return count;
     },
   };
 }
