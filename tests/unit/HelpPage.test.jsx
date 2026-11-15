@@ -44,8 +44,9 @@ describe('help.json (HU-13.1-A, HU-13.1-B)', () => {
     expect(text).toMatch(/servicio externo/);
     expect(text).toMatch(/navegador/);
     expect(text).toMatch(/permisos/);
-    // El envío programado (HT-07.2-A) no entró: la página no debe prometerlo.
-    expect(text).toMatch(/no está activo el envío automático/);
+    // Envío programado (HT-07.2-A, D-26): se dice cuánto puede tardar y que nunca se juntan atrasados.
+    expect(text).toMatch(/hasta unos 30 minutos tarde/);
+    expect(text).toMatch(/nunca se juntan avisos atrasados/);
   });
 
   it('isHelpDraft es true si falta cualquiera de las dos aprobaciones', () => {

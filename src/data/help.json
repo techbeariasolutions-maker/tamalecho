@@ -81,7 +81,7 @@
     "approved": false,
     "items": [
       "Los avisos con la pestaña cerrada dependen de un servicio externo de envío, del navegador y de los permisos que des. Por eso pueden llegar tarde o no llegar, aunque tus ajustes sean correctos.",
-      "Por ahora no está activo el envío automático cada 2 o 3 horas con la pestaña cerrada: solo llegan los envíos de prueba que hace el equipo. Con la página abierta, los avisos sí llegan en su horario.",
+      "Con la pestaña cerrada, el aviso de cada horario puede llegar hasta unos 30 minutos tarde: lo envía un proceso automático que revisa cada media hora. Si se retrasa demasiado, ese aviso se omite y llega el siguiente; nunca se juntan avisos atrasados.",
       "Si el navegador o el sistema operativo bloquean las notificaciones, por ejemplo con el modo «No molestar», no podemos mostrarlas."
     ]
   },
@@ -115,7 +115,8 @@
         "items": [
           "La suscripción de tu navegador: una dirección que da el servicio de notificaciones de tu navegador y las claves para cifrar los avisos.",
           "Tu zona horaria, para respetar tu horario y tu silencio.",
-          "Tu horario de avisos, incluida la pausa."
+          "Tu horario de avisos, incluida la pausa.",
+          "La ventana y la hora del último aviso que te enviamos, para no repetirlo."
         ]
       },
       {

@@ -7,12 +7,17 @@ import { getPushStatus, syncPushSettings } from '../../src/services/pushClient.j
 // HU-07.2-B, lado del cliente: con Web Push activo, cambiar el horario o la pausa actualiza la
 // suscripción en el servidor.
 
-vi.mock('../../src/services/pushClient.js', async (importOriginal) => ({
-  ...(await importOriginal()),
-  getPushStatus: vi.fn(),
-  syncPushSettings: vi.fn(),
-  currentTimeZone: () => 'America/Monterrey',
-}));
+// reconcilePush (HU-15.1-B) delega en el getPushStatus simulado: no hay suscripciones perdidas.
+vi.mock('../../src/services/pushClient.js', async (importOriginal) => {
+  const getPushStatus = vi.fn();
+  return {
+    ...(await importOriginal()),
+    getPushStatus,
+    reconcilePush: async () => ({ status: await getPushStatus(), lost: null }),
+    syncPushSettings: vi.fn(),
+    currentTimeZone: () => 'America/Monterrey',
+  };
+});
 
 describe('Ajustes sincroniza el horario con el servidor', () => {
   beforeEach(() => {

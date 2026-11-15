@@ -184,3 +184,25 @@ export async function disablePush(env) {
   resolved.repository.savePushState({ status: 'off' });
   return { ok: true, status: await getPushStatus(resolved), serverRemoved };
 }
+
+// Baja y compatibilidad (HU-15.1-B). Si este navegador tenía Web Push activo pero ya no puede
+// recibir avisos —se revocó el permiso o la suscripción caducó o se borró—, se da de baja en el
+// servidor con el endpoint guardado y se marca como desactivado. Así el servidor no sigue intentando
+// enviar a una suscripción muerta y la persona sabe por qué se desactivó.
+// Devuelve { status, lost } con lost = null | 'denied' | 'expired'. Nunca lanza errores.
+export async function reconcilePush(env) {
+  const resolved = resolveEnv(env);
+  const status = await getPushStatus(resolved);
+  const local = resolved.repository.getPushState();
+  if (local?.status !== 'on' || status === 'on' || status === 'unsupported') return { status, lost: null };
+
+  if (local.endpoint) {
+    try {
+      await sendToServer(resolved.fetch, 'DELETE', { endpoint: local.endpoint });
+    } catch {
+      // Sin red: el servidor la borrará solo cuando el servicio de push responda 404 o 410.
+    }
+  }
+  resolved.repository.savePushState({ status: 'off' });
+  return { status, lost: status === 'denied' ? 'denied' : 'expired' };
+}
