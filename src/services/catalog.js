@@ -3,6 +3,7 @@
 // funciones de Vercel (api/), que corren como módulos nativos.
 import tipsData from '../data/tips.json' with { type: 'json' };
 import compareData from '../data/compare.json' with { type: 'json' };
+import quizData from '../data/quizzes.json' with { type: 'json' };
 import { FRAMEWORKS } from '../data/schema.js';
 
 export const FRAMEWORK_LABELS = { scrum: 'Scrum', pmbok: 'PMI/PMBOK' };
@@ -64,6 +65,16 @@ export function createCatalog(catalog) {
 
 export const { getCatalogVersion, getTips, getTipById, getCategories, getNextTip, getFeaturedTip } =
   createCatalog(tipsData);
+
+// Preguntas de la microevaluación (HU-10). Siguen en borrador mientras `approved` sea false.
+export function getQuestions() {
+  return quizData.questions;
+}
+
+// Pregunta asociada a un consejo, o null si ese consejo no tiene (la mayoría no la tiene).
+export function getQuestionForTip(tipId) {
+  return quizData.questions.find((question) => question.tipId === tipId) ?? null;
+}
 
 // Ejemplo comparativo (WP-8): una situación vista desde cada enfoque.
 export function getComparison() {

@@ -1,0 +1,84 @@
+{
+  "quizVersion": "0.1.0",
+  "note": "Borrador (HU-10.1-B): cada pregunta sale del texto ya aprobado de su consejo y queda con approved:false hasta que el Product Owner la valide.",
+  "questions": [
+    {
+      "id": "Q-SCR-01",
+      "tipId": "SCR-01",
+      "question": "Según el consejo, ¿cómo es el Product Backlog?",
+      "options": [
+        "Una lista fija que se escribe una sola vez al inicio.",
+        "Una lista ordenada y emergente que cambia conforme el equipo aprende.",
+        "Una lista de deseos sin ningún orden."
+      ],
+      "correctIndex": 1,
+      "feedback": "El Product Backlog es una lista ordenada y emergente: cambia a medida que el equipo aprende, y el Product Owner la ordena para maximizar el valor.",
+      "approved": false
+    },
+    {
+      "id": "Q-SCR-02",
+      "tipId": "SCR-02",
+      "question": "¿Qué es el Objetivo del Sprint?",
+      "options": [
+        "Una lista de tareas que deben terminarse.",
+        "Varios objetivos, uno por cada Developer.",
+        "El compromiso del Sprint Backlog: da enfoque y deja flexibilidad sobre cómo lograrlo."
+      ],
+      "correctIndex": 2,
+      "feedback": "El Objetivo del Sprint es el único objetivo del sprint y se define durante la Sprint Planning. Es un resultado, no una lista de tareas.",
+      "approved": false
+    },
+    {
+      "id": "Q-SCR-03",
+      "tipId": "SCR-03",
+      "question": "¿Qué pasa con un elemento que no cumple la Definición de Terminado?",
+      "options": [
+        "No se presenta en la Sprint Review y regresa al Product Backlog.",
+        "Se presenta en la Sprint Review con una nota.",
+        "Se integra al Incremento y se corrige después."
+      ],
+      "correctIndex": 0,
+      "feedback": "Si un elemento no cumple la Definición de Terminado, no forma parte del Incremento: no se presenta en la Sprint Review y regresa al Product Backlog.",
+      "approved": false
+    },
+    {
+      "id": "Q-PMI-01",
+      "tipId": "PMI-01",
+      "question": "¿Terminar todos los entregables garantiza que el proyecto entregue valor?",
+      "options": [
+        "Sí, si se entregan a tiempo.",
+        "No: hay que revisar si alguien obtuvo el beneficio esperado.",
+        "Sí, siempre que se respete el costo."
+      ],
+      "correctIndex": 1,
+      "feedback": "Terminar entregables no garantiza que el valor llegue. El caso de negocio explica por qué vale la pena el proyecto y el plan de gestión de beneficios describe cómo y cuándo se obtendrán.",
+      "approved": false
+    },
+    {
+      "id": "Q-PMI-03",
+      "tipId": "PMI-03",
+      "question": "¿Qué es un riesgo en la gestión de proyectos?",
+      "options": [
+        "Un problema que ya ocurrió.",
+        "Un evento que solo puede afectar de forma negativa.",
+        "Un evento incierto que, si ocurre, afecta positiva o negativamente los objetivos."
+      ],
+      "correctIndex": 2,
+      "feedback": "Un riesgo es un evento incierto que, si ocurre, afecta positiva o negativamente los objetivos del proyecto. Un problema, en cambio, es algo que ya ocurrió.",
+      "approved": false
+    },
+    {
+      "id": "Q-PMI-04",
+      "tipId": "PMI-04",
+      "question": "¿Qué busca la gestión del alcance?",
+      "options": [
+        "Que el proyecto incluya todo el trabajo requerido, y únicamente ese.",
+        "Que el proyecto incluya la mayor cantidad posible de trabajo.",
+        "Aceptar los agregados pequeños sin evaluarlos."
+      ],
+      "correctIndex": 0,
+      "feedback": "La gestión del alcance asegura que el proyecto incluya todo el trabajo requerido, y únicamente ese. Definir lo que queda fuera evita que el proyecto crezca sin control.",
+      "approved": false
+    }
+  ]
+}

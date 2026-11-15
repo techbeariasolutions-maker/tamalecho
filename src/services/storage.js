@@ -61,14 +61,24 @@ function sanitizeServedWindows(value) {
 
 // Progreso local (rediseño D-24): { completed: { 'SCR-01': '2026-11-13T15:00:00.000Z', ... } }.
 // Solo ids con formato y fechas válidas; cualquier otro campo se descarta.
+// Respuestas de la microevaluación (HU-10.2-A): { answers: { 'SCR-01': { correct: true, at: '...' } } }.
+// Solo se guarda si fue correcta y cuándo; nunca qué opción se eligió ni datos personales.
 function sanitizeProgress(value) {
   const completed = {};
+  const answers = {};
   const source = isPlainObject(value) && isPlainObject(value.completed) ? value.completed : {};
   for (const [id, at] of Object.entries(source)) {
     const iso = toIsoDate(at);
     if (ID_PATTERN.test(id) && iso) completed[id] = iso;
   }
-  return { completed };
+  const answerSource = isPlainObject(value) && isPlainObject(value.answers) ? value.answers : {};
+  for (const [id, answer] of Object.entries(answerSource)) {
+    const iso = isPlainObject(answer) ? toIsoDate(answer.at) : null;
+    if (ID_PATTERN.test(id) && iso && typeof answer.correct === 'boolean') {
+      answers[id] = { correct: answer.correct, at: iso };
+    }
+  }
+  return { completed, answers };
 }
 
 // Estado local de Web Push (HU-15.1-A): { status: 'on' | 'off', endpoint? }. El endpoint se guarda
@@ -87,7 +97,7 @@ export function createEmptyData() {
     settings: validateSettings().settings,
     history: [],
     favorites: [],
-    progress: { completed: {} },
+    progress: { completed: {}, answers: {} },
     servedWindows: [],
     push: null,
   };
@@ -215,7 +225,29 @@ export function createRepository(storage) {
       if (typeof id !== 'string' || !ID_PATTERN.test(id) || !iso) return false;
       const data = read();
       if (data.progress.completed[id]) return true;
-      data.progress = { completed: { ...data.progress.completed, [id]: iso } };
+      data.progress = { ...data.progress, completed: { ...data.progress.completed, [id]: iso } };
+      return write(data);
+    },
+
+    // Respuestas de la microevaluación (HU-10.2-A). Devuelve { id: { correct, at } }.
+    getQuizAnswers() {
+      return read().progress.answers;
+    },
+
+    // Guarda el resultado de la pregunta de un consejo; una nueva respuesta reemplaza la anterior.
+    saveQuizAnswer({ id, correct, at } = {}) {
+      const iso = toIsoDate(at);
+      if (typeof id !== 'string' || !ID_PATTERN.test(id) || typeof correct !== 'boolean' || !iso) return false;
+      const data = read();
+      data.progress = { ...data.progress, answers: { ...data.progress.answers, [id]: { correct, at: iso } } };
+      return write(data);
+    },
+
+    // «Reiniciar progreso» (HU-10.2-B): borra misiones completadas y respuestas de la microevaluación.
+    // No toca el historial de lecturas (se borra aparte), los favoritos ni los ajustes.
+    resetProgress() {
+      const data = read();
+      data.progress = { completed: {}, answers: {} };
       return write(data);
     },
 
