@@ -116,7 +116,8 @@
           "La suscripción de tu navegador: una dirección que da el servicio de notificaciones de tu navegador y las claves para cifrar los avisos.",
           "Tu zona horaria, para respetar tu horario y tu silencio.",
           "Tu horario de avisos, incluida la pausa.",
-          "La ventana y la hora del último aviso que te enviamos, para no repetirlo."
+          "La ventana y la hora del último aviso que te enviamos, para no repetirlo.",
+          "Un contador temporal de solicitudes para evitar abusos. Se calcula con una versión cifrada de tu dirección IP (no la guardamos tal cual) y se borra solo a los 10 minutos."
         ]
       },
       {
@@ -133,7 +134,8 @@
         "title": "Cuánto tiempo se guarda",
         "items": [
           "En tu navegador: hasta que restablezcas tus datos o borres los datos del sitio en tu navegador.",
-          "En el servidor: hasta que desactives los avisos con la pestaña cerrada, restablezcas tus datos o el servicio de notificaciones nos avise que tu suscripción ya no es válida."
+          "En el servidor: hasta que desactives los avisos con la pestaña cerrada, restablezcas tus datos o el servicio de notificaciones nos avise que tu suscripción ya no es válida.",
+          "El contador de solicitudes dura 10 minutos."
         ]
       },
       {

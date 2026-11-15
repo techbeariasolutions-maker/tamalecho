@@ -262,6 +262,13 @@
 - **Lo que no cubre:** aprobaciones del PO, pruebas manuales, acta, reportes, dailies y las decisiones D-22, D-23 y S-02. Las hacen personas (D-19).
 - **Revisión:** como en el S3, los PR se integran con la autorización de Diego mientras D-22 siga PENDIENTE, y así se registra en cada PR.
 
+## D-27 · Cierre opcional posterior a `v1.1.0` — VIGENTE (15/11/2026)
+- **Decisión de Diego (15/11/2026):** hacer con el agente de código el trabajo opcional que quedó abierto: límite de frecuencia de `/api/push/subscribe` (S-02, opción B), CSP (S-05), caducidad de suscripciones por inactividad (S-06), la prueba E2E inestable de `settings.spec.js` y una mejora visual con más animación.
+- **Plan:** sección «Opcionales» de `docs/sprint-3/PENDIENTES.md` (WP O1 a O5), uno por PR y en ese orden. Release objetivo: `v1.2.0`.
+- **Qué cambia respecto a D-26:** estas actividades no son del backlog de la propuesta; las pide Diego de forma explícita (CLAUDE.md §3).
+- **S-02:** se elige la opción B (límite propio con el mismo Redis, 20 solicitudes por 10 minutos por IP). La IP nunca se guarda: la llave es un HMAC con el secreto del servidor y caduca sola. Se declara en el aviso de privacidad. Es una decisión del agente por encargo de Diego; Alan puede pedir A o C.
+- **Lo que no cubre:** probar la CSP en la vista previa de Vercel, revisar el diseño en un móvil real y las aprobaciones del PO de los textos nuevos. Las hacen personas (D-19).
+
 ## D-12 · Versionado — VIGENTE
 - Catálogo: `0.9.0` mientras haya borradores; `1.0.0` solo cuando los 24 estén aprobados (HT-03.2-B).
 - Producto: etiqueta Git `v0.1.0` al cierre del S1, `v0.2.0` S2, `v1.0.0` entrega final 20/11.

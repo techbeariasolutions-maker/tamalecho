@@ -27,9 +27,18 @@ async function readJson(request) {
 }
 
 // POST = alta o actualización · DELETE = baja. Solo quien conoce el endpoint puede darlo de baja.
-export async function handleSubscribe(request, { store }) {
+// `limiter` es opcional: sin él no hay límite de frecuencia (S-02).
+export async function handleSubscribe(request, { store, limiter }) {
   if (request.method !== 'POST' && request.method !== 'DELETE') {
     return json(405, { error: 'Método no permitido.' }, { Allow: 'POST, DELETE' });
+  }
+
+  // El límite se revisa antes de leer el cuerpo, para que un abuso no cueste ni la lectura.
+  if (limiter) {
+    const { allowed, retryAfter } = await limiter.check(request);
+    if (!allowed) {
+      return json(429, { error: 'Demasiadas solicitudes. Intenta de nuevo más tarde.' }, { 'Retry-After': String(retryAfter) });
+    }
   }
 
   const { body, error } = await readJson(request);

@@ -19,12 +19,19 @@ export function createRedisStore(redis) {
     async list() {
       return Object.values((await redis.hgetall(SUBSCRIPTIONS_KEY)) ?? {});
     },
+    // Contador con caducidad para el límite de frecuencia (S-02). `set ... nx` crea la llave con su
+    // caducidad solo si no existe y `incr` conserva esa caducidad: así nunca queda un contador sin caducar.
+    async hit(key, windowSeconds) {
+      await redis.set(key, 0, { ex: windowSeconds, nx: true });
+      return redis.incr(key);
+    },
   };
 }
 
 // Almacén en memoria para las pruebas.
 export function createMemoryStore() {
   const records = new Map();
+  const counters = new Map();
   return {
     async save(record) {
       records.set(record.id, record);
@@ -37,6 +44,11 @@ export function createMemoryStore() {
     },
     async list() {
       return [...records.values()];
+    },
+    // Contadores en memoria; la caducidad no se simula (las pruebas no esperan ventanas reales).
+    async hit(key) {
+      counters.set(key, (counters.get(key) ?? 0) + 1);
+      return counters.get(key);
     },
   };
 }

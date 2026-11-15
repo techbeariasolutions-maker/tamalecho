@@ -10,7 +10,7 @@ Severidad: **Alta** (explotable y con impacto en usuarios o datos), **Media** (e
 | # | Hallazgo | Severidad | Decisión |
 |---|---|---|---|
 | S-01 | `npm audit` sin vulnerabilidades | Info | — |
-| S-02 | Sin límite de frecuencia en `/api/push/subscribe` | Media | **Pendiente**, la decide el equipo (§4) |
+| S-02 | Sin límite de frecuencia en `/api/push/subscribe` | Media | **Corregido** con la opción B (D-27); el equipo puede revisarla |
 | S-03 | El cuerpo se leía completo antes de medir su tamaño | Baja | **Corregido** en este PR |
 | S-04 | Faltaban encabezados de seguridad HTTP | Baja | **Corregido** en este PR (sin CSP) |
 | S-05 | Sin Content-Security-Policy | Baja | **Pendiente**: se propone y debe probarse en una vista previa |
@@ -64,7 +64,7 @@ Ver §2: ni el repositorio, ni su historial, ni el bundle contienen las claves. 
   - Antes ya había un límite de 4096 bytes, pero el cuerpo se leía completo antes de medirlo (S-03).
   - **Corregido:** si `Content-Length` declara más del límite, se responde 413 sin leer el cuerpo. Si no lo declara, se mide después de leer, como antes.
   - Vercel también limita el cuerpo de las funciones (4.5 MB según su documentación).
-- **Frecuencia (S-02, Media):** no hay límite de solicitudes por cliente en `/api/push/subscribe`.
+- **Frecuencia (S-02, Media, corregido):** desde D-27 hay un límite de 20 solicitudes por 10 minutos por cliente en `/api/push/subscribe` (`server/rateLimit.js`, opción B). Responde 429 con `Retry-After`. La IP nunca se guarda: la llave del contador es un HMAC con el secreto del servidor y caduca a los 10 minutos. Si Redis falla, se deja pasar para no impedir las bajas. Cuesta 2 comandos de Redis por solicitud. Texto original del riesgo:
   - **Riesgo:** un script podría registrar muchas suscripciones falsas con hosts válidos. Gastaría la cuota del almacén (plan gratuito de Upstash: 256 MB y 500 000 comandos al mes, según el spike, D-21) y haría más lentos los envíos. Las suscripciones falsas se borran solas cuando el servicio de push responde 404 o 410 en un envío.
   - **No hay datos de usuarios expuestos.**
   - **Opciones (las decide el equipo):**

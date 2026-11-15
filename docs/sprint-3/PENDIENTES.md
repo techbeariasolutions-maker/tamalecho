@@ -34,3 +34,14 @@ Cada WP sigue la Definition of Done del S3 (PLAN S3 §8): PR con CI en verde, pr
 | Acta de aceptación, Review y Retrospectiva | Ana (SM) y el equipo |
 | DAILY, horas, burndown y reportes en Word | Cada integrante |
 | D-22, D-23, S-02 y la prueba de la CSP | Diego y Alan |
+
+## 4. Opcionales posteriores a `v1.1.0` (D-27)
+
+| WP | Qué debe quedar | Rama |
+|---|---|---|
+| **O1 · Límite de frecuencia (S-02)** | Límite por IP cifrada en `/api/push/subscribe`, con respuesta 429 y `Retry-After`; declarado en el aviso de privacidad | `feat/S-02-rate-limit` |
+| **O2 · CSP (S-05)** | Content-Security-Policy en `vercel.json`, comprobada con un build local; la prueba en la vista previa de Vercel la hace una persona | `feat/S-05-csp` |
+| **O3 · Caducidad (S-06)** | Las suscripciones sin actividad se borran tras un plazo; se declara en el aviso de privacidad | `feat/S-06-expiry` |
+| **O4 · E2E inestable** | Encontrar la causa de la falla de `settings.spec.js` («restablecer da de baja la suscripción») y corregirla | `fix/e2e-settings-flaky` |
+| **O5 · Diseño más animado** | Animaciones y microinteracciones con tokens, dentro de `prefers-reduced-motion: no-preference` y sin romper contraste, 360 px ni axe | `feat/ui-motion` |
+
