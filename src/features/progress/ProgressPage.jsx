@@ -1,7 +1,10 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
+import Button from '../../components/Button.jsx';
 import { useCatalog } from '../../hooks/useCatalog.js';
 import { useDocumentTitle } from '../../hooks/useDocumentTitle.js';
 import { useProgress } from '../../hooks/useProgress.js';
+import { summarizeQuiz } from '../../services/quiz.js';
 import { getBadges, getRecommendation, getRoute, getStreak, summarizeProgress } from '../../services/progress.js';
 
 function daysText(days) {
@@ -28,14 +31,15 @@ function ProgressBar({ label, value, max }) {
 // siguiente recomendación e insignias. Todo se calcula en el dispositivo; no hay cuenta.
 export default function ProgressPage() {
   useDocumentTitle('Mi progreso');
-  const { FRAMEWORK_LABELS, getFeaturedTip, getTips } = useCatalog();
+  const { FRAMEWORK_LABELS, getFeaturedTip, getQuestions, getTips } = useCatalog();
   const now = new Date();
   const tips = getTips();
-  const { history, completed } = useProgress();
+  const { history, completed, answers, resetProgress } = useProgress();
   const summary = summarizeProgress({ tips, history, completed });
   const streak = getStreak(history, now);
   const recommendation = getRecommendation(getRoute(getFeaturedTip, now), tips, completed);
   const badges = getBadges(summary);
+  const quiz = summarizeQuiz({ questions: getQuestions(), answers, tips });
 
   return (
     <>
@@ -71,9 +75,19 @@ export default function ProgressPage() {
               value={data.read}
               max={data.total}
             />
+            {quiz[framework]?.available > 0 && (
+              <p>
+                Preguntas de práctica: {quiz[framework].answered} de {quiz[framework].available} contestadas ·{' '}
+                {quiz[framework].correct} correctas
+              </p>
+            )}
           </div>
         ))}
       </section>
+
+      <p>
+        Leer o contestar una pregunta no mide cuánto aprendiste: es solo una guía para que sigas tu propio avance.
+      </p>
 
       <section className="home-section" aria-labelledby="siguiente">
         <h2 id="siguiente">Siguiente recomendación</h2>
@@ -100,6 +114,75 @@ export default function ProgressPage() {
           ))}
         </ul>
       </section>
+
+      <ResetProgress onReset={resetProgress} />
     </>
+  );
+}
+
+// Reiniciar progreso (HU-10.2-B). Confirmación dentro de la página, sin window.confirm.
+// Borra misiones completadas y respuestas de las preguntas; el historial de lecturas se borra aparte.
+function ResetProgress({ onReset }) {
+  const [confirming, setConfirming] = useState(false);
+  const [done, setDone] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const resetButtonRef = useRef(null);
+  const cancelButtonRef = useRef(null);
+  const focusAfter = useRef(null);
+
+  // Los botones se reemplazan entre sí: el foco se mueve al que aparece para no perderse.
+  useEffect(() => {
+    if (confirming) cancelButtonRef.current?.focus();
+    else if (focusAfter.current === 'reset') resetButtonRef.current?.focus();
+    focusAfter.current = null;
+  }, [confirming]);
+
+  const confirm = () => {
+    const saved = onReset();
+    setDone(saved);
+    setFailed(!saved);
+    focusAfter.current = 'reset';
+    setConfirming(false);
+  };
+
+  const cancel = () => {
+    focusAfter.current = 'reset';
+    setConfirming(false);
+  };
+
+  return (
+    <section className="home-section" aria-labelledby="reiniciar">
+      <h2 id="reiniciar">Reiniciar progreso</h2>
+      {confirming ? (
+        <div className="confirm-box" role="group" aria-labelledby="reiniciar-pregunta">
+          <p id="reiniciar-pregunta">
+            ¿Reiniciar tu progreso? Se borran tus misiones completadas y tus respuestas de práctica en este
+            dispositivo. Tu historial de lecturas y tus favoritos no cambian. No se puede deshacer.
+          </p>
+          <div className="button-row">
+            <Button onClick={confirm}>Sí, reiniciar</Button>
+            <Button variant="secondary" onClick={cancel} ref={cancelButtonRef}>
+              Cancelar
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <Button
+          variant="secondary"
+          onClick={() => {
+            setDone(false);
+            setFailed(false);
+            setConfirming(true);
+          }}
+          ref={resetButtonRef}
+        >
+          Reiniciar progreso
+        </Button>
+      )}
+      <p className="settings-status" role="status">
+        {done && 'Listo: tu progreso se reinició.'}
+        {failed && 'No se pudo reiniciar el progreso porque este navegador no permite guardar información del sitio.'}
+      </p>
+    </section>
   );
 }

@@ -14,6 +14,7 @@ import { shareTip } from '../../services/shareService.js';
 import { useFavorites } from '../../hooks/useFavorites.js';
 import Button from '../../components/Button.jsx';
 import Avatar from '../avatar/Avatar.jsx';
+import TipQuiz from './TipQuiz.jsx';
 
 // Solo se acepta volver a una URL de la biblioteca; cualquier otra cosa usa la categoría del tip.
 function libraryUrlFor(tip, from) {
@@ -84,6 +85,8 @@ function TipDetail({ tip }) {
         </p>
       </article>
 
+      <TipQuizSection tipId={tip.id} />
+
       <MissionComplete tipId={tip.id} />
 
       <nav className="tip-nav" aria-label="Navegación entre consejos">
@@ -149,6 +152,15 @@ function MissionIcon() {
       <circle cx="12" cy="12" r="1.5" />
     </svg>
   );
+}
+
+// Pregunta voluntaria del consejo (HU-10.1-A). Solo aparece si el consejo tiene pregunta.
+function TipQuizSection({ tipId }) {
+  const { getQuestionForTip } = useCatalog();
+  const { answers, saveAnswer } = useProgress();
+  const question = getQuestionForTip(tipId);
+  if (!question) return null;
+  return <TipQuiz question={question} saved={answers[tipId]} onAnswer={(correct) => saveAnswer(tipId, correct)} />;
 }
 
 // Final de la microlección (DISEÑO_UI_UX §6): marcar como comprendida es opcional; guarda el

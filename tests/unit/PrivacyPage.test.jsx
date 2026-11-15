@@ -37,8 +37,11 @@ describe('aviso de privacidad contra el código (HU-13.2-A)', () => {
     expect(text).toContain(`${MAX_SERVED_WINDOWS} más recientes`);
     expect(text).toMatch(/dirección de tu suscripción/);
     // Rediseño D-24: progress.completed guarda las misiones comprendidas.
-    expect(Object.keys(createEmptyData().progress)).toEqual(['completed']);
+    // HU-10: progress.answers guarda si cada respuesta de práctica fue correcta (no la opción elegida).
+    expect(Object.keys(createEmptyData().progress)).toEqual(['completed', 'answers']);
     expect(text).toMatch(/misiones que marcas como comprendidas/);
+    expect(text).toMatch(/preguntas de práctica/);
+    expect(text).toMatch(/No guardamos qué opción elegiste/);
   });
 
   it('menciona cada campo que guarda el servidor y nada más', () => {

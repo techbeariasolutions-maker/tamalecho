@@ -47,7 +47,7 @@ describe('repositorio local (HT-04.2-A)', () => {
         settings: { ...DEFAULT_SETTINGS, activeDays: [...DEFAULT_SETTINGS.activeDays] },
         history: [],
         favorites: [],
-        progress: { completed: {} },
+        progress: { completed: {}, answers: {} },
         servedWindows: [],
         push: null,
       });
@@ -67,7 +67,7 @@ describe('repositorio local (HT-04.2-A)', () => {
       expect(result.settings.paused).toBe(true);
       expect(result.history).toEqual(data.history);
       expect(result.favorites).toEqual(['PMI-03']);
-      expect(result.progress).toEqual({ completed: { 'SCR-01': '2026-11-04T15:05:00.000Z' } });
+      expect(result.progress).toEqual({ completed: { 'SCR-01': '2026-11-04T15:05:00.000Z' }, answers: {} });
       expect(result.push).toEqual({ status: 'off' });
     });
 
@@ -85,7 +85,7 @@ describe('repositorio local (HT-04.2-A)', () => {
       expect(result.settings.startTime).toBe('07:00');
       expect(result.history).toEqual([]);
       expect(result.favorites).toEqual(['SCR-01']);
-      expect(result.progress).toEqual({ completed: {} });
+      expect(result.progress).toEqual({ completed: {}, answers: {} });
       expect(result.push).toBeNull();
     });
 
@@ -308,7 +308,7 @@ describe('último aviso y restablecer (HT-04.2-B)', () => {
       expect(repository.getHistory()).toEqual([]);
       const data = stored(storage);
       expect(data.favorites).toEqual([]);
-      expect(data.progress).toEqual({ completed: {} });
+      expect(data.progress).toEqual({ completed: {}, answers: {} });
       expect(data.push).toBeNull();
       expect(data.schemaVersion).toBe(1);
       // Persiste: un repositorio nuevo («recargar») ve lo mismo.
@@ -374,7 +374,7 @@ describe('estado de push en el repositorio (HU-15.1-A)', () => {
           otro: 1,
         },
       });
-      expect(result.progress).toEqual({ completed: { 'SCR-01': '2026-11-04T15:00:00.000Z' } });
+      expect(result.progress).toEqual({ completed: { 'SCR-01': '2026-11-04T15:00:00.000Z' }, answers: {} });
     });
 
     it('markCompleted guarda la primera fecha y no la cambia al repetir', () => {
@@ -392,6 +392,67 @@ describe('estado de push en el repositorio (HU-15.1-A)', () => {
       expect(repository.markCompleted({ id: 'nada', at: at(4, 9) })).toBe(false);
       expect(repository.markCompleted({ id: 'SCR-01', at: 'ayer' })).toBe(false);
       expect(repository.getCompleted()).toEqual({});
+    });
+  });
+
+  describe('respuestas de la microevaluación (HU-10.2)', () => {
+    const when = at(4, 12);
+
+    it('guarda solo si fue correcta y cuándo; una respuesta nueva reemplaza la anterior', () => {
+      const storage = createFakeStorage();
+      const repository = createRepository(storage);
+      expect(repository.saveQuizAnswer({ id: 'SCR-01', correct: false, at: when })).toBe(true);
+      expect(repository.saveQuizAnswer({ id: 'SCR-01', correct: true, at: at(5, 9) })).toBe(true);
+      expect(repository.getQuizAnswers()).toEqual({
+        'SCR-01': { correct: true, at: at(5, 9).toISOString() },
+      });
+      // Nada que identifique a la persona ni la opción elegida.
+      expect(Object.keys(stored(storage).progress.answers['SCR-01']).sort()).toEqual(['at', 'correct']);
+    });
+
+    it('rechaza ids, resultados o fechas inválidos', () => {
+      const repository = createRepository(createFakeStorage());
+      expect(repository.saveQuizAnswer({ id: 'nope', correct: true, at: when })).toBe(false);
+      expect(repository.saveQuizAnswer({ id: 'SCR-01', correct: 'sí', at: when })).toBe(false);
+      expect(repository.saveQuizAnswer({ id: 'SCR-01', correct: true, at: 'ayer' })).toBe(false);
+      expect(repository.getQuizAnswers()).toEqual({});
+    });
+
+    it('marcar una misión no borra las respuestas', () => {
+      const repository = createRepository(createFakeStorage());
+      repository.saveQuizAnswer({ id: 'SCR-01', correct: true, at: when });
+      repository.markCompleted({ id: 'SCR-02', at: when });
+      expect(Object.keys(repository.getQuizAnswers())).toEqual(['SCR-01']);
+    });
+
+    it('descarta respuestas con formato inválido al leer', () => {
+      const raw = {
+        ...createEmptyData(),
+        progress: {
+          completed: {},
+          answers: { 'SCR-01': { correct: true, at: when.toISOString(), choice: 2 }, 'SCR-02': { correct: 'x', at: when.toISOString() }, malo: { correct: true, at: when.toISOString() } },
+        },
+      };
+      expect(migrate(raw).progress.answers).toEqual({ 'SCR-01': { correct: true, at: when.toISOString() } });
+    });
+
+    it('reiniciar progreso borra misiones y respuestas, y conserva historial y favoritos', () => {
+      const repository = createRepository(createFakeStorage());
+      repository.addHistoryEntry({ id: 'SCR-01', at: when });
+      repository.toggleFavorite('SCR-03');
+      repository.markCompleted({ id: 'SCR-01', at: when });
+      repository.saveQuizAnswer({ id: 'SCR-01', correct: true, at: when });
+      expect(repository.resetProgress()).toBe(true);
+      expect(repository.getCompleted()).toEqual({});
+      expect(repository.getQuizAnswers()).toEqual({});
+      expect(repository.getHistory()).toHaveLength(1);
+      expect(repository.getFavorites()).toEqual(['SCR-03']);
+    });
+
+    it('si el navegador no deja guardar, reiniciar y responder devuelven false', () => {
+      const repository = createRepository(createFailingStorage());
+      expect(repository.resetProgress()).toBe(false);
+      expect(repository.saveQuizAnswer({ id: 'SCR-01', correct: true, at: when })).toBe(false);
     });
   });
 });
