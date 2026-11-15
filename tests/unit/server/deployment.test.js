@@ -32,9 +32,15 @@ describe('despliegue de las funciones', () => {
 
   // HT-08.2-A: encabezados de seguridad básicos en todas las respuestas. No se incluye CSP todavía:
   // se propone en docs/sprint-3/SEGURIDAD.md y debe probarse en una vista previa antes de activarla.
+  // WP-P5: el service worker y su manifiesto de precarga nunca quedan en la caché HTTP.
+  it('vercel.json sirve sw.js y precache-manifest.json sin caché HTTP', () => {
+    const { headers } = JSON.parse(readFileSync('vercel.json', 'utf8'));
+    const rule = headers.find((entry) => entry.source === '/(sw\\.js|precache-manifest\\.json)');
+    expect(rule.headers).toEqual([{ key: 'Cache-Control', value: 'no-cache' }]);
+  });
+
   it('vercel.json agrega los encabezados de seguridad a todas las rutas', () => {
     const { headers } = JSON.parse(readFileSync('vercel.json', 'utf8'));
-    expect(headers).toHaveLength(1);
     expect(headers[0].source).toBe('/(.*)');
     const values = Object.fromEntries(headers[0].headers.map(({ key, value }) => [key, value]));
     expect(values).toEqual({

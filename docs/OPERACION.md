@@ -46,6 +46,16 @@ Abre el PR del revert. Cuando el CI esté en verde, intégralo. Si antes hiciste
 ### 3.3 Revertir un cambio de contenido
 Igual que §3.2, siguiendo `docs/EDITORIAL.md` §5: el revert regresa juntos `tips.json` y su bitácora.
 
+## 3.4 Lectura sin conexión y datos guardados (HU-12.2-B)
+- **Qué se guarda:** en cada build, `vite.config.js` escribe `dist/precache-manifest.json` con la lista de archivos publicados y una `version` (hash de esa lista). El service worker (`public/sw.js`) los guarda en la caché `tamalecho-<versión>` del navegador. Son los mismos para todas las personas y no contienen datos de nadie.
+- **Cómo se actualizan:**
+  1. Se publica un cambio y cambia la lista de archivos, así que cambia la `version`.
+  2. En la siguiente visita con red, la página pide primero a la red y se ve la versión nueva de inmediato.
+  3. El navegador detecta el `sw.js` nuevo (Vercel lo sirve con `Cache-Control: no-cache`), lo instala, guarda los archivos de la versión nueva y **borra las cachés anteriores**.
+- **Lo que no pasa:** el service worker nunca intercepta `/api/`, así que leer sin conexión no envía nada y no se encola ningún aviso.
+- **Si alguien ve una versión vieja:** que abra la página con conexión y recargue una vez. En casos raros: DevTools → Application → Service workers → *Unregister*, y Storage → *Clear site data*.
+- **Íconos:** si cambia el personaje, se regeneran con `node scripts/generate-icons.mjs`.
+
 ## 4. Respaldo
 | Qué | Dónde está el respaldo | Cómo se recupera |
 |---|---|---|

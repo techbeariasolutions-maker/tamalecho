@@ -108,7 +108,7 @@ Reglas de arquitectura:
   - No usan APIs del navegador, para que `server/` también pueda importarlas.
 - El catálogo se lee **solo** a través de `src/services/catalog.js`. Ningún componente importa `tips.json`.
 - `localStorage` se usa **solo** dentro de `src/services/storage.js`, que recibe el almacenamiento por parámetro para poder probarlo.
-- `Notification`, `PushManager` y `navigator.serviceWorker` se usan **solo** dentro de `notificationService.js` y `pushClient.js`.
+- `Notification`, `PushManager` y `navigator.serviceWorker` se usan **solo** dentro de `notificationService.js`, `pushClient.js` y, desde el WP P5 (D-26), `offline.js` (registro del service worker para leer sin conexión, sin pedir permisos).
 - `src/data/schema.js` es la única definición de las reglas del tip. Lo usan el validador y las pruebas. No usa APIs de Node.
 - `api/` no contiene lógica: valida el método, lee el cuerpo, llama a `server/` y responde. La lógica y sus pruebas viven en `server/`.
 - Colores, espacios, tipografía, foco, radios, breakpoints y duraciones de animación salen de `tokens.css`, incluidos los del personaje. No escribas valores sueltos en los componentes.

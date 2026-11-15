@@ -15,8 +15,14 @@ function trackProblems(page) {
 }
 
 const pushSection = (page) => page.getByRole('region', { name: 'Avisos con la pestaña cerrada' });
-const registrations = (page) =>
-  page.evaluate(async () => (await navigator.serviceWorker.getRegistrations()).length);
+// Desde el WP-P5 el service worker se registra al cargar, solo para leer sin conexión. Lo que importa
+// aquí es que sin permiso no se cree ninguna suscripción push.
+const subscriptions = (page) =>
+  page.evaluate(async () => {
+    const all = await navigator.serviceWorker.getRegistrations();
+    const found = await Promise.all(all.map((registration) => registration.pushManager.getSubscription()));
+    return found.filter(Boolean).length;
+  });
 
 test('sin permiso: la sección lo explica, no hay botón y la página sigue funcionando', async ({ page }) => {
   const problems = trackProblems(page);
@@ -33,7 +39,7 @@ test('sin permiso: la sección lo explica, no hay botón y la página sigue func
   expect(problems).toEqual([]);
 });
 
-test('cargar Ajustes no registra el service worker ni pide permiso (HU-06.2-A)', async ({ page }) => {
+test('cargar Ajustes no pide permiso ni crea una suscripción push (HU-06.2-A)', async ({ page }) => {
   await page.addInitScript(() => {
     window.__permissionRequests = 0;
     const original = Notification.requestPermission.bind(Notification);
@@ -44,7 +50,7 @@ test('cargar Ajustes no registra el service worker ni pide permiso (HU-06.2-A)',
   });
   await page.goto('/ajustes');
   await expect(pushSection(page).locator('.push-state')).not.toHaveText(/Comprobando/);
-  expect(await registrations(page)).toBe(0);
+  expect(await subscriptions(page)).toBe(0);
   expect(await page.evaluate(() => window.__permissionRequests)).toBe(0);
 });
 
@@ -81,7 +87,7 @@ test('desactivado: «Activar avisos» con teclado; si no se activa, la página n
   // el diálogo cerrado deja «No diste permiso». En ambos casos sigue desactivado.
   await expect(pushSection(page).getByRole('status')).toHaveText(/falta la configuración|No diste permiso/);
   await expect(button).toBeVisible();
-  expect(await registrations(page)).toBe(0);
+  expect(await subscriptions(page)).toBe(0);
   expect(problems).toEqual([]);
 });
 
@@ -101,11 +107,13 @@ test('a 360 px la sección no provoca desplazamiento horizontal', async ({ page 
   expect(box.height).toBeGreaterThanOrEqual(44);
 });
 
-test('el service worker se publica en /sw.js sin manejador de fetch', async ({ request }) => {
+// Desde el WP-P5 el service worker también atiende fetch para leer sin conexión, pero nunca la API.
+test('el service worker se publica en /sw.js y su caché nunca intercepta la API', async ({ request }) => {
   const response = await request.get('/sw.js');
   expect(response.ok()).toBe(true);
   expect(response.headers()['content-type']).toMatch(/javascript/);
   const source = await response.text();
   expect(source).toContain("addEventListener('push'");
-  expect(source).not.toContain("addEventListener('fetch'");
+  expect(source).toContain("addEventListener('fetch'");
+  expect(source).toContain("!url.pathname.startsWith('/api/')");
 });
