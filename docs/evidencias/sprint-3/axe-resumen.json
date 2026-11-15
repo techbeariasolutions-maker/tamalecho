@@ -7,7 +7,7 @@
   ],
   "projects": {
     "desktop": {
-      "generatedAt": "2026-11-13T22:44:21.897Z",
+      "generatedAt": "2026-11-15T23:01:12.889Z",
       "routes": [
         {
           "route": "/",
@@ -23,6 +23,14 @@
         },
         {
           "route": "/biblioteca/scrum?categoria=Eventos",
+          "violations": []
+        },
+        {
+          "route": "/biblioteca/pmbok?q=riesgo",
+          "violations": []
+        },
+        {
+          "route": "/biblioteca/scrum?q=zzz",
           "violations": []
         },
         {
@@ -43,6 +51,14 @@
         },
         {
           "route": "/progreso",
+          "violations": []
+        },
+        {
+          "route": "/historial (con datos)",
+          "violations": []
+        },
+        {
+          "route": "/progreso (con datos)",
           "violations": []
         },
         {
@@ -76,7 +92,7 @@
       ]
     },
     "mobile-360": {
-      "generatedAt": "2026-11-13T22:45:00.721Z",
+      "generatedAt": "2026-11-15T23:01:49.992Z",
       "routes": [
         {
           "route": "/",
@@ -92,6 +108,14 @@
         },
         {
           "route": "/biblioteca/scrum?categoria=Eventos",
+          "violations": []
+        },
+        {
+          "route": "/biblioteca/pmbok?q=riesgo",
+          "violations": []
+        },
+        {
+          "route": "/biblioteca/scrum?q=zzz",
           "violations": []
         },
         {
@@ -112,6 +136,14 @@
         },
         {
           "route": "/progreso",
+          "violations": []
+        },
+        {
+          "route": "/historial (con datos)",
+          "violations": []
+        },
+        {
+          "route": "/progreso (con datos)",
           "violations": []
         },
         {

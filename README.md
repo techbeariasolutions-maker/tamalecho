@@ -6,7 +6,7 @@ Acceso público, sin registro.
 > Reglas del proyecto para personas y agentes: [`CLAUDE.md`](CLAUDE.md). Decisiones vigentes: [`docs/DECISIONES.md`](docs/DECISIONES.md).
 > Planes por sprint: [`docs/sprint-1/`](docs/sprint-1/PLAN.md), [`docs/sprint-2/`](docs/sprint-2/PLAN.md) y [`docs/sprint-3/`](docs/sprint-3/PLAN.md).
 
-**Versión entregada:** `v1.0.0` (13/11/2026, entrega final; adelantada respecto al 20/11 del plan por decisión de Diego). Versiones anteriores: `v0.1.0` (Sprint 1) y `v0.2.0` (Sprint 2).
+**Versión actual:** `v1.1.0` (15/11/2026), que termina el backlog pendiente de la propuesta (D-26). Versiones anteriores: `v1.0.0` (13/11/2026, entrega final del Sprint 3, adelantada por decisión de Diego), `v0.2.0` (Sprint 2) y `v0.1.0` (Sprint 1).
 
 ## Qué hace
 
@@ -14,9 +14,14 @@ Acceso público, sin registro.
 - **Avisos** cada 2 o 3 horas dentro de la página, con horario, días, silencio (21:00–08:00 por defecto) y pausa. A lo sumo un aviso por ventana; nunca se acumulan.
 - **Notificaciones del navegador** y **Web Push** opcionales; el permiso solo se pide tras un clic.
 - **Personaje** que cambia según la hora del día.
+- **Web Push programado** con la pestaña cerrada: un proceso revisa cada 30 minutos y envía a lo sumo un aviso por ventana y suscripción.
+- **Pausa desde el aviso** y gestos breves del personaje.
+- **Historial, favoritos y compartir**; **búsqueda y filtros combinados**; **Mi progreso** con racha e insignias.
+- **Preguntas de práctica** voluntarias en algunos consejos (hoy en **borrador**, pendientes de aprobación del PO) y «Reiniciar progreso».
+- **PWA instalable** y lectura sin conexión.
 - **Ayuda**, **aviso de privacidad** y canal de **sugerencias**.
 
-Sin cuentas ni datos personales: las preferencias y el historial viven en el navegador; el servidor solo guarda la suscripción push si se activa (ver `/privacidad`).
+Sin cuentas ni datos personales: las preferencias, el historial, los favoritos y el progreso viven en el navegador; el servidor solo guarda la suscripción push si se activa (ver `/privacidad`).
 
 ## Documentos de operación
 
