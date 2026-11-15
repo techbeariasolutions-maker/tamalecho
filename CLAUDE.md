@@ -4,6 +4,7 @@
 > Versión del Sprint 3, actualizada el 14/11/2026 para el backlog pendiente posterior a `v1.0.0` (D-26). Si algo aquí contradice la propuesta aprobada, gana la propuesta (ver `docs/DECISIONES.md`, D-01).
 
 ## 1. Orden de lectura obligatorio
+0. `docs/sprint-3/PUNTO_DE_CONTROL.md`: dónde vamos, qué sigue y por qué. Si estás retomando el trabajo, empieza aquí.
 1. Este archivo.
 2. `docs/DECISIONES.md`: decisiones vigentes y pendientes (en especial D-19, D-21, D-22, D-23 y D-26).
 3. `docs/sprint-3/PLAN.md`: alcance comprometido, calendario, puntos de control y Definition of Done del sprint actual.
