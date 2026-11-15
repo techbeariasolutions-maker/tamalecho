@@ -1,7 +1,7 @@
 # Punto de control — dónde vamos y qué sigue
 
 > **Para una sesión nueva (persona o agente):** lee esto primero, después `CLAUDE.md` y el WP que toque en `docs/sprint-3/PENDIENTES.md`.
-> **Actualizado:** 15/11/2026, con `main` en `05ecf57`. Si `main` avanzó, revisa `git log` y los PR abiertos antes de confiar en este archivo.
+> **Actualizado:** 15/11/2026, con `main` en `b18d098`. Si `main` avanzó, revisa `git log` y los PR abiertos antes de confiar en este archivo.
 > **Lo actualiza** quien termine o integre un WP: el agente al cerrar cada paso o Diego al integrar.
 
 ## 1. Por qué estamos aquí
@@ -17,20 +17,20 @@
 | P1 | Web Push programado sin duplicados (HT-07.2, HU-15.2-A, HU-15.1-B, HT-06.1-B) | 🟡 PR **#69**, CI en verde | **Diego lo integra a mano.** Activa el envío cada 30 min en producción, y el sistema de permisos bloquea que el agente lo integre |
 | P2 | Pausa desde el aviso, gestos y peso del personaje | ✅ Integrado (#70) | — |
 | P3 | Borrar historial, favoritos y compartir | ✅ Integrado (#71) | — |
-| P4 | Filtros combinados y selector único (HU-09) | 🟡 PR **#72**, CI en verde | Integrar |
-| P5 | PWA instalable y lectura sin conexión (HT-06.2, HU-12) | 🟡 PR **#73**, CI en curso | Integrar cuando el CI pase |
-| P6 | Microevaluación y progreso (HU-10) | ⬜ Sin empezar | Siguiente WP del agente (§3) |
-| P7 | Release `v1.1.0` | ⬜ Sin empezar | Después del P6 (§3) |
+| P4 | Filtros combinados y selector único (HU-09) | ✅ Integrado (#72) | — |
+| P5 | PWA instalable y lectura sin conexión (HT-06.2, HU-12) | ✅ Integrado (#73) | — |
+| P6 | Microevaluación y progreso (HU-10) | ✅ Integrado (#75). Preguntas en borrador (`approved: false`) | El PO las valida |
+| P7 | Release `v1.1.0` | ⬜ Detenido a propósito | **Espera a que Diego integre #69** (decisión de Diego, 15/11): sin P1 el release no podría reportar el envío programado ni actualizar S-06 |
 
 ## 3. Qué sigue para el agente, en orden
-1. **Integrar #72 y #73** si sus CI pasaron. Si el sistema de permisos bloquea el merge, pásale a Diego el comando `gh pr merge <n> --squash --delete-branch`.
-2. **P6 · Microevaluación** (rama `feat/HU-10-quiz`, desde `main`):
+1. ~~Integrar #72 y #73~~ y ~~P6~~ ya están integrados (#72, #73, #75).
+2. ~~**P6 · Microevaluación**~~ (hecho; detalle de lo que se pidió):
    - Pregunta voluntaria de opción múltiple en algunos consejos, con retroalimentación. Nunca bloquea la lectura.
    - Las preguntas salen del texto ya aprobado de cada consejo y se marcan **borrador** (`approved: false`) hasta que el PO las valide (HU-10.1-B). **No inventar contenido ni fuentes.**
    - Respuestas solo en el dispositivo, vía `storage.js` (`progress`), y un panel por enfoque en Mi progreso (HU-10.2-A).
    - Botón «Reiniciar progreso» (HU-10.2-B), con confirmación en la página.
    - Declararlo en el aviso de privacidad y en «Tus datos».
-3. **P7 · Release `v1.1.0`:**
+3. **P7 · Release `v1.1.0`** (solo cuando #69 esté en `main`; rama `release/v1.1.0`):
    - Actualizar `SEGURIDAD.md`: S-06 cambia con el envío programado.
    - README y `package.json` a `1.1.0`.
    - `check`, `test:e2e`, `validate:tips:release` y `evidence`.
