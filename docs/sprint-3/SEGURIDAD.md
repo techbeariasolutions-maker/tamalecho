@@ -83,11 +83,11 @@ Ver §2: ni el repositorio, ni su historial, ni el bundle contienen las claves. 
 - **Servidor:** la suscripción se borra cuando:
   - la persona la desactiva o restablece sus datos;
   - el servicio de push responde 404 o 410 en un envío (`server/push.js`).
-- **S-06 (aceptado):**
-  - Una suscripción de alguien que deja de usar la página sin desactivarla se queda en el almacén hasta el siguiente envío que el servicio de push rechace.
-  - Mientras el envío programado no esté activo (HT-07.2-A), eso solo pasa en los envíos de prueba.
-  - El registro no tiene datos personales (CLAUDE.md §2), así que el impacto es bajo.
-  - Si entra el envío programado, se propone revisar esta decisión.
+- **S-06 (aceptado, revisado en `v1.1.0`):**
+  - Desde el WP-P1 el envío programado está activo (cada 30 minutos, `push-dispatch.yml`). Una suscripción de alguien que deja de usar la página sin desactivarla se borra en el primer envío que el servicio de push rechace con 404 o 410 (`server/push.js`). Ya no depende de envíos de prueba.
+  - Sigue sin existir una caducidad propia por tiempo: si el servicio de push no rechaza la suscripción, se queda en el almacén. Cada aviso lleva `TTL` de 2 horas, así que un aviso no entregado no se acumula.
+  - El registro no tiene datos personales (CLAUDE.md §2), así que el impacto sigue siendo bajo y el riesgo se mantiene **aceptado**.
+  - Revisión pendiente de una persona: con el envío programado en producción, Diego y Alan deciden si se agrega una caducidad por inactividad. No se implementó en este release.
 
 ## 4. Pendientes para el equipo
 1. Decidir S-02 (A, B o C) y anotarlo en `DECISIONES.md`.
