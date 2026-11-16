@@ -13,7 +13,7 @@ Severidad: **Alta** (explotable y con impacto en usuarios o datos), **Media** (e
 | S-02 | Sin límite de frecuencia en `/api/push/subscribe` | Media | **Corregido** con la opción B (D-27); el equipo puede revisarla |
 | S-03 | El cuerpo se leía completo antes de medir su tamaño | Baja | **Corregido** en este PR |
 | S-04 | Faltaban encabezados de seguridad HTTP | Baja | **Corregido** en este PR (sin CSP) |
-| S-05 | Sin Content-Security-Policy | Baja | **Pendiente**: se propone y debe probarse en una vista previa |
+| S-05 | Sin Content-Security-Policy | Baja | **Corregido** en el WP-O2 (D-27); falta probarla en una vista previa de Vercel (una persona) |
 | S-06 | Suscripciones abandonadas sin caducidad en el servidor | Baja | **Aceptado**, con motivo (§3.6) |
 | S-07 | Cualquiera que conozca un endpoint puede darlo de baja | Info | **Aceptado**, con motivo (§3.2) |
 | S-08 | Secretos fuera del repositorio, del historial y del bundle | Info | — |
@@ -73,10 +73,11 @@ Ver §2: ni el repositorio, ni su historial, ni el bundle contienen las claves. 
     - **C.** Aceptarlo para la entrega del curso y vigilar el uso del almacén en el panel de Upstash (`docs/OPERACION.md`).
   - **Recomendación del agente:** C para el 20/11, por tiempo y riesgo, y A si el plan lo permite sin costo.
 - **Encabezados (S-04, corregido):** `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: DENY` y `Permissions-Policy`, en todas las rutas.
-- **CSP (S-05, pendiente):**
-  - Propuesta: `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'`.
-  - No se activó porque los encabezados de `vercel.json` no se aplican en `vite preview` ni en las pruebas locales: un error solo se vería en Vercel.
-  - **Para activarla:** agregarla en un PR, abrir su vista previa, recorrer todas las rutas, activar y desactivar Web Push, y revisar la consola en busca de bloqueos.
+- **CSP (S-05, corregido en el WP-O2, pendiente de probar en Vercel):**
+  - Política activa en `vercel.json`: `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; manifest-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'`.
+  - Respecto a la propuesta original se agregaron `manifest-src 'self'` y `object-src 'none'`. Los estilos en línea se permiten porque React escribe atributos `style` (barras de progreso y color del personaje); los scripts no.
+  - `vite preview` no aplica los encabezados de `vercel.json`. Por eso `tests/e2e/csp.spec.js` los agrega a cada respuesta con `page.route`, recorre las 17 rutas sin datos sembrados en escritorio y 360 px, registra el service worker y falla ante cualquier evento `securitypolicyviolation`. Tiene un control negativo: un script en línea debe quedar bloqueado.
+  - **Lo que no cubre esa prueba:** el servicio de push real de cada navegador (`PushManager.subscribe` no se rige por `connect-src`, pero no se probó con un envío real) ni lo que Vercel agregue por su cuenta. **Una persona debe abrir la vista previa de este PR, activar y desactivar Web Push, recorrer las rutas y revisar la consola.** Si algo se bloquea, se revierte con `git revert` de este PR.
 
 ### 3.6 Política de retención
 - **Navegador:** los datos se quedan hasta que la persona restablece sus datos o borra los datos del sitio (aviso de privacidad, HU-13.2-A).
@@ -91,6 +92,6 @@ Ver §2: ni el repositorio, ni su historial, ni el bundle contienen las claves. 
 
 ## 4. Pendientes para el equipo
 1. Decidir S-02 (A, B o C) y anotarlo en `DECISIONES.md`.
-2. Probar la CSP (S-05) en una vista previa y activarla si no rompe nada.
+2. Probar la CSP (S-05) en la vista previa del PR del WP-O2 (activar y desactivar Web Push, recorrer las rutas, revisar la consola) antes de integrarlo.
 3. Repetir `npm audit` y T2-18 en la regresión final (T3-11).
 4. Que una persona revise esta auditoría y lo deje registrado en el PR.

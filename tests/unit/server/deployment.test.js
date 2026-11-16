@@ -30,8 +30,8 @@ describe('despliegue de las funciones', () => {
     expect(pattern.test('/api/push/dispatch')).toBe(false);
   });
 
-  // HT-08.2-A: encabezados de seguridad básicos en todas las respuestas. No se incluye CSP todavía:
-  // se propone en docs/sprint-3/SEGURIDAD.md y debe probarse en una vista previa antes de activarla.
+  // HT-08.2-A: encabezados de seguridad básicos en todas las respuestas.
+  // S-05: la CSP se verifica en tests/e2e/csp.spec.js; aquí se fijan sus directivas.
   // WP-P5: el service worker y su manifiesto de precarga nunca quedan en la caché HTTP.
   it('vercel.json sirve sw.js y precache-manifest.json sin caché HTTP', () => {
     const { headers } = JSON.parse(readFileSync('vercel.json', 'utf8'));
@@ -42,12 +42,42 @@ describe('despliegue de las funciones', () => {
   it('vercel.json agrega los encabezados de seguridad a todas las rutas', () => {
     const { headers } = JSON.parse(readFileSync('vercel.json', 'utf8'));
     expect(headers[0].source).toBe('/(.*)');
-    const values = Object.fromEntries(headers[0].headers.map(({ key, value }) => [key, value]));
-    expect(values).toEqual({
+    const { 'Content-Security-Policy': csp, ...others } = Object.fromEntries(
+      headers[0].headers.map(({ key, value }) => [key, value]),
+    );
+    expect(others).toEqual({
       'X-Content-Type-Options': 'nosniff',
       'Referrer-Policy': 'strict-origin-when-cross-origin',
       'X-Frame-Options': 'DENY',
       'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
     });
+    expect(csp).toBeTruthy();
+  });
+
+  it('la CSP solo permite el mismo origen y no admite scripts en línea ni eval', () => {
+    const { headers } = JSON.parse(readFileSync('vercel.json', 'utf8'));
+    const value = headers[0].headers.find((header) => header.key === 'Content-Security-Policy').value;
+    const directives = Object.fromEntries(
+      value.split(';').map((part) => {
+        const [name, ...sources] = part.trim().split(/\s+/);
+        return [name, sources];
+      }),
+    );
+    expect(directives['default-src']).toEqual(["'self'"]);
+    // Sin 'unsafe-inline' ni 'unsafe-eval' en los scripts (los estilos en línea sí, por los atributos style de React).
+    expect(directives['script-src']).toEqual(["'self'"]);
+    expect(directives['connect-src']).toEqual(["'self'"]);
+    expect(directives['worker-src']).toEqual(["'self'"]);
+    expect(directives['object-src']).toEqual(["'none'"]);
+    expect(directives['frame-ancestors']).toEqual(["'none'"]);
+    expect(directives['base-uri']).toEqual(["'self'"]);
+    expect(directives['form-action']).toEqual(["'self'"]);
+  });
+
+  it('index.html no tiene scripts ni manejadores en línea (la CSP los bloquearía)', () => {
+    const html = readFileSync('index.html', 'utf8');
+    const scripts = [...html.matchAll(/<script\b([^>]*)>/g)];
+    for (const [, attributes] of scripts) expect(attributes).toMatch(/\bsrc=/);
+    expect(html).not.toMatch(/\son[a-z]+\s*=/i);
   });
 });
