@@ -8,6 +8,7 @@ import PrivacyPage from '../../src/features/help/PrivacyPage.jsx';
 import HelpPage from '../../src/features/help/HelpPage.jsx';
 import { getPrivacy, getSuggestions } from '../../src/services/help.js';
 import { createEmptyData, MAX_HISTORY_ENTRIES, MAX_SERVED_WINDOWS } from '../../src/services/storage.js';
+import { RATE_WINDOW_SECONDS } from '../../server/rateLimit.js';
 import { validateSubscription } from '../../server/subscriptions.js';
 import { renderApp } from './renderApp.jsx';
 
@@ -57,6 +58,11 @@ describe('aviso de privacidad contra el código (HU-13.2-A)', () => {
     expect(text).toMatch(/zona horaria/);
     expect(text).toMatch(/horario de avisos/);
     expect(text).toMatch(/Solo si activas los avisos con la pestaña cerrada/);
+    // S-02: el límite de frecuencia guarda un contador con la IP cifrada y caduca a los 10 minutos.
+    expect(text).toMatch(/contador temporal de solicitudes/);
+    expect(text).toMatch(/versión cifrada de tu dirección IP/);
+    expect(text).toContain(`${RATE_WINDOW_SECONDS / 60} minutos`);
+    expect(sectionText('cuanto-tiempo')).toContain(`${RATE_WINDOW_SECONDS / 60} minutos`);
   });
 
   it('explica cómo borrar los datos y cancelar la suscripción con los nombres reales de los botones', () => {

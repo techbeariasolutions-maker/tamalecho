@@ -19,12 +19,20 @@ export function createRedisStore(redis) {
     async list() {
       return Object.values((await redis.hgetall(SUBSCRIPTIONS_KEY)) ?? {});
     },
+    // Contador con caducidad para el límite de frecuencia (S-02). INCR y EXPIRE NX van en una sola
+    // transacción (MULTI): no hay un instante en que la llave exista sin caducidad, que bloquearía a
+    // esa IP para siempre. NX pone la caducidad solo si la llave no tiene una, así la ventana es fija.
+    async hit(key, windowSeconds) {
+      const [count] = await redis.multi().incr(key).expire(key, windowSeconds, 'NX').exec();
+      return count;
+    },
   };
 }
 
 // Almacén en memoria para las pruebas.
 export function createMemoryStore() {
   const records = new Map();
+  const counters = new Map();
   return {
     async save(record) {
       records.set(record.id, record);
@@ -37,6 +45,11 @@ export function createMemoryStore() {
     },
     async list() {
       return [...records.values()];
+    },
+    // Contadores en memoria; la caducidad no se simula (las pruebas no esperan ventanas reales).
+    async hit(key) {
+      counters.set(key, (counters.get(key) ?? 0) + 1);
+      return counters.get(key);
     },
   };
 }
