@@ -118,7 +118,7 @@ describe('sendScheduled: un aviso por ventana y suscripción', () => {
   it('envía la ventana vigente, guarda su clave y no la repite en la siguiente corrida', async () => {
     const { store, webpush } = await setup([makeRecord('a')]);
     const first = await sendScheduled({ webpush, store, vapid: VAPID, now: monterrey(11, 7), tips: TIPS });
-    expect(first).toEqual({ sent: 1, removed: 0, failed: 0, skipped: 0 });
+    expect(first).toEqual({ sent: 1, removed: 0, failed: 0, skipped: 0, expired: 0 });
     expect((await store.get('a')).lastWindowKey).toBe('2026-11-09@11:00');
 
     const second = await sendScheduled({ webpush, store, vapid: VAPID, now: monterrey(11, 37), tips: TIPS });
