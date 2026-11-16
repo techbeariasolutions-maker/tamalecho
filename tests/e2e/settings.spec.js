@@ -157,14 +157,45 @@ test('restablecer da de baja la suscripción en el servidor antes de borrar (ped
   const problems = trackProblems(page);
   const endpoint = 'https://fcm.googleapis.com/fcm/send/e2e';
   const requests = [];
-  // El servidor se simula: ninguna prueba del CI usa red ni claves reales.
+  // Causa de la inestabilidad anterior: con el estado local «activo» pero sin permiso ni suscripción
+  // real en el navegador, la app se da de baja sola al cargar (HU-15.1-B). Ese DELETE salía en carrera
+  // con el reload y con el clic de la prueba: la prueba medía el DELETE de la carga y no el del botón,
+  // y a veces llegaba mientras la página navegaba y page.evaluate fallaba con «Execution context was
+  // destroyed». Aquí el navegador simula el permiso y la suscripción, así que el único DELETE es el
+  // de «Restablecer».
+  await page.addInitScript((subscribedEndpoint) => {
+    const subscription = {
+      endpoint: subscribedEndpoint,
+      toJSON: () => ({ endpoint: subscribedEndpoint, keys: { p256dh: 'p', auth: 'a' } }),
+      unsubscribe: async () => true,
+    };
+    // El Chromium sin interfaz reporta el permiso como «denegado» (y grantPermissions no lo cambia).
+    Object.defineProperty(Notification, 'permission', { get: () => 'granted' });
+    navigator.serviceWorker.getRegistration = async () => ({ pushManager: { getSubscription: async () => subscription } });
+  }, endpoint);
+
+  // El servidor se simula: ninguna prueba del CI usa red ni claves reales. La respuesta queda retenida
+  // hasta que la prueba lee el almacenamiento, así se comprueba sin carreras que los datos siguen
+  // intactos mientras el servidor aún no confirma la baja.
+  let releaseServer;
+  const serverGate = new Promise((resolve) => {
+    releaseServer = resolve;
+  });
+  let markRequestSeen;
+  const requestSeen = new Promise((resolve) => {
+    markRequestSeen = resolve;
+  });
   await page.route('**/api/push/subscribe', async (route) => {
     const request = route.request();
-    requests.push({
-      method: request.method(),
-      body: request.postDataJSON(),
-      historyAtRequest: await page.evaluate((key) => JSON.parse(window.localStorage.getItem(key)).history.length, STORAGE_KEY),
-    });
+    // Con la suscripción simulada, al cargar la app renueva la suscripción con un POST (S-06): se
+    // responde sin más. Solo el DELETE de «Restablecer» se cuenta y se retiene.
+    if (request.method() !== 'DELETE') {
+      await route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' });
+      return;
+    }
+    requests.push({ method: request.method(), body: request.postDataJSON() });
+    markRequestSeen();
+    await serverGate;
     await route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' });
   });
   await page.goto('/ajustes');
@@ -176,9 +207,14 @@ test('restablecer da de baja la suscripción en el servidor antes de borrar (ped
 
   await page.getByRole('button', { name: 'Restablecer mis datos' }).click();
   await page.getByRole('button', { name: 'Sí, restablecer' }).click();
+  await requestSeen;
+  const historyAtRequest = (await readStored(page)).history.length;
+  releaseServer();
   await expect(page.getByRole('status').filter({ hasText: 'Listo' })).toHaveText(/tus datos se restablecieron/);
 
-  expect(requests).toEqual([{ method: 'DELETE', body: { endpoint }, historyAtRequest: 2 }]);
+  expect(requests).toEqual([{ method: 'DELETE', body: { endpoint } }]);
+  // La baja en el servidor se pidió antes de borrar el historial.
+  expect(historyAtRequest).toBe(2);
   const afterReset = await readStored(page);
   expect(afterReset.push).toBeNull();
   expect(afterReset.history).toEqual([]);
