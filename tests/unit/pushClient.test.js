@@ -103,7 +103,12 @@ describe('pushClient (HU-15.1-A)', () => {
         timeZone: TIME_ZONE,
         settings: SETTINGS,
       });
-      expect(fake.env.repository.getPushState()).toEqual({ status: 'on', endpoint: FAKE_ENDPOINT });
+      // syncedAt (S-06): la fecha de esta sincronización, para renovarla a lo más una vez al día.
+      expect(fake.env.repository.getPushState()).toEqual({
+        status: 'on',
+        endpoint: FAKE_ENDPOINT,
+        syncedAt: expect.any(String),
+      });
     });
 
     it('el permiso se pide antes de registrar el service worker (acción del usuario)', async () => {

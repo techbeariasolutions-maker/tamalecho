@@ -14,7 +14,7 @@ Severidad: **Alta** (explotable y con impacto en usuarios o datos), **Media** (e
 | S-03 | El cuerpo se leía completo antes de medir su tamaño | Baja | **Corregido** en este PR |
 | S-04 | Faltaban encabezados de seguridad HTTP | Baja | **Corregido** en este PR (sin CSP) |
 | S-05 | Sin Content-Security-Policy | Baja | **Corregido** en el WP-O2 (D-27); falta probarla en una vista previa de Vercel (una persona) |
-| S-06 | Suscripciones abandonadas sin caducidad en el servidor | Baja | **Aceptado**, con motivo (§3.6) |
+| S-06 | Suscripciones abandonadas sin caducidad en el servidor | Baja | **Corregido** en el WP-O3 (D-27, §3.6) |
 | S-07 | Cualquiera que conozca un endpoint puede darlo de baja | Info | **Aceptado**, con motivo (§3.2) |
 | S-08 | Secretos fuera del repositorio, del historial y del bundle | Info | — |
 
@@ -84,11 +84,17 @@ Ver §2: ni el repositorio, ni su historial, ni el bundle contienen las claves. 
 - **Servidor:** la suscripción se borra cuando:
   - la persona la desactiva o restablece sus datos;
   - el servicio de push responde 404 o 410 en un envío (`server/push.js`).
-- **S-06 (aceptado, revisado en `v1.1.0`):**
+- **S-06 (aceptado en `v1.1.0`; corregido en el WP-O3):**
   - Desde el WP-P1 el envío programado está activo (cada 30 minutos, `push-dispatch.yml`). Una suscripción de alguien que deja de usar la página sin desactivarla se borra en el primer envío que el servicio de push rechace con 404 o 410 (`server/push.js`). Ya no depende de envíos de prueba.
-  - Sigue sin existir una caducidad propia por tiempo: si el servicio de push no rechaza la suscripción, se queda en el almacén. Cada aviso lleva `TTL` de 2 horas, así que un aviso no entregado no se acumula.
-  - El registro no tiene datos personales (CLAUDE.md §2), así que el impacto sigue siendo bajo y el riesgo se mantiene **aceptado**.
-  - Revisión pendiente de una persona: con el envío programado en producción, Diego y Alan deciden si se agrega una caducidad por inactividad. No se implementó en este release.
+  - Cada aviso lleva `TTL` de 2 horas, así que un aviso no entregado no se acumula.
+  - **Corregido en el WP-O3 (D-27): caducidad por inactividad.**
+    - El servidor guarda `lastSeenAt` en cada alta o sincronización (`server/handlers.js`; nunca viene del cuerpo). El cliente renueva la suscripción como máximo una vez al día al abrir la app, solo si los avisos con la pestaña cerrada están activos (`renewPushSubscription`).
+    - Cada corrida del envío programado (cada 30 minutos) borra las suscripciones con más de `INACTIVITY_DAYS` = 60 días sin actividad (`server/expiry.js`, `server/push.js`) y las cuenta como `expired`.
+    - Un envío exitoso **no** cuenta como actividad: el servicio de push acepta avisos aunque nadie los lea.
+    - Los registros anteriores al cambio (sin `lastSeenAt`) reciben la fecha de la primera corrida; su plazo empieza ahí, no se borran de golpe.
+    - Se declara en el aviso de privacidad y en la Ayuda (texto en borrador hasta que lo apruebe el PO). Quien quiera volver a recibir avisos después de la caducidad los activa de nuevo en Ajustes.
+  - **Costo:** un POST por dispositivo y por día a `/api/push/subscribe` (cabe de sobra en el límite de 20 por 10 minutos de S-02), más un `HSET` por registro en la primera corrida tras el despliegue.
+  - **Límite:** si alguien nunca abre la página en 60 días pero sigue leyendo los avisos del sistema, los pierde; al pulsar un aviso la app se abre y renueva. 60 días es una constante (`INACTIVITY_DAYS`); si el equipo prefiere otro plazo, se cambia ahí y en los textos (una prueba lo exige).
 
 ## 4. Pendientes para el equipo
 1. Decidir S-02 (A, B o C) y anotarlo en `DECISIONES.md`.

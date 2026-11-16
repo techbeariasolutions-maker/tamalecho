@@ -1,5 +1,6 @@
 // Envío de avisos Web Push (HT-07.1-B; agenda HT-07.2). `webpush` y `store` se reciben por parámetro para probarlos sin red.
 import { getDueWindow, tipForWindow } from './delivery.js';
+import { isInactive } from './expiry.js';
 
 // Si el dispositivo está apagado, el servicio de push descarta el aviso después de 2 horas, la cadencia
 // más corta. Así un aviso viejo nunca llega junto con el siguiente (regla de «sin atrasados», CLAUDE.md §2).
@@ -85,6 +86,13 @@ async function markDelivered(store, id, windowKey, now) {
   await store.save({ ...current, lastWindowKey: windowKey, lastSentAt: now.toISOString() });
 }
 
+// Pone la fecha de actividad sobre la versión ACTUAL del registro (mismo cuidado que markDelivered).
+async function markSeen(store, id, now) {
+  const current = await store.get(id);
+  if (!current || current.lastSeenAt) return;
+  await store.save({ ...current, lastSeenAt: now.toISOString() });
+}
+
 // Envío programado (HT-07.2-A, HU-15.2-A). Lo dispara el job de GitHub Actions cada 30 min.
 // A cada suscripción le toca a lo sumo la ventana vigente de su hora local (getDueWindow). Después
 // de un envío exitoso se guarda la clave de la ventana y la hora, para no repetirla aunque el job
@@ -94,6 +102,13 @@ export async function sendScheduled({ webpush, store, vapid, now, tips, sleep })
   const records = await store.list();
   const results = await Promise.all(
     records.map(async (record) => {
+      // S-06: sin actividad por más de INACTIVITY_DAYS, la suscripción se borra sin enviar nada.
+      if (isInactive(record, now)) {
+        await store.remove(record.id);
+        return 'expired';
+      }
+      // Registro anterior a la caducidad: su plazo empieza hoy, no se borra de golpe.
+      if (!record.lastSeenAt) await markSeen(store, record.id, now);
       const due = getDueWindow(record, now);
       if (!due) return 'skipped';
       const tip = tipForWindow(tips, due.window);
@@ -104,5 +119,11 @@ export async function sendScheduled({ webpush, store, vapid, now, tips, sleep })
     }),
   );
   const count = (outcome) => results.filter((result) => result === outcome).length;
-  return { sent: count('sent'), removed: count('removed'), failed: count('failed'), skipped: count('skipped') };
+  return {
+    sent: count('sent'),
+    removed: count('removed'),
+    failed: count('failed'),
+    skipped: count('skipped'),
+    expired: count('expired'),
+  };
 }

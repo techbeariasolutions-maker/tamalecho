@@ -28,7 +28,8 @@ async function readJson(request) {
 
 // POST = alta o actualización · DELETE = baja. Solo quien conoce el endpoint puede darlo de baja.
 // `limiter` es opcional: sin él no hay límite de frecuencia (S-02).
-export async function handleSubscribe(request, { store, limiter }) {
+// `now` entrega la fecha actual (se inyecta en las pruebas).
+export async function handleSubscribe(request, { store, limiter, now = () => new Date() }) {
   if (request.method !== 'POST' && request.method !== 'DELETE') {
     return json(405, { error: 'Método no permitido.' }, { Allow: 'POST, DELETE' });
   }
@@ -58,7 +59,8 @@ export async function handleSubscribe(request, { store, limiter }) {
   // y hora del último envío). Si se perdiera, el job podría repetir el aviso de la ventana actual
   // (HU-15.2-A). Ningún campo del cuerpo puede escribir estos valores.
   const existing = await store.get(value.id);
-  const record = { ...value };
+  // lastSeenAt (S-06) lo pone el servidor en cada alta o sincronización; nunca viene del cuerpo.
+  const record = { ...value, lastSeenAt: now().toISOString() };
   if (existing?.lastWindowKey) record.lastWindowKey = existing.lastWindowKey;
   if (existing?.lastSentAt) record.lastSentAt = existing.lastSentAt;
   await store.save(record);

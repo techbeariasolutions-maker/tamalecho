@@ -6,8 +6,9 @@ import { resolve } from 'node:path';
 import { cwd } from 'node:process';
 import PrivacyPage from '../../src/features/help/PrivacyPage.jsx';
 import HelpPage from '../../src/features/help/HelpPage.jsx';
-import { getPrivacy, getSuggestions } from '../../src/services/help.js';
+import { getHelpItems, getPrivacy, getSuggestions } from '../../src/services/help.js';
 import { createEmptyData, MAX_HISTORY_ENTRIES, MAX_SERVED_WINDOWS } from '../../src/services/storage.js';
+import { INACTIVITY_DAYS } from '../../server/expiry.js';
 import { RATE_WINDOW_SECONDS } from '../../server/rateLimit.js';
 import { validateSubscription } from '../../server/subscriptions.js';
 import { renderApp } from './renderApp.jsx';
@@ -37,6 +38,8 @@ describe('aviso de privacidad contra el código (HU-13.2-A)', () => {
     expect(text).toMatch(/avisos que ya te mostramos/);
     expect(text).toContain(`${MAX_SERVED_WINDOWS} más recientes`);
     expect(text).toMatch(/dirección de tu suscripción/);
+    // S-06: push.syncedAt, la fecha de la última renovación de la suscripción.
+    expect(text).toMatch(/fecha en que se renovó por última vez/);
     // Rediseño D-24: progress.completed guarda las misiones comprendidas.
     // HU-10: progress.answers guarda si cada respuesta de práctica fue correcta (no la opción elegida).
     expect(Object.keys(createEmptyData().progress)).toEqual(['completed', 'answers']);
@@ -63,6 +66,11 @@ describe('aviso de privacidad contra el código (HU-13.2-A)', () => {
     expect(text).toMatch(/versión cifrada de tu dirección IP/);
     expect(text).toContain(`${RATE_WINDOW_SECONDS / 60} minutos`);
     expect(sectionText('cuanto-tiempo')).toContain(`${RATE_WINDOW_SECONDS / 60} minutos`);
+    // S-06: lastSeenAt (la fecha de actividad) y el plazo de caducidad por inactividad.
+    expect(text).toMatch(/última vez que abriste TamalEcho Tips/);
+    expect(sectionText('cuanto-tiempo')).toContain(`${INACTIVITY_DAYS} días`);
+    const closedTab = getHelpItems().find((entry) => entry.id === 'pestana-cerrada');
+    expect(closedTab.answer.join(' ')).toContain(`${INACTIVITY_DAYS} días`);
   });
 
   it('explica cómo borrar los datos y cancelar la suscripción con los nombres reales de los botones', () => {

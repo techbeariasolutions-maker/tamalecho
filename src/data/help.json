@@ -44,7 +44,8 @@
         "question": "¿Qué pasa si cierro la pestaña?",
         "answer": [
           "Los avisos dentro de la página solo aparecen mientras TamalEcho Tips está abierto. Si cierras la pestaña y vuelves más tarde, te mostramos a lo sumo un aviso, nunca todos los que se juntaron.",
-          "Para recibir avisos con la pestaña cerrada, actívalos en Ajustes, en «Avisos con la pestaña cerrada», y da permiso de notificaciones. En computadora, el navegador tiene que seguir abierto, aunque no tengas la pestaña."
+          "Para recibir avisos con la pestaña cerrada, actívalos en Ajustes, en «Avisos con la pestaña cerrada», y da permiso de notificaciones. En computadora, el navegador tiene que seguir abierto, aunque no tengas la pestaña.",
+          "Si pasan 60 días sin que abras TamalEcho Tips, dejamos de enviarte avisos con la pestaña cerrada y borramos tu suscripción. Para recibirlos otra vez, vuelve a activarlos en Ajustes."
         ],
         "link": {
           "to": "/ajustes",
@@ -102,7 +103,7 @@
           "Si contestas las preguntas de práctica: si tu respuesta fue correcta y cuándo, para mostrar tu avance por enfoque. No guardamos qué opción elegiste.",
           "Los consejos que guardas en favoritos.",
           "Los avisos que ya te mostramos, hasta los 20 más recientes, para no repetir el mismo aviso.",
-          "Si activaste los avisos con la pestaña cerrada: que están activos y la dirección de tu suscripción, para poder darla de baja.",
+          "Si activaste los avisos con la pestaña cerrada: que están activos, la dirección de tu suscripción, para poder darla de baja, y la fecha en que se renovó por última vez, para renovarla como máximo una vez al día.",
           "Una copia de la página y del catálogo de consejos para leer sin conexión. Es la misma para todas las personas y no contiene datos tuyos."
         ]
       },
@@ -117,6 +118,7 @@
           "Tu zona horaria, para respetar tu horario y tu silencio.",
           "Tu horario de avisos, incluida la pausa.",
           "La ventana y la hora del último aviso que te enviamos, para no repetirlo.",
+          "La fecha de la última vez que abriste TamalEcho Tips con los avisos activos, para borrar tu suscripción si dejas de usarla.",
           "Un contador temporal de solicitudes para evitar abusos. Se calcula con una versión cifrada de tu dirección IP (no la guardamos tal cual) y se borra solo a los 10 minutos."
         ]
       },
@@ -134,7 +136,7 @@
         "title": "Cuánto tiempo se guarda",
         "items": [
           "En tu navegador: hasta que restablezcas tus datos o borres los datos del sitio en tu navegador.",
-          "En el servidor: hasta que desactives los avisos con la pestaña cerrada, restablezcas tus datos o el servicio de notificaciones nos avise que tu suscripción ya no es válida.",
+          "En el servidor: hasta que desactives los avisos con la pestaña cerrada, restablezcas tus datos, el servicio de notificaciones nos avise que tu suscripción ya no es válida o pasen 60 días sin que abras la página con los avisos activos.",
           "El contador de solicitudes dura 10 minutos."
         ]
       },

@@ -81,12 +81,15 @@ function sanitizeProgress(value) {
   return { completed, answers };
 }
 
-// Estado local de Web Push (HU-15.1-A): { status: 'on' | 'off', endpoint? }. El endpoint se guarda
-// para poder dar de baja la suscripción en el servidor aunque el navegador ya la haya perdido.
+// Estado local de Web Push (HU-15.1-A): { status: 'on' | 'off', endpoint?, syncedAt? }. El endpoint se
+// guarda para poder dar de baja la suscripción en el servidor aunque el navegador ya la haya perdido.
+// syncedAt (S-06) es la fecha de la última vez que se renovó la suscripción en el servidor; sirve para
+// renovarla como máximo una vez al día y que el servidor no la borre por inactividad.
 function sanitizePush(value) {
   if (!isPlainObject(value) || !['on', 'off'].includes(value.status)) return null;
   const state = { status: value.status };
   if (typeof value.endpoint === 'string' && value.endpoint.startsWith('https://')) state.endpoint = value.endpoint;
+  if (typeof value.syncedAt === 'string' && !Number.isNaN(Date.parse(value.syncedAt))) state.syncedAt = value.syncedAt;
   return state;
 }
 

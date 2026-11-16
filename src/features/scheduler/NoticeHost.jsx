@@ -6,7 +6,7 @@ import { useCatalog } from '../../hooks/useCatalog.js';
 import { useNoticeScheduler } from '../../hooks/useNoticeScheduler.js';
 import { announceSettingsChanged } from '../../hooks/useSettings.js';
 import { getBrowserRepository } from '../../services/storage.js';
-import { currentTimeZone, syncPushSettings } from '../../services/pushClient.js';
+import { currentTimeZone, renewPushSubscription, syncPushSettings } from '../../services/pushClient.js';
 import NoticeToast from './NoticeToast.jsx';
 
 // Lugar de los avisos dentro de la página (HU-06.1-A). Vive en el Layout, así que funciona en
@@ -27,6 +27,13 @@ export default function NoticeHost() {
   const hostRef = useRef(null);
   const confirmRef = useRef(null);
   const [pausedHere, setPausedHere] = useState(false);
+
+  // S-06: al abrir la app se renueva la suscripción (a lo más una vez al día) para que el servidor no
+  // la borre por inactividad. Solo actúa si los avisos con la pestaña cerrada ya están activos.
+  useEffect(() => {
+    const repository = getBrowserRepository();
+    renewPushSubscription(repository.getSettings(), currentTimeZone()).catch(() => {});
+  }, []);
 
   // Al cerrar:
   // - la página no salta: a 360 px el aviso va en el flujo, así que quitarlo subiría todo lo de

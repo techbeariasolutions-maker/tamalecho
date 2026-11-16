@@ -30,6 +30,9 @@ function resolveEnv(env) {
   return { ...browserEnv(), ...env };
 }
 
+// Fecha actual; `env.now` permite fijarla en las pruebas.
+const currentTime = (resolved) => (resolved.now ? resolved.now() : new Date());
+
 // Clave VAPID pública (base64 URL) → bytes, como la pide pushManager.subscribe.
 export function urlBase64ToUint8Array(base64Url) {
   const padding = '='.repeat((4 - (base64Url.length % 4)) % 4);
@@ -117,7 +120,11 @@ export async function enablePush(settings, timeZone, env) {
     return { ok: false, status: await getPushStatus(resolved), error: 'failed' };
   }
 
-  resolved.repository.savePushState({ status: 'on', endpoint: subscription.endpoint });
+  resolved.repository.savePushState({
+    status: 'on',
+    endpoint: subscription.endpoint,
+    syncedAt: currentTime(resolved).toISOString(),
+  });
   return { ok: true, status: 'on' };
 }
 
@@ -142,10 +149,32 @@ export async function syncPushSettings(settings, timeZone, env) {
   if (!subscription) return { ok: true, synced: false };
   try {
     await sendToServer(resolved.fetch, 'POST', { subscription: subscription.toJSON(), timeZone, settings });
-    return { ok: true, synced: true };
   } catch {
     return { ok: false, synced: false };
   }
+  // S-06: el servidor toma cada sincronización como actividad; se anota cuándo fue para renovar a lo más 1 vez al día.
+  resolved.repository.savePushState({
+    status: 'on',
+    endpoint: subscription.endpoint,
+    syncedAt: currentTime(resolved).toISOString(),
+  });
+  return { ok: true, synced: true };
+}
+
+// Renovación diaria (S-06): al abrir la app, si los avisos con la pestaña cerrada están activos y la última
+// sincronización fue hace más de un día, se vuelve a enviar la suscripción. Así el servidor distingue a
+// quien sigue usando la página de quien la abandonó (su suscripción caduca tras INACTIVITY_DAYS sin
+// actividad, server/expiry.js). No registra el service worker ni pide permiso.
+export const RENEW_INTERVAL_MS = 24 * 60 * 60 * 1000;
+
+export async function renewPushSubscription(settings, timeZone, env) {
+  const resolved = resolveEnv(env);
+  const local = resolved.repository.getPushState();
+  if (local?.status !== 'on') return { ok: true, synced: false };
+  if (local.syncedAt && currentTime(resolved).getTime() - Date.parse(local.syncedAt) < RENEW_INTERVAL_MS) {
+    return { ok: true, synced: false };
+  }
+  return syncPushSettings(settings, timeZone, resolved);
 }
 
 // Desactiva los avisos con la pestaña cerrada: primero cancela la suscripción en el navegador
